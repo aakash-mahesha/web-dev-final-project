@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+/* import logo from './logo.svg';
+import './App.css'; */
+
+import { Map } from './components/Map';
+import { MapEvents } from './components/MapEvents'
+import LeafletLogo from './assets/leafletlogo.png'
+import ReactIcon from './assets/reacticon.png';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <nav>
+        <img src={LeafletLogo} alt={'leaflet logo'} className='logo-mid'/>
+        <img src={ReactIcon} alt={'react logo'} className='logo-small'/>
+      </nav>
+      <Map />
+      <MapEvents />
     </div>
   );
 }
