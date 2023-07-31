@@ -1,7 +1,7 @@
 // --- (1), (2) & (3): install and import ---
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import Markers from './Markers';
 
 // -----------------------------------------------------
 
@@ -9,15 +9,8 @@ export function Map() {
     // Berlin coordinates
     const position = [52.51, 13.38];
 
-
-    // --- (6) Create a custom marker ---
-    const customIcon = new Icon({
-        iconUrl: '/cust-icon.png',
-        iconSize: [20,20]
-    });
-
     return (
-        <section className='map-component'>
+        <div className='map-component'>
             {/* --- (5) Add leaflet map container --- */}
             <div className='map'>
                 <MapContainer center={position} zoom={6} scrollWheelZoom={true}>
@@ -29,15 +22,16 @@ export function Map() {
                     // url='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
                     // --- -------------------------------------------------------------------------------------- ---
                     />
-                    <Marker position={position}
+                    {/* <Marker position={position}
                     icon={customIcon}
                     >
                         <Popup>
-                            🐻🍻🎉
+                            Popup test
                         </Popup>
-                    </Marker>
+                    </Marker> */}
+                    <Markers />
                 </MapContainer>
             </div>
-        </section>
-    )
+        </div>
+    );
 }
