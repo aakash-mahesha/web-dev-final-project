@@ -4,8 +4,11 @@ import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
 
 function EventForm() {
+    const dispatch = useDispatch();
+
   const [eventName, setEventName] = useState('');
   const [startDateAndTime, setStartDateAndTime] = useState(dayjs());
   const [endDateAndTime, setEndDateAndTime] = useState(dayjs());
@@ -62,12 +65,16 @@ function EventForm() {
     setImages(Array.from(selectedImages));
   };
 
-  const handleSubmit = () => {
-    // Implement your submit logic here
+  const handleSubmit = (event) => {
+    const data = new FormData(event.currentTarget);
+    data.append('publish', true);
+    console.log(data);
   };
 
-  const handleSaveDraft = () => {
-    // Implement your save draft logic here
+  const handleSaveDraft = (event) => {
+    const data = new FormData(event.currentTarget);
+    data.append('publish', false);
+    console.log(data);
   };
 
   return (
@@ -188,7 +195,7 @@ function EventForm() {
         </Grid>
         <Grid item xs={6}>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
-                Submit
+                Publish Event
             </Button>
         </Grid>
         <Grid item xs={6}>

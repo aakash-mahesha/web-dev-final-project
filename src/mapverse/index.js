@@ -1,4 +1,4 @@
-import CreateEvent from "./create_event";
+import CreateEvent from "./component/create_event";
 
 function MapVerse() {
     return(
