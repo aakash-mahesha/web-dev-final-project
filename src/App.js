@@ -1,24 +1,25 @@
 import logo from './logo.svg';
 import './App.css';
+import { HashRouter, Routes } from 'react-router-dom';
+import MapVerse from './mapverse';
+import { Route } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import EventForm from './mapverse/create_event/test';
 
 function App() {
   return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <HashRouter>
+        <div className='container'>
+          <Routes>
+            <Route path="/" element={<EventForm/>} />
+          </Routes>
+        </div>
+      </HashRouter>
     </div>
+    </LocalizationProvider>
   );
 }
 
