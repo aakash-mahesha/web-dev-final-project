@@ -19,7 +19,7 @@ function App() {
           <HashRouter>
             <div className='container'>
               <Routes>
-                <Route path="/" element={<EventForm/>} />
+                <Route path="/" element={<MapVerse/>} />
               </Routes>
             </div>
           </HashRouter>

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Button, Grid, Typography, InputLabel, Checkbox, FormControlLabel, Chip } from '@mui/material';
 import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
+import { submitEventFormThunk } from '../../services/event-form-thunks';
 
 function EventForm() {
     const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function EventForm() {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState('');
   const [selectedImages, setImages] = useState([]);
+  const [shouldSubmit, setShouldSubmit] = useState(false);
 
   const handleEventNameChange = (event) => {
     setEventName(event.target.value);
@@ -65,21 +67,44 @@ function EventForm() {
     setImages(Array.from(selectedImages));
   };
 
+  function constructForm(publishBool) {
+    const startDateAndTimeString = startDateAndTime.toString();
+    const endDateAndTimeString = endDateAndTime.toString();
+    const formData = {
+      eventName,
+      startDateAndTimeString,
+      endDateAndTimeString,
+      address,
+      isReservation,
+      maxPeople,
+      tags,
+      selectedImages,
+      publish: publishBool
+    }
+    return formData;
+  }
+
   const handleSubmit = (event) => {
-    const data = new FormData(event.currentTarget);
-    data.append('publish', true);
-    console.log(data);
+    event.preventDefault();
+    setShouldSubmit(true);
   };
 
   const handleSaveDraft = (event) => {
-    const data = new FormData(event.currentTarget);
-    data.append('publish', false);
-    console.log(data);
+    event.preventDefault();
+    setShouldSubmit(true);
   };
+
+  useEffect(() => {
+    if(shouldSubmit) {
+      const formData = constructForm(true);
+      dispatch(submitEventFormThunk(formData));
+      setShouldSubmit(false);
+    }
+  }, [shouldSubmit])
 
   return (
     <div>
-      <Grid container spacing={2} maxWidth='sm' alignItems="flex-start">
+      <Grid container spacing={3} maxWidth='sm' alignItems="flex-start">
         <Grid item xs={12}>
             <Typography variant="h6">Event Details</Typography>
         </Grid>

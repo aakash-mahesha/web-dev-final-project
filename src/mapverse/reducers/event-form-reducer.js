@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { saveEventFormThunk, submitEventFormThunk } from "../services/event-form-thunks";
+import { submitEventFormThunk } from "../services/event-form-thunks";
 
 const initialState = {
     loading: false,
-    submittedForm: null,
-    savedDraft: null
+    submittedForm: false,
+    savedDraft: false
 }
 
 const eventFormSlice = createSlice({
@@ -29,7 +29,7 @@ const eventFormSlice = createSlice({
         [submitEventFormThunk.rejected]:
         (state) => {
             state.submittedForm = false;
-            state.savedDraft = true; // NOT TOO SURE
+            state.savedDraft = false;
             state.loading = false;
         }
 
@@ -56,5 +56,5 @@ const eventFormSlice = createSlice({
     }
 })
 
-export const { submitEventForm, saveEventForm } = eventFormSlice.actions;
+export const { submitEventForm } = eventFormSlice.actions;
 export default eventFormSlice.reducer
