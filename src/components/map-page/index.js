@@ -19,7 +19,10 @@ import DrawerHeader from "./header";
 import Main from "./main";
 import AppBar from "./app-bar";
 
-export const drawerWidth = 280;
+export const drawerWidth = 400;
+// export const drawerWidth = `calc(100% - 300px)`;
+// export const drawerWidth = "40%"
+
 
 function MapPage({Component}) {
   const theme = useTheme();

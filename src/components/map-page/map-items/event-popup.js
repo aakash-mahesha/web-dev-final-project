@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 const EventPopup = (
     // { event = {
@@ -23,28 +25,34 @@ const EventPopup = (
     { event }
 ) => {
     return (
-        <div>
-            <div>
-                <div>{event.title}</div>
-            </div>
-            <div>
-                <label htmlFor="date">
-                    Date
-                </label>
-                <span id="date">
-                    <div>{event.date.when}</div>
-                </span>
-            </div>
-            <div>
-                <label htmlFor="address">
-                    Address
-                </label>
-                <span id="address">
-                    <div>{event.address[0]}</div>
-                    <div>{event.address[1]}</div>
-                </span>
-            </div>
-        </div>
+        <Grid container spacing={2}
+            sx={{
+                p: 1, textAlign: "left", display: "flex", justifyContent: "flex-start", alignItems: "center"
+            }}
+        >
+            <Grid item xs={8}>
+                <Typography variant='h6'>{event.title}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+                <Grid container
+                    sx={{
+                        display: "flex", justifyContent: "flex-end", textAlign: "right"
+                    }}
+                >
+                    <Grid item xs={12}>
+                        <Typography variant='body2'>{event.date.start_date}</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box
+                            component="img"
+                            sx={{
+                                width: "100%",
+                            }}
+                            src={event.thumbnail} />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
     )
 }
 

@@ -1,7 +1,7 @@
 // tag behavior based on NearHuscarl's response to: https://stackoverflow.com/questions/69532940/is-there-a-material-ui-component-to-search-select-tags-like-in-stackoverflow
 // and mui freeSolo multiple values autocomplete tutorial: https://mui.com/material-ui/react-autocomplete/
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -22,7 +22,8 @@ import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
 
-// import { DateTimePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { DateTimePicker } from '@mui/x-date-pickers';
 
 import Tags from "./tags.js";
 
@@ -30,7 +31,7 @@ const SearchForm = () => {
     const handleSubmit = (event) => {
         console.log('search');
     }
-    const [scope, setScope] = React.useState({
+    const [scope, setScope] = useState({
         db: true,
         google: false,
     }); // add other search scopes here
@@ -46,11 +47,22 @@ const SearchForm = () => {
     const { db, google } = scope;
     const error = [db, google].filter((v) => v).length === 0;
 
-    const [dist, setDist] = React.useState('');
+    const [dist, setDist] = useState('');
 
     const handleDistChange = (event) => {
         setDist(event.target.value);
     };
+
+    const [startDateAndTime, setStartDateAndTime] = useState(dayjs());
+    const [endDateAndTime, setEndDateAndTime] = useState(dayjs());
+
+    const handleEventStartDateChange = (event) => {
+        setStartDateAndTime(event);
+    }
+
+    const handleEventEndDateChange = (event) => {
+        setEndDateAndTime(event);
+    }
 
     return (
         <Box component="form" noValidate onSubmit={handleSubmit}
@@ -76,7 +88,7 @@ const SearchForm = () => {
                 <FormControl
                     component="fieldset"
                     error={error}
-                    sx={{ ml: 3, mt: 1 }}
+                    sx={{ ml: 2, mt: 1 }}
                     variant="standard"
                 >
                     <FormLabel component="legend">Search scope</FormLabel>
@@ -97,7 +109,7 @@ const SearchForm = () => {
                     <FormHelperText>Please select at least one scope to search</FormHelperText>
                 </FormControl>
                 <FormControl
-                    sx={{ ml: 3, minWidth: 150 }}
+                    sx={{ ml: 2, minWidth: 130 }}
                     variant="standard"
                 >
                     <InputLabel id="dist-label">Max distance</InputLabel>
@@ -119,10 +131,10 @@ const SearchForm = () => {
                 </FormControl>
                 <FormControl
                     component="fieldset"
-                    sx={{ ml: 3, mt: 3, minWidth: 150 }}
+                    sx={{ ml: 2, mt: 3, width: "95%" }}
                     variant="standard"
                 >
-                    <FormLabel component="legend">Filter by tag</FormLabel>
+                    <FormLabel sx={{ mb: 2 }} component="legend">Filter by tag</FormLabel>
                     <Autocomplete
                         multiple
                         id="tags-filled"
@@ -142,18 +154,23 @@ const SearchForm = () => {
                     />
                 </FormControl>
 
-                {/* <Grid item xs={6}>
+                <Grid item xs={12}
+                    sx={{ display: "flex", justifyContent: "flex-start", pl: 2 }}
+                >
+                    <FormLabel component="legend">Filter by tag</FormLabel>
+                </Grid>
+                <Grid item xs={12} sm={6}>
                     <DateTimePicker
-                        label="Start Date, Time"
+                        label="Start Range"
                         value={startDateAndTime}
                         onChange={handleEventStartDateChange} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <DateTimePicker
-                        label="End Date, Time"
+                        label="End Range"
                         value={endDateAndTime}
                         onChange={handleEventEndDateChange} />
-                </Grid> */}
+                </Grid>
             </Grid>
 
             <Button

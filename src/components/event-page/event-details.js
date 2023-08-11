@@ -1,8 +1,15 @@
+import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router-dom';
+
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const EventDetails = ({
     event = {
@@ -26,69 +33,102 @@ const EventDetails = ({
         },
         "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8mRlkCYd_eqWXP6BjfIHI8_m35omm6PkpHEYS9jFoq1wz3O4ra2i8mz4&s",
         "host": {
-            "firstname": "alice",
-            "lastname": "wonderland",
+            "firstname": "Alice",
+            "lastname": "Wonderland",
             "_id": "123"
         }
     }
 }) => {
-    // when calling, pass only selected event (via url)
+    // when calling, pass only selected event (via url) (update to take event arg w/o default)
+    const [place, street] = event.address[0].split(',');
     return (
         <div>
             <ListItem disablePadding>
                 <ListItemButton component={Link} to='/search'>
+                    <ArrowBackIcon />
                     <ListItemText primary="Back to results" />
                 </ListItemButton>
             </ListItem>
             <Divider />
-            <div>
-                <div>{event.title}</div>
-                <div><img src={event.thumbnail} /></div>
-            </div>
-            <div>
-                <label for="date">
-                    Date
-                </label>
-                <span id="date">
-                    <div>{event.date.start_date}</div>
-                    <div>{event.date.when}</div>
-                </span>
-            </div>
-            <div>
-                <label for="address">
-                    Address
-                </label>
-                <span id="address">
-                    <div>{event.address[0]}</div>
-                    <div>{event.address[1]}</div>
-                </span>
-            </div>
-            <div>
-                {event.description}
-                <a target='_blank' rel='noopener noreferrer' href={event.link}>Read more on event site</a>
-            </div>
-            <div>
-                <label for="venue">
-                    Venue
-                </label>
-                <div id="venue">
-                    <div>{event.venue.name}</div>
-                    <div>
-                        <span>{event.venue.rating} stars</span>
-                        <span> </span>
-                        <span>{event.venue.reviews} reviews</span>
-                    </div>
-                    <a target='_blank' rel='noopener noreferrer' href={event.venue.link}>Venue details</a>
-                </div>
-            </div>
-            <div>
-                <label for="host">
-                    Host
-                </label>
-                <div id="host">
-                    {event.host.firstname} {event.host.lastname}
-                </div>
-            </div>
+            <Grid container spacing={2}
+                sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
+            >
+                <Grid item xs={12}>
+                    <Grid container
+                        sx={{
+                            py: 2
+                        }}
+                    >
+                        <Grid item xs={9}>
+                            <Typography variant='h5'>{event.title}</Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Box
+                                component="img"
+                                sx={{
+                                    pr: 2,
+                                    width: "100%",
+                                }}
+                                src={event.thumbnail} />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Divider style={{ width: '100%' }} />
+                <Grid item xs={12}>
+                    <Typography variant='h5'>
+                        Details
+                    </Typography>
+                    <Grid item xs={12}>
+                        <Grid container
+                            sx={{
+                                pt: 2
+                            }}
+                        >
+                            <Grid item xs={1}>
+                                <AccessTimeIcon />
+                            </Grid>
+                            <Grid item xs={11}>{event.date.when}</Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container
+                        sx={{
+                            pb: 2
+                        }}
+                    >
+                        <Grid item xs={1}>
+                            <LocationOnIcon />
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Grid item xs={12} sx={{ fontWeight: 'bold' }}>
+                                {place}
+                            </Grid>
+                            <Grid item xs={12}>{street}, {event.address[1]}</Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography>
+                        {event.description}
+                    </Typography>
+                    <a target='_blank' rel='noopener noreferrer' href={event.link}>
+                        <Typography>Read more on event site</Typography>
+                    </a>
+                </Grid>
+                <Grid item xs={12}
+                    sx={{
+                        py: 2
+                    }}
+                >
+                    <Typography variant='h6'>
+                        Host
+                    </Typography>
+                    <Typography>
+                        {event.host.firstname} {event.host.lastname}
+                    </Typography>
+                </Grid>
+            </Grid>
         </div>
     )
 }
