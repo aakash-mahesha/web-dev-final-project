@@ -1,0 +1,138 @@
+[{
+    "title": "2021 Austin City Limits Music Festival",
+    "date": {
+      "start_date": "Oct 1",
+      "when": "Oct 1 – 10"
+    },
+    "address": [
+      "Zilker Park, 2207 Lou Neff Rd",
+      "Austin, TX"
+    ],
+    "pos": ["39.742043", "-104.991531"],
+    "link": "https://www.austintexas.org/event/austin-city-limits-music-festival/350781/",
+    "description": "One of the country's largest celebrations of live music, this two weekend, six-day festival brings the magic of the famed public TV series \"Austin City Limits\" outside the studio and into Austin's...",
+    "ticket_info": [
+      {
+        "source": "Mileycyrus.com",
+        "link": "https://mileycyrus.com/events/451575",
+        "link_type": "tickets"
+      },
+      {
+        "source": "Livenation.lat",
+        "link": "https://www.livenation.lat/show/975308/austin-city-limits-music-festival/texas/2021-10-01/en",
+        "link_type": "tickets"
+      },
+      {
+        "source": "Fgtix.com",
+        "link": "https://on.fgtix.com/trk/aclwk1tm",
+        "link_type": "tickets"
+      },
+      {
+        "source": "Stubhub.it",
+        "link": "https://www.stubhub.it/austin-city-limits-festival-acl-austin-tickets-10-1-2021/event/104853922/",
+        "link_type": "tickets"
+      },
+      {
+        "source": "Visit Austin",
+        "link": "https://www.austintexas.org/event/austin-city-limits-music-festival/350781/",
+        "link_type": "more info"
+      }
+    ],
+    "venue": {
+      "name": "Zilker Park",
+      "rating": 4.8,
+      "reviews": 837,
+      "link": "https://www.google.com/search?q=Zilker+Park&ludocid=11191514603003015866&ibp=gwp%3B0,7"
+    },
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8mRlkCYd_eqWXP6BjfIHI8_m35omm6PkpHEYS9jFoq1wz3O4ra2i8mz4&s",
+    "host": {
+        "firstname": "alice",
+        "lastname": "wonderland",
+        "_id": "123" 
+    }
+  },
+  {
+    "title": "Bob Schneider Independence Bash & Fireworks",
+    "date": {
+      "start_date": "Jul 3",
+      "when": "Tomorrow, 6 – 11 PM"
+    },
+    "address": [
+      "Nutty Brown Amphitheatre, 12225 US-290",
+      "Austin, TX"
+    ],
+    "pos": [40.742043, -104.991531],
+    "link": "https://www.kxan.com/calendar/?_escaped_fragment_=%2Fshow%2F%3Fser%3DDuo%2520Works#!/details/Bob-Schneider-Independence-Bash-Fireworks/9085010/2021-07-03T18",
+    "event_location_map": {
+      "image": "https://www.google.com/maps/vt/data=tPdtfApMc71-IhFYDnuyzvCdkjhQ2lznP686R6voTS7DrH68fbibFoziwCCgj2879RtewNl6XpbLSppBWCE17woHtECPBh3DV3sIk9SNnrYjpSRcTD0",
+      "link": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x865b466d1e9dfbb5:0xe87ac225766538e?sa=X",
+      "serpapi_link": "https://serpapi.com/search.json?data=%214m2%213m1%211s0x865b466d1e9dfbb5%3A0xe87ac225766538e&engine=google_maps&google_domain=google.com&hl=en&q=events+in+austin&type=place"
+    },
+    "description": "Nutty Brown Amphitheatre Presents Bob Schneider for the Independence Bash featuring a FIREWORKS show!",
+    "ticket_info": [
+      {
+        "source": "Seatgeek.com",
+        "link": "https://seatgeek.com/bob-schneider-with-del-castillo-tickets/austin-texas-nutty-brown-cafe-2021-07-03-6-pm/concert/5404610?utm_source=google&utm_medium=event-interface",
+        "link_type": "tickets"
+      },
+      {
+        "source": "Songkick.com",
+        "link": "https://www.songkick.com/concerts/39833125-bob-schneider-at-nutty-brown-cafe-and-amphitheatre?utm_medium=organic&utm_source=microformat",
+        "link_type": "tickets"
+      },
+      {
+        "source": "Eventbrite.com",
+        "link": "https://www.eventbrite.com/e/bob-schneider-independence-bash-fireworks-tickets-154165576389",
+        "link_type": "tickets"
+      },
+      {
+        "source": "Gigrover.com",
+        "link": "https://gigrover.com/eventtickets/bob-schneider-with-del-castillo-at-nutty-brown-cafe-on-Saturday-2021-07-03-06-00-pm/5404610",
+        "link_type": "tickets"
+      },
+      {
+        "source": "Stayhappening.com",
+        "link": "https://stayhappening.com/e/bob-schneider-independence-bash-andamp-fireworks-E3LUSE3P22JO",
+        "link_type": "tickets"
+      }
+    ],
+    "venue": {
+      "name": "Nutty Brown Amphitheatre",
+      "rating": 4.4,
+      "reviews": 544,
+      "link": "https://www.google.com/search?q=Nutty+Brown+Amphitheatre&ludocid=1046994701882119054&ibp=gwp%3B0,7"
+    },
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhrQ4EhNEUekTwo45eeVZHa7LrVO7K1o_XqJJaXavWDbu7HlHPE9M6pBA&s",
+    "host": {
+        "firstname": "jane",
+        "lastname": "doe",
+        "_id": "234" 
+    }
+  },
+  {
+    "title": "Eddie Griffin: Live in Austin",
+    "date": {
+      "start_date": "Jul 2",
+      "when": "Today, 6:30 – 8:30 PM"
+    },
+    "address": [
+      "Vulcan Gas Company, 418 E 6th St",
+      "Austin, TX"
+    ],
+    "pos": [39.742043, -100.991531],
+    "link": "https://do512.com/events/2021/7/2/eddie-griffin-live-in-austin-night-one-early-show-tickets",
+    "description": "Are you ready to see a comedy legend live in your backyard? No. We’re not going into your backyard. Eddie Griffin is coming to Austin. For a fun ass night, full of laughter. This is your chance to...",
+    "venue": {
+      "name": "Vulcan Gas Company",
+      "rating": 4.2,
+      "reviews": 180,
+      "link": "https://www.google.com/search?q=Vulcan+Gas+Company&ludocid=12449565916142550629&ibp=gwp%3B0,7"
+    },
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7pMbs_ijVD2Ndh-y3qXTFdbRVW3RKnexO7CJcv7dzsABnxrUMQjB7GVo&s",
+    "host": {
+        "firstname": "bob",
+        "lastname": "builder",
+        "_id": "567" 
+    }
+  }
+]

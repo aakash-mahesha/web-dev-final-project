@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { HashRouter, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router";
+import EventPage from './components/event-page';
+import SearchPage from './components/search-page';
+import Dashboard from './components/dashboard';
+import EventTable from './components/dashboard/table';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <div className='App'>
+    //   <SearchPage />
+    //   <TemporaryDrawer />
+    // </div>
+
+    //new:
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <HashRouter>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<Navigate to="/search" />} />
+            <Route path="/search/*" element={<SearchPage />} />
+            <Route path="/dashboard" element={<Dashboard/>}/>
+            <Route path="/table" element={<EventTable />} />
+            {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
+            {/* <Route path="/details/*" element={<EventPage />} /> */}
+          </Routes>
+        </div>
+      </HashRouter>
+    </LocalizationProvider>
   );
 }
 
