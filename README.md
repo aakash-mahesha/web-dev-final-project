@@ -68,3 +68,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+### Leaflet content
+
+Leaflet content is based on theses tutorials:
+
+[https://github.com/ms-aija/LeafletReact5minDemo/tree/master](https://github.com/ms-aija/LeafletReact5minDemo/tree/master)
+
+[https://react-leaflet.js.org/docs/example-events/](https://react-leaflet.js.org/docs/example-events/)
