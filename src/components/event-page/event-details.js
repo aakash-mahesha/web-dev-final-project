@@ -1,4 +1,5 @@
-import { Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { IconButton, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -10,6 +11,8 @@ import { Link } from 'react-router-dom';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+import BookmarkOutlinedIcon from '@mui/icons-material/BookmarkOutlined';
 
 const EventDetails = ({
     event = {
@@ -41,6 +44,12 @@ const EventDetails = ({
 }) => {
     // when calling, pass only selected event (via url) (update to take event arg w/o default)
     const [place, street] = event.address[0].split(',');
+    const [bookmarked, setBookmarked] = useState(false);
+
+    const handleBookmark = () => {
+        setBookmarked(!bookmarked);
+    }
+
     return (
         <div>
             <ListItem disablePadding>
@@ -53,6 +62,13 @@ const EventDetails = ({
             <Grid container spacing={2}
                 sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
             >
+                <Grid item xs={12}
+                    sx={{ textAlign: "right", justifyContent: "flex-end" }} >
+                    <IconButton color="primary" aria-label="add to bookmarks"
+                        onClick={handleBookmark}>
+                        {bookmarked ? <BookmarkOutlinedIcon /> : <BookmarkBorderOutlinedIcon />}
+                    </IconButton>
+                </Grid>
                 <Grid item xs={12}>
                     <Grid container
                         sx={{
