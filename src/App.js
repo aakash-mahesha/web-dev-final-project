@@ -1,5 +1,15 @@
 // import logo from './logo.svg';
 import './App.css';
+import { HashRouter, Routes } from 'react-router-dom';
+import MapVerse from './mapverse';
+import { Route } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import EventForm from './mapverse/component/create_event';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+
+const store = configureStore({reducer: {}});
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -13,6 +23,7 @@ import EventTable from './components/dashboard/table';
 
 function App() {
   return (
+
     // <div className='App'>
     //   <SearchPage />
     //   <TemporaryDrawer />
@@ -27,8 +38,9 @@ function App() {
             <Route path="/search/*" element={<SearchPage />} />
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/table" element={<EventTable />} />
+            <Route path="/create-event" element={<MapVerse/>} />
             {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
-            {/* <Route path="/details/*" element={<EventPage />} /> */}
+            <Route path="/details/*" element={<EventPage />} />
           </Routes>
         </div>
       </HashRouter>
