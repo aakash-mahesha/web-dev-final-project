@@ -157,7 +157,7 @@ const SearchForm = () => {
                 <Grid item xs={12}
                     sx={{ display: "flex", justifyContent: "flex-start", pl: 2 }}
                 >
-                    <FormLabel component="legend">Filter by tag</FormLabel>
+                    <FormLabel component="legend">Filter by date</FormLabel>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <DateTimePicker
