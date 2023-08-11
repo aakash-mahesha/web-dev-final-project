@@ -21,4 +21,5 @@ const AppBar = styled(MuiAppBar, {
     }),
   }));
 
+  // move rendering stuff into here, add hello, name & profile icon or login
   export default AppBar

@@ -11,6 +11,8 @@ function Map() {
     // denver -> update to be dynamically centerred
     const position = ["39.742043", "-104.991531"];
 
+    // update base map? (diff langs now)
+
     return (
         <div className='map-component'>
             {/* --- (5) Add leaflet map container --- */}
