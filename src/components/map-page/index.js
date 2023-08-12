@@ -18,6 +18,7 @@ import Map from "./map-items/search-map";
 import DrawerHeader from "./header";
 import Main from "./main";
 import AppBar from "./app-bar";
+import SiteMenu from './menu';
 
 // export const drawerWidth = 400;
 // export const drawerWidth = `calc(100% - 300px)`;
@@ -42,7 +43,7 @@ function MapPage({ Component }) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open}>
+            {/* <AppBar position="fixed" open={open}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -57,7 +58,25 @@ function MapPage({ Component }) {
                         MapVerse
                     </Typography>
                 </Toolbar>
+            </AppBar> */}
+            <AppBar position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                    >
+                        <SearchIcon />
+                    </IconButton>
+                    <Typography variant="h5" noWrap component="div" sx={{ flexGrow: 1, textAlign: 'left' }}>
+                        MapVerse
+                    </Typography>
+                    <SiteMenu />
+                </Toolbar>
             </AppBar>
+            {/* Add responsive behavior to drawer (for xs, drawer takes up screen width) */}
             <Drawer
                 sx={{
                     width: drawerWidth,

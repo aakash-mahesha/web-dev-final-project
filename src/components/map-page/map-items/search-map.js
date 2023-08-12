@@ -51,7 +51,7 @@ import Markers from './markers';
 // -----------------------------------------------------
 
 function ResetSize({ map }) {
-    setTimeout(function () { map.invalidateSize() }, 400);
+    setTimeout(function () { map.invalidateSize() }, 200);
 
 }
 
