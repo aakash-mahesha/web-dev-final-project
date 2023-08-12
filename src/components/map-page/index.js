@@ -19,70 +19,72 @@ import DrawerHeader from "./header";
 import Main from "./main";
 import AppBar from "./app-bar";
 
-export const drawerWidth = 400;
+// export const drawerWidth = 400;
 // export const drawerWidth = `calc(100% - 300px)`;
 // export const drawerWidth = "40%"
+export const drawerWidth = Number(getComputedStyle(document.documentElement)
+    .getPropertyValue('--drawer-width'));
+
+function MapPage({ Component }) {
+    console.log(drawerWidth)
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(true);
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
 
-function MapPage({Component}) {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <SearchIcon />
-          </IconButton>
-          <Typography variant="h5" noWrap component="div">
-            MapVerse
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <Component />
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-        <Map />
-      </Main>
-    </Box>
-  );
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                    >
+                        <SearchIcon />
+                    </IconButton>
+                    <Typography variant="h5" noWrap component="div">
+                        MapVerse
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: drawerWidth,
+                        boxSizing: 'border-box',
+                    },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={open}
+            >
+                <DrawerHeader>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <Component />
+            </Drawer>
+            <Main open={open}>
+                <DrawerHeader />
+                <Map />
+            </Main>
+        </Box>
+    );
 }
 
 export default MapPage
