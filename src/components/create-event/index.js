@@ -6,10 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { submitEventFormThunk } from '../../services/event-form-thunks';
+import axios from 'axios';
+import { postreq } from '../../utils/postreq';
 
 function EventForm() {
     const dispatch = useDispatch();
-
+  const uploadAPI = "localhost:4000/api/files/upload"
   const [eventName, setEventName] = useState('');
   const [startDateAndTime, setStartDateAndTime] = useState(dayjs());
   const [endDateAndTime, setEndDateAndTime] = useState(dayjs());
@@ -21,7 +23,7 @@ function EventForm() {
   const [tagInput, setTagInput] = useState('');
   const [selectedImages, setImages] = useState([]);
   const [shouldSubmit, setShouldSubmit] = useState(false);
-
+  const uploadLinks = [];
   const handleEventNameChange = (event) => {
     setEventName(event.target.value);
   };
@@ -74,11 +76,12 @@ function EventForm() {
       eventName,
       startDateAndTimeString,
       endDateAndTimeString,
+      eventDescription,
       address,
       isReservation,
       maxPeople,
       tags,
-      selectedImages,
+      uploadLinks,
       publish: publishBool
     }
     return formData;
@@ -86,6 +89,25 @@ function EventForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // handle upload files here:
+    
+    if(selectedImages.length() === 1) {
+      const data = {file: selectedImages[0]}
+      const response = postreq(uploadAPI, data);
+      if(response.status === 201) {
+        uploadLinks.push(response.file.publicUrl);
+      }
+      else {
+        uploadLinks = ['Upload failed'];
+      }
+    }
+    else if (selectedImages.length() >= 1) {
+
+    }
+    else {
+
+    }
+
     setShouldSubmit(true);
   };
 
