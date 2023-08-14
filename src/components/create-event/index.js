@@ -6,12 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { submitEventFormThunk } from '../../services/event-form-thunks';
-import axios from 'axios';
-import { postreq } from '../../utils/postreq';
+import postreq from '../../utils/postreq.js';
 
 function EventForm() {
     const dispatch = useDispatch();
-  const uploadAPI = "localhost:4000/api/files/upload"
+  const uploadAPI = "http://localhost:4000/api/files/upload"
+  const UploadMultipleAPI = "http://localhost:4000/api/files/multi-upload"
   const [eventName, setEventName] = useState('');
   const [startDateAndTime, setStartDateAndTime] = useState(dayjs());
   const [endDateAndTime, setEndDateAndTime] = useState(dayjs());
@@ -23,7 +23,8 @@ function EventForm() {
   const [tagInput, setTagInput] = useState('');
   const [selectedImages, setImages] = useState([]);
   const [shouldSubmit, setShouldSubmit] = useState(false);
-  const uploadLinks = [];
+  const [shouldPublish, setShouldPublish] = useState(false);
+  const [uploadLinks, setUploadLinks] = useState([]);
   const handleEventNameChange = (event) => {
     setEventName(event.target.value);
   };
@@ -87,38 +88,48 @@ function EventForm() {
     return formData;
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // handle upload files here:
-    
-    if(selectedImages.length() === 1) {
-      const data = {file: selectedImages[0]}
-      const response = postreq(uploadAPI, data);
-      if(response.status === 201) {
-        uploadLinks.push(response.file.publicUrl);
+  async function uploadImage() {
+    let links = [];
+      const data = new FormData()
+      let response = {};
+      for (let i = 0; i < selectedImages.length; i++) {
+        data.append('file', selectedImages[i], selectedImages[i].name);
+      }
+      if(selectedImages.length === 1) {
+        response = await postreq(uploadAPI, data)
+      }
+      else if(selectedImages.length >= 1) {
+        response = await postreq(UploadMultipleAPI, data);
       }
       else {
-        uploadLinks = ['Upload failed'];
+        return;
       }
-    }
-    else if (selectedImages.length() >= 1) {
+      
+      if(response.status === 200) {
+        links.push(response.data.public_url);
+        setUploadLinks(links);
+      }
+      else {
+        links = ['Upload failed'];
+      }
+  }
 
-    }
-    else {
-
-    }
-
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await uploadImage();
+    setShouldPublish(true);
     setShouldSubmit(true);
   };
 
   const handleSaveDraft = (event) => {
     event.preventDefault();
+    setShouldPublish(false);
     setShouldSubmit(true);
   };
 
   useEffect(() => {
     if(shouldSubmit) {
-      const formData = constructForm(true);
+      const formData = constructForm(shouldPublish);
       dispatch(submitEventFormThunk(formData));
       setShouldSubmit(false);
     }
@@ -256,3 +267,6 @@ function EventForm() {
 }
 
 export default EventForm;
+
+
+

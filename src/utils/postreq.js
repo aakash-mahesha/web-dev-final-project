@@ -1,14 +1,23 @@
 import axios from "axios";
 
-export const postreq = (apiUrl, data, headers) => {
+async function postreq(apiUrl, data, headers) {
     const api = apiUrl;
-    const data = data;
+    const inData = data;
     const defaultHeader = {
         headers: {
           "Content-Type": "multipart/form-data",
         }
       }
-    const headers = headers ? headers : defaultHeader;
+    const inHeaders = headers ? headers : defaultHeader;
 
-    axios.post(api, data, headers).then((res) => {return res;}).catch((err) => {return err;});
+    let status = '';
+    try {
+        status = await axios.post(api, inData, inHeaders);
+        // console.log("in postreq", status);
+    } catch (error) {
+        status = error.message;
+    }
+    return status;
 }
+
+export default postreq;
