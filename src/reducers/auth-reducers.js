@@ -21,11 +21,8 @@ const authSlice = createSlice({
             state.currentUser =  {...state.currentUser};
             state.currentUser.details = payload;
             state.currentUser.loggedIn = true;
-            console.log('in auth reducer')
-            console.log(state.currentUser)
         }
     }
 });
 
-export const {loginSubmit} = authSlice.actions
 export default authSlice.reducer

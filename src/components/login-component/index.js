@@ -7,18 +7,13 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-// import { useSelect } from '@mui/base';
-// import { loginSubmit } from '../../reducers/auth-reducers';
 import LoginStateDisplay from './login-state-display';
-// import { UseSelector } from 'react-redux/es/hooks/useSelector';
-// import { useSelector } from 'react-redux';
 import { loginThunk } from '../../thunks/auth-thunks';
 
 const defaultTheme = createTheme();
@@ -26,18 +21,24 @@ const defaultTheme = createTheme();
 const LoginComponent = () =>{
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const clickSubmitHandler = (event) =>{
+    const [loginStauts, setLoginStatus ] = useState(null);
+    const clickSubmitHandler = async (event) =>{
         event.preventDefault()
         const data = new FormData(event.currentTarget)
         const authData = {
             username:data.get('email')
             ,password:data.get('password')
         }
-        console.log('auth data is ', authData);
-        dispatch(loginThunk(authData))
-        // navigate("/")
+        const response = await dispatch(loginThunk(authData))
+        if(response.error){
+          setLoginStatus('error');
+        }else{
+          setLoginStatus('success');
+          navigate("/")
+        }
+        
     };
-
+  console.log(loginStauts)
     return(
         <ThemeProvider theme={defaultTheme}>
             <Container component='main' maxWidth="xs">
@@ -50,12 +51,14 @@ const LoginComponent = () =>{
                     alignItems: 'center',
                 }}>
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            {/* <LockOutlinedIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
           <Box component="form" onSubmit={clickSubmitHandler} noValidate sx={{ mt: 1 }}>
+            {loginStauts === "error" && (
+              <Typography variant='body3' color='error'>Incorrect Username or Password. Please Try Again.</Typography>
+            )}
             <TextField
               margin="normal"
               required
@@ -95,7 +98,7 @@ const LoginComponent = () =>{
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="#/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

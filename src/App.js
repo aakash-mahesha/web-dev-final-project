@@ -13,6 +13,7 @@ import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducers';
+import Register from './components/register-component';
 
 
 // import React from 'react';
@@ -51,6 +52,7 @@ function App() {
               {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/login" element = {<LoginComponent/>}/>
+              <Route path="/register" element = {<Register/>}/>
             </Routes>
           </div>
         </HashRouter>
