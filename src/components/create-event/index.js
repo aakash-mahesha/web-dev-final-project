@@ -7,9 +7,11 @@ import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { submitEventFormThunk } from '../../services/event-form-thunks';
 import postreq from '../../utils/postreq.js';
+import { useSelector } from 'react-redux';
 
 function EventForm() {
     const dispatch = useDispatch();
+    const {loading, submittedForm, savedDraft} = useSelector(state => state.eventFormState)
   const uploadAPI = "http://localhost:4000/api/files/upload"
   const UploadMultipleAPI = "http://localhost:4000/api/files/multi-upload"
   const [eventName, setEventName] = useState('');
@@ -107,7 +109,7 @@ function EventForm() {
       
       if(response.status === 200) {
         links.push(response.data.public_url);
-        setUploadLinks(links);
+        setUploadLinks(links.flat());
       }
       else {
         links = ['Upload failed'];
@@ -131,6 +133,12 @@ function EventForm() {
     if(shouldSubmit) {
       const formData = constructForm(shouldPublish);
       dispatch(submitEventFormThunk(formData));
+      if(submittedForm) {
+        alert("Form Submitted Successfully");
+      }
+      if(savedDraft) {
+        alert("Form saved to drafts successfully");
+      }
       setShouldSubmit(false);
     }
   }, [shouldSubmit])
