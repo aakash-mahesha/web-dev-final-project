@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Button, Grid, Typography, InputLabel, Checkbox, FormControlLabel, Chip } from '@mui/material';
+import { TextField, Button, Grid, Typography, InputLabel, Checkbox, FormControlLabel, Chip, Backdrop, CircularProgress } from '@mui/material';
 import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 function EventForm() {
     const dispatch = useDispatch();
-    const {loading, submittedForm, savedDraft} = useSelector(state => state.eventFormState)
+    const {loading, submittedForm, message} = useSelector(state => state.eventFormState)
   const uploadAPI = "http://localhost:4000/api/files/upload"
   const UploadMultipleAPI = "http://localhost:4000/api/files/multi-upload"
   const [eventName, setEventName] = useState('');
@@ -27,6 +27,23 @@ function EventForm() {
   const [shouldSubmit, setShouldSubmit] = useState(false);
   const [shouldPublish, setShouldPublish] = useState(false);
   const [uploadLinks, setUploadLinks] = useState([]);
+  const [formLoading, setFormLoading] = useState(false);
+
+  function resetStates() {
+    setEventName('');
+    setStartDateAndTime(dayjs());
+    setEndDateAndTime(dayjs());
+    setEventDescription('');
+    setAddress('');
+    setIsReservation(false);
+    setMaxPeople('0');
+    setTags([]);
+    setTagInput('')
+    setUploadLinks([]);
+    setFormLoading(false);
+    setImages([]);
+  }
+
   const handleEventNameChange = (event) => {
     setEventName(event.target.value);
   };
@@ -118,12 +135,14 @@ function EventForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setFormLoading(true);
     await uploadImage();
     setShouldPublish(true);
     setShouldSubmit(true);
   };
 
   const handleSaveDraft = (event) => {
+    setFormLoading(true);
     event.preventDefault();
     setShouldPublish(false);
     setShouldSubmit(true);
@@ -133,18 +152,21 @@ function EventForm() {
     if(shouldSubmit) {
       const formData = constructForm(shouldPublish);
       dispatch(submitEventFormThunk(formData));
-      if(submittedForm) {
-        alert("Form Submitted Successfully");
-      }
-      if(savedDraft) {
-        alert("Form saved to drafts successfully");
-      }
       setShouldSubmit(false);
+      setFormLoading(false);
+      console.log("Loading, Submitted, Message", loading, submittedForm, message);
+      resetStates();
     }
   }, [shouldSubmit])
 
   return (
     <div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={formLoading}
+      >
+      <CircularProgress color="inherit" />
+      </Backdrop>
       <Grid container spacing={3} maxWidth='sm' alignItems="flex-start">
         <Grid item xs={12}>
             <Typography variant="h6">Event Details</Typography>

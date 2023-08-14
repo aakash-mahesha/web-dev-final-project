@@ -4,7 +4,7 @@ import { submitEventFormThunk } from "../services/event-form-thunks";
 const initialState = {
     loading: false,
     submittedForm: false,
-    savedDraft: false
+    message: 'init'
 }
 
 const eventFormSlice = createSlice({
@@ -15,44 +15,29 @@ const eventFormSlice = createSlice({
         [submitEventFormThunk.pending]:
         (state) => {
             state.submittedForm = false;
-            state.savedDraft = false;
             state.loading = true;
         },
 
         [submitEventFormThunk.fulfilled]:
-        (state) => {
-            state.submittedForm = true;
-            state.savedDraft = false;
+        (state, {payload}) => {
             state.loading = false;
+            const error = payload.includes("Request failed with status code 400");
+            if(error) {
+                state.submittedForm = false;
+            }
+            else {
+                state.submittedForm = true;
+            }
+            state.message = payload;
+            console.log("In fulfilled: ", state.loading, state.submittedForm, state.payload);
         },
 
         [submitEventFormThunk.rejected]:
-        (state) => {
+        (state, {payload}) => {
             state.submittedForm = false;
-            state.savedDraft = false;
             state.loading = false;
+            state.message = payload;
         }
-
-        // [saveEventFormThunk.pending]:
-        // (state) => {
-        //     state.submittedForm = false;
-        //     state.savedDraft = false;
-        //     state.loading = true;
-        // },
-
-        // [saveEventFormThunk.fulfilled]:
-        // (state) => {
-        //     state.submittedForm = false;
-        //     state.savedDraft = true;
-        //     state.loading = false;
-        // },
-
-        // [saveEventFormThunk.rejected]:
-        // (state) => {
-        //     state.submittedForm = false;
-        //     state.savedDraft = false; // NOT TOO SURE
-        //     state.loading = false;
-        // }
     }
 })
 
