@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { submitEventFormThunk } from "../services/event-form-thunks";
+import { createEventThunk, deleteEventThunk, editEventThunk } from "../services/event-form-thunks";
 
 const initialState = {
     loading: false,
     submittedForm: false,
-    message: 'init'
+    message: 'init',
+    processedFormUpdates: false,
 }
 
 const eventFormSlice = createSlice({
@@ -12,13 +13,13 @@ const eventFormSlice = createSlice({
     initialState: initialState,
     reducers: {},
     extraReducers: {
-        [submitEventFormThunk.pending]:
+        [createEventThunk.pending]:
         (state) => {
             state.submittedForm = false;
             state.loading = true;
         },
 
-        [submitEventFormThunk.fulfilled]:
+        [createEventThunk.fulfilled]:
         (state, {payload}) => {
             state.loading = false;
             const error = payload.includes("Request failed with status code 400");
@@ -29,15 +30,66 @@ const eventFormSlice = createSlice({
                 state.submittedForm = true;
             }
             state.message = payload;
-            console.log("In fulfilled: ", state.loading, state.submittedForm, state.payload);
         },
 
-        [submitEventFormThunk.rejected]:
+        [createEventThunk.rejected]:
         (state, {payload}) => {
             state.submittedForm = false;
             state.loading = false;
             state.message = payload;
-        }
+        },
+
+        [editEventThunk.pending]:
+        (state) => {
+            state.processedFormUpdates = false;
+            state.loading = true;
+        },
+
+        [editEventThunk.fulfilled]:
+        (state, {payload}) => {
+            state.loading = false;
+            const error = payload.includes("Request failed with status code 400");
+            if(error) {
+                state.processedFormUpdates = false;
+            }
+            else {
+                state.processedFormUpdates = true;
+            }
+            state.message = payload;
+        },
+
+        [editEventThunk.rejected]:
+        (state, {payload}) => {
+            state.processedFormUpdates = false;
+            state.loading = false;
+            state.message = payload;
+        },
+
+        [deleteEventThunk.pending]:
+        (state) => {
+            state.processedFormUpdates = false;
+            state.loading = true;
+        },
+
+        [deleteEventThunk.fulfilled]:
+        (state, {payload}) => {
+            state.loading = false;
+            const error = payload.includes("Request failed with status code 400");
+            if(error) {
+                state.processedFormUpdates = false;
+            }
+            else {
+                state.processedFormUpdates = true;
+            }
+            state.message = payload;
+        },
+
+        [deleteEventThunk.rejected]:
+        (state, {payload}) => {
+            state.processedFormUpdates = false;
+            state.loading = false;
+            state.message = payload;
+        },
     }
 })
 

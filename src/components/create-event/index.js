@@ -5,13 +5,13 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { submitEventFormThunk } from '../../services/event-form-thunks';
+import { createEventThunk } from '../../services/event-form-thunks';
 import postreq from '../../utils/postreq.js';
 import { useSelector } from 'react-redux';
 
 function EventForm() {
     const dispatch = useDispatch();
-    const {loading, submittedForm, message} = useSelector(state => state.eventFormState)
+    const {loading, submittedForm, message} = useSelector(state => state.eventFormState);
   const uploadAPI = "http://localhost:4000/api/files/upload"
   const UploadMultipleAPI = "http://localhost:4000/api/files/multi-upload"
   const [eventName, setEventName] = useState('');
@@ -133,25 +133,23 @@ function EventForm() {
       }
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, action) => {
     event.preventDefault();
     setFormLoading(true);
     await uploadImage();
-    setShouldPublish(true);
-    setShouldSubmit(true);
-  };
-
-  const handleSaveDraft = (event) => {
-    setFormLoading(true);
-    event.preventDefault();
-    setShouldPublish(false);
+    if (action === 'submit') {
+      setShouldPublish(true);
+    }
+    if (action === 'saveDraft') {
+      setShouldPublish(false);
+    }
     setShouldSubmit(true);
   };
 
   useEffect(() => {
     if(shouldSubmit) {
       const formData = constructForm(shouldPublish);
-      dispatch(submitEventFormThunk(formData));
+      dispatch(createEventThunk(formData));
       setShouldSubmit(false);
       setFormLoading(false);
       console.log("Loading, Submitted, Message", loading, submittedForm, message);
@@ -282,12 +280,12 @@ function EventForm() {
           />
         </Grid>
         <Grid item xs={6}>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <Button variant="contained" color="primary" onClick={event => {handleSubmit(event, 'submit')}}>
                 Publish Event
             </Button>
         </Grid>
         <Grid item xs={6}>
-            <Button variant="outlined" color="primary" onClick={handleSaveDraft}>
+            <Button variant="outlined" color="primary" onClick={event => {handleSubmit(event, 'saveDraft')}}>
             Save Draft
             </Button>
         </Grid>
