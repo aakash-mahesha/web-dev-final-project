@@ -2,6 +2,8 @@
 // and mui freeSolo multiple values autocomplete tutorial: https://mui.com/material-ui/react-autocomplete/
 
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -28,9 +30,14 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 import Tags from "./tags.js";
 
 const SearchForm = () => {
-    const handleSubmit = (event) => {
-        console.log('search');
+    const dispatch = useDispatch();
+
+    const [searchString, setSearchString] = useState('');
+
+    const handleSearchStringChange = (event) => {
+        setSearchString(event.target.value);
     }
+
     const [scope, setScope] = useState({
         db: true,
         google: false,
@@ -64,6 +71,25 @@ const SearchForm = () => {
         setEndDateAndTime(event);
     }
 
+    const constructSearch = () => {
+        const startDateAndTimeString = startDateAndTime.toString();
+        const endDateAndTimeString = endDateAndTime.toString();
+        const search = {
+            searchString,
+            scope,
+            dist,
+            startDateAndTimeString,
+            endDateAndTimeString
+        }
+        
+        return search;
+    }
+
+     const handleSubmit = (event) => {
+        const search = constructSearch();
+        dispatch(submitSearchThunk(search));
+    }
+
     return (
         <Box component="form" noValidate onSubmit={handleSubmit}
             sx={{
@@ -81,8 +107,12 @@ const SearchForm = () => {
                 <Grid item xs={12}>
                     <TextField
                         fullWidth
+                        autoFocus
+                        required
                         id="search-string"
                         label="Enter keyword or location"
+                        value={searchString}
+                        onChange={handleSearchStringChange}
                     />
                 </Grid>
                 <FormControl
@@ -178,6 +208,7 @@ const SearchForm = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={handleSubmit}
             >
                 Search
             </Button>

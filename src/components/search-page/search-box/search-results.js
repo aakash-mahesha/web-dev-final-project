@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -6,19 +9,29 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
-import { Link } from 'react-router-dom';
-
-import events from "../../map-page/map-items/events.json";
+// import events from "../../map-page/map-items/events.json";
 
 const SearchResults = () => {
+    const { resultsState } = useSelector((state) => state.search);
+    const [results, setResults] = useState(resultsState);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        async function loadResults () {
+            const { payload } = await dispatch(resultsThunk());
+            setResults(payload);
+        };
+        loadResults();
+    }, []);
+
     // update to pass event id to details link so that clicked event is the one that pops up
 
     return (
         <Box sx={{ display: 'flex' }}>
             <List>
-                {events.map((event, index) => (
+                {results.map((event, index) => (
                     <ListItem key={event.title} disablePadding>
-                        <ListItemButton component={Link} to='/details'>
+                        <ListItemButton component={Link} to={`/details/${event._id}`}>
                             <Grid container spacing={2}
                                 sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
                             >

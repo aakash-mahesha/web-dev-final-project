@@ -12,11 +12,15 @@ import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
 import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
+import searchReducers from './reducers/search-reducers';
+import eventDetailsReducers from './reducers/event-details-reducers';
 
 function App() {
   const store = configureStore({
     reducer: {
-        eventFormState: eventFormReducer
+        eventFormState: eventFormReducer,
+        search: searchReducers,
+        event: eventDetailsReducers
     }
 })
   return (
