@@ -13,22 +13,29 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from "react";
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 // import { useSelect } from '@mui/base';
-import { loginSubmit } from '../../auth-reducers';
+// import { loginSubmit } from '../../reducers/auth-reducers';
+import LoginStateDisplay from './login-state-display';
+// import { UseSelector } from 'react-redux/es/hooks/useSelector';
+// import { useSelector } from 'react-redux';
+import { loginThunk } from '../../thunks/auth-thunks';
 
 const defaultTheme = createTheme();
 // const defaultTheme = createTheme();
 const LoginComponent = () =>{
-    // const auth = useSelect(state => state.auth);
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const clickSubmitHandler = (event) =>{
         event.preventDefault()
         const data = new FormData(event.currentTarget)
         const authData = {
-            email:data.get('email')
+            username:data.get('email')
             ,password:data.get('password')
         }
-        dispatch(loginSubmit(authData))
+        console.log('auth data is ', authData);
+        dispatch(loginThunk(authData))
+        // navigate("/")
     };
 
     return(
@@ -96,7 +103,10 @@ const LoginComponent = () =>{
           </Box>
                 </Box>
             </Container>
+            <LoginStateDisplay/>
         </ThemeProvider>
+
+        
     );
 
 }

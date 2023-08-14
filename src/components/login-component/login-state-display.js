@@ -1,17 +1,22 @@
+import { current } from "@reduxjs/toolkit";
 import React from "react";
 import { useSelector } from "react-redux";
 
 const LoginStateDisplay = ()=>{
-    const {email, password, logged_in} = useSelector((state) => state.auth)
+    const current_user = useSelector((state) => state.auth.currentUser)
+    // const {username, password, user_type, user_privileges } = 
     return(
         <>
-        <h1>{email}</h1>
-        <h1>{password}</h1>
-        {logged_in ? 
-            <h1>ture</h1>
-        :
-            <h1>false</h1>
-        }
+        {current_user.loggedIn?
+        <div>
+            <h1>User Logged in</h1>
+            {current_user.details.username}<br/>
+            {current_user.details.password}
+        </div>
+        
+        : 
+        <h1>User not logged in</h1>}
+        
         </>
 
     );

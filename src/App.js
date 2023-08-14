@@ -11,6 +11,9 @@ import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
 import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
+import LoginComponent from "./components/login-component"
+import authReducers from './reducers/auth-reducers';
+
 
 // import React from 'react';
 // import LoginComponent from './components/login-component';
@@ -23,7 +26,8 @@ import eventFormReducer from "./reducers/event-form-reducer"
 function App() {
   const store = configureStore({
     reducer: {
-        eventFormState: eventFormReducer
+        eventFormState: eventFormReducer,
+        auth: authReducers,
     }
 })
   return (
@@ -46,6 +50,7 @@ function App() {
               <Route path="/create-event" element={<EventForm/>} />
               {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
+              <Route path="/login" element = {<LoginComponent/>}/>
             </Routes>
           </div>
         </HashRouter>
