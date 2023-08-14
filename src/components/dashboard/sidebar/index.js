@@ -40,7 +40,7 @@ const navItems = [
       icon: <AccountCircleIcon/>,
     },
     {
-      text: "My Events",
+      text: "Events",
       icon: <ChecklistIcon />,
     },
     {
