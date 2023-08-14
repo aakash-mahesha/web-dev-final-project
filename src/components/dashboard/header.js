@@ -2,10 +2,9 @@ import { Typography, Box, useTheme } from "@mui/material";
 import React from "react";
 
 //const Header = ({ title, subtitle }) => {
-const Header = () =>{
+const Header = ({title, subtitle}) =>{
   const theme = useTheme();
-  const title = "Dashboard";
-  const subtitle= "Welcome !";
+  
   return (
     <Box>
       <Typography
@@ -14,7 +13,7 @@ const Header = () =>{
         fontWeight="bold"
         sx={{ mb: "5px" }}
       >
-       {/* {title} */}
+       {title}
       </Typography>
       <Typography variant="h6" color={theme.palette.main}>
         {subtitle}

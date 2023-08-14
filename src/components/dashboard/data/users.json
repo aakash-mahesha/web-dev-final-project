@@ -1,0 +1,20 @@
+[
+    {
+        "_id":123,
+        "name":"Alice",
+        "role":"admin",
+        "avartar":"../assets/images/avatars/1.jpg"
+    },
+    {
+        "_id":124,
+        "name":"Jack",
+        "role":"user",
+        "avartar":"../assets/images/avatars/2.jpg"
+    },
+    {
+        "_id":125,
+        "name":"Tom",
+        "role":"organizer",
+        "avartar":"../assets/images/avatars/3.jpg"
+    }
+]

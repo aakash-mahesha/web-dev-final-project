@@ -7,6 +7,7 @@ import Header from"./header";
 import Sidebar from "./sidebar";
 import EventTable from "./eventTable";
 import TGrid from "./grid";
+import Navtab from "./navtab";
 
 const Layout = () => {
     const isNonMobile = useMediaQuery("(min-width: 600px)");
@@ -23,14 +24,20 @@ const Layout = () => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-        <Box><Header title="DASHBOARD" subtitle="Welcome to your dashboard"/> 
-        </Box>
-         <Box>
-          <TGrid/>
+        <Box flexGrow={1}>
+        <Header title="DASHBOARD" subtitle="Welcome to your dashboard"/> 
+        <Navtab
+          user= "admin"
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
+        <div style={{ padding: '20px' }}>
+        
+          <TGrid display ="flex"/>
             
-        </Box> 
+        </div>
         </Box>
-       
+        </Box>
   );
 };
 export default Layout;

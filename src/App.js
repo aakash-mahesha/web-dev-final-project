@@ -12,13 +12,16 @@ import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
 import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
+import UserTable from './pages/user-table';
+import ProfileScreen from './pages/user-profile-page';
+import ProfileForm from './pages/edit-profile.js';
 
 function App() {
   const store = configureStore({
     reducer: {
-        eventFormState: eventFormReducer
+      eventFormState: eventFormReducer
     }
-})
+  })
   return (
 
     // <div className='App'>
@@ -34,11 +37,14 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/search" />} />
               <Route path="/search/*" element={<SearchPage />} />
-              <Route path="/dashboard" element={<Dashboard/>}/>
+              <Route path="/dashboard/*" element={<Dashboard />} />
               <Route path="/table" element={<EventTable />} />
-              <Route path="/create-event" element={<EventForm/>} />
+              <Route path="/create-event" element={<EventForm />} />
               {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
+              <Route path="/usertable" element={<UserTable />} />
+              <Route path="/create-profile" element={< ProfileForm/>} />
+              
             </Routes>
           </div>
         </HashRouter>
