@@ -14,6 +14,7 @@ import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
 import UserTable from './pages/user-table';
 import ProfileScreen from './pages/user-profile-page';
+import ProfileForm from './pages/edit-profile.js';
 
 function App() {
   const store = configureStore({
@@ -42,6 +43,7 @@ function App() {
               {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/usertable" element={<UserTable />} />
+              <Route path="/create-profile" element={< ProfileForm/>} />
               
             </Routes>
           </div>
