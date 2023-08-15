@@ -38,7 +38,6 @@ const LoginComponent = () =>{
         }
         
     };
-  console.log(loginStauts)
     return(
         <ThemeProvider theme={defaultTheme}>
             <Container component='main' maxWidth="xs">
@@ -106,7 +105,7 @@ const LoginComponent = () =>{
           </Box>
                 </Box>
             </Container>
-            <LoginStateDisplay/>
+            {/* <LoginStateDisplay/> */}
         </ThemeProvider>
 
         

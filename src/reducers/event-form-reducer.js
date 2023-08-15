@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { submitEventFormThunk } from "../services/event-form-thunks";
+import { submitEventFormThunk } from "../thunks/event-form-thunks";
 
 const initialState = {
     loading: false,

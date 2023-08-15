@@ -1,11 +1,23 @@
+import * as authService from "../services/auth-service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import * as authService from "../services/auth-services";
 
-
-export const loginThunk = createAsyncThunk(
-    "user/loging" , async (credentials) => {
-        const user = await authService.login(credentials);
-
-        return user;
-    }
-)
+export const registerThunk = createAsyncThunk("auth/register", async ({ username, password }) => {
+    const response = await authService.register({ username, password });
+    return response.data;
+}); 
+export const loginThunk = createAsyncThunk("auth/login", async ({ username, password }) => {
+    console.log('in auth thunks',{username, password})
+    const response = await authService.login({ username, password });
+    return response;
+});
+export const logoutThunk = createAsyncThunk("auth/logout", async () => {  
+    await authService.logout();
+});
+export const profileThunk = createAsyncThunk("auth/profile", async () => {
+    const response = await authService.profile();
+    return response.data;
+});
+export const updateUserThunk = createAsyncThunk("auth/updateUser", async (user) => {
+    const response = await authService.updateUser(user);
+    return response.data;
+});

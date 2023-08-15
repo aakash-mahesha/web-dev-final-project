@@ -12,31 +12,21 @@ import Dashboard from './components/dashboard';
 import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
 import LoginComponent from "./components/login-component"
-import authReducers from './reducers/auth-reducers';
+import authReducers from './reducers/auth-reducer';
 import Register from './components/register-component';
-
-
-// import React from 'react';
-// import LoginComponent from './components/login-component';
-// import { configureStore } from '@reduxjs/toolkit';
-// import { Provider } from 'react-redux';
-// import auth from './auth-reducers';
-// import LoginStateDisplay from './components/login-component/login-state-display';
-
+import UserTable from './components/user-table/user-table';
+// import ProfileScreen from './pages/user-profile-page';
+import ProfileForm from './components/edit-profile/edit-profile.js';
 
 function App() {
   const store = configureStore({
     reducer: {
         eventFormState: eventFormReducer,
         auth: authReducers,
+      eventFormState: eventFormReducer
     }
-})
+  })
   return (
-
-    // <div className='App'>
-    //   <SearchPage />
-    //   <TemporaryDrawer />
-    // </div>
 
     //new:
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -46,13 +36,16 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/search" />} />
               <Route path="/search/*" element={<SearchPage />} />
-              <Route path="/dashboard" element={<Dashboard/>}/>
+              <Route path="/dashboard/*" element={<Dashboard />} />
               <Route path="/table" element={<EventTable />} />
-              <Route path="/create-event" element={<EventForm/>} />
+              <Route path="/create-event" element={<EventForm />} />
               {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/login" element = {<LoginComponent/>}/>
               <Route path="/register" element = {<Register/>}/>
+              <Route path="/usertable" element={<UserTable />} />
+              <Route path="/create-profile" element={< ProfileForm/>} />
+              
             </Routes>
           </div>
         </HashRouter>
