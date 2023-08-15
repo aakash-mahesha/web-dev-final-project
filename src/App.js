@@ -12,6 +12,7 @@ import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
 import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
+import ExamplePage from './components/layout-page/example-test-page';
 
 function App() {
   const store = configureStore({
@@ -39,6 +40,7 @@ function App() {
               <Route path="/create-event" element={<EventForm/>} />
               {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
+              <Route path="/example" element={<ExamplePage />} />
             </Routes>
           </div>
         </HashRouter>
