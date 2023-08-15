@@ -14,9 +14,11 @@ import eventFormReducer from "./reducers/event-form-reducer"
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
 import Register from './components/register-component';
-import UserTable from './components/user-table/user-table';
 // import ProfileScreen from './pages/user-profile-page';
-import ProfileForm from './components/edit-profile/edit-profile.js';
+import ExamplePage from './components/layout-page/example-test-page';
+import UserTable from './pages/user-table/user-table';
+// import ProfileScreen from './pages/user-profile-page';
+import ProfileForm from './pages/edit-profile/edit-profile.js';
 
 function App() {
   const store = configureStore({
@@ -43,9 +45,9 @@ function App() {
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/login" element = {<LoginComponent/>}/>
               <Route path="/register" element = {<Register/>}/>
+              <Route path="/example" element={<ExamplePage />} />
               <Route path="/usertable" element={<UserTable />} />
               <Route path="/create-profile" element={< ProfileForm/>} />
-              
             </Routes>
           </div>
         </HashRouter>
