@@ -23,9 +23,12 @@ import {
     SettingsOutlined,
     ChevronLeft,
     ChevronRightOutlined,
+    
 
   } from "@mui/icons-material";
   //import profileImage from "../../../assets/profile1.jpeg";
+ ;
+ 
   
 const navItems = [
     {
@@ -165,7 +168,7 @@ const navItems = [
                     fontSize="0.9rem"
                     sx={{ color: theme.palette.secondary[100] }}
                   >
-                    {/* {user.name}  */} 
+                    {/* {user.name}   */}
                   </Typography>
                   <Typography
                     fontSize="0.8rem"
