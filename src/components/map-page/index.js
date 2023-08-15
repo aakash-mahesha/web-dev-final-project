@@ -12,7 +12,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import LayoutPage from '../layout-page';
 import Map from "./map-items/search-map";
-import DrawerHeader from "./header";
+import DrawerHeader from "./drawer-header";
 import Main from "./main";
 
 // export const drawerWidth = 400;
