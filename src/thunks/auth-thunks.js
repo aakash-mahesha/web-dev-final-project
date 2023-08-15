@@ -6,7 +6,7 @@ export const registerThunk = createAsyncThunk("auth/register", async ({ username
     return response.data;
 }); 
 export const loginThunk = createAsyncThunk("auth/login", async ({ username, password }) => {
-    console.log('in auth thunks',{username, password})
+    // console.log('in auth thunks',{username, password})
     const response = await authService.login({ username, password });
     return response;
 });

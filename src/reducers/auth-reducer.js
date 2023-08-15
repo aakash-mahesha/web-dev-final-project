@@ -18,7 +18,7 @@ const authSlice = createSlice({
 
         [loginThunk.fulfilled]:(state,{payload}) => {
             //in a state variable called currentUser
-            console.log('in auth reducer', payload)
+            // console.log('in auth reducer', payload)
             state.currentUser.details = payload;
             state.currentUser.loggedIn = true;
         },

@@ -13,9 +13,9 @@ export const register = async ({ username, password }) => {
     return user;
 }
 export const login = async ({username,password}) => {
-    console.log('in fornt end auth service',{username,password})
+    // console.log('in fornt end auth service',{username,password})
     const response = await  api.post(`${USERS_API_URL}/login`,{username,password});
-    console.log(response)
+    // console.log(response)
     const user =response.data;
     return user;
 };
