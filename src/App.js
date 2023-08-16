@@ -44,7 +44,7 @@ function App() {
               {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/login" element = {<LoginComponent/>}/>
-              <Route path="/register" element = {<Register/>}/>
+              <Route path="/register/*" element = {<Register/>}/>
               <Route path="/example" element={<ExamplePage />} />
               <Route path="/usertable" element={<UserTable />} />
               <Route path="/create-profile" element={< ProfileForm/>} />

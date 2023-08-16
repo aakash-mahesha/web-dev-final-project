@@ -1,0 +1,43 @@
+[
+    {
+        "label": "Music",
+        "value": "music"
+    },
+    {
+        "label": "Gallery",
+        "value": "gallery"
+    },
+    {
+        "label": "Food",
+        "value": "food"
+    },
+    {
+        "label": "Dance",
+        "value": "dance"
+    },
+    {
+        "label": "Family",
+        "value": "family"
+    },
+    {
+        "label": "Party",
+        "value": "party"
+    },
+    {
+        "label": "Art Studio",
+        "value": "art"
+    },
+    {
+        "label": "Volunteering",
+        "value": "voluntary"
+    },
+    {
+        "label": "Sports",
+        "value": "sports"
+    },
+    {
+        "label": "Lectures",
+        "value": "edcuation"
+    }
+]
+
