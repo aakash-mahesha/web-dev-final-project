@@ -43,7 +43,7 @@
 // export default Map
 
 // --- (1), (2) & (3): install and import ---
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Markers from './markers';
@@ -51,7 +51,16 @@ import Markers from './markers';
 // -----------------------------------------------------
 
 function ResetSize({ map }) {
-    setTimeout(function () { map.invalidateSize() }, 200);
+    const safeInvalidateSize = (map) => {
+        try {
+            return map.invalidateSize();
+        } catch (error) {
+            console.log(error);
+            return map;
+        }
+    }
+    // { setTimeout(() => { map.invalidateSize() }, 400); }
+    setTimeout(() => { safeInvalidateSize(map) }, 100);
 
 }
 
@@ -92,12 +101,17 @@ function Map() {
         ),
         [],
     );
-    return (
-        <div>
-            {map ? <ResetSize map={map} /> : null}
-            {displayMap}
-        </div>
-    )
+    try {
+        return (
+            <div>
+                {map ? <ResetSize map={map} /> : null}
+                {displayMap}
+            </div>
+        )
+    } catch (error) {
+        console.log(error);
+        return (<div>Map unavailable</div>);
+    }
 }
 
 export default Map

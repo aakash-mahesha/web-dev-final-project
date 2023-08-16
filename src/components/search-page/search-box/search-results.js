@@ -10,13 +10,13 @@ import { Link } from 'react-router-dom';
 
 import events from "../../map-page/map-items/events.json";
 
-const SearchResults = () => {
+const SearchResults = ({results}) => {
     // update to pass event id to details link so that clicked event is the one that pops up
 
     return (
         <Box sx={{ display: 'flex' }}>
             <List>
-                {events.map((event, index) => (
+                {results.map((event, index) => (
                     <ListItem key={event.title} disablePadding>
                         <ListItemButton component={Link} to='/details'>
                             <Grid container spacing={2}

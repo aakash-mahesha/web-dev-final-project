@@ -8,8 +8,8 @@ const SearchBox = () => {
     return (
         <div>
             <SearchForm />
-            <Divider />
-            <SearchResults />
+            {/* <Divider />
+            <SearchResults /> */}
         </div>
     )
 }
