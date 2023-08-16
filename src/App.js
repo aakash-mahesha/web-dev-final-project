@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import EventPage from './components/event-page/index.js';
 import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
-import EventTable from './components/dashboard/table';
+// import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
@@ -39,7 +39,7 @@ function App() {
               <Route path="/" element={<Navigate to="/search" />} />
               <Route path="/search/*" element={<SearchPage />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
-              <Route path="/table" element={<EventTable />} />
+              {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<EventForm />} />
               {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
