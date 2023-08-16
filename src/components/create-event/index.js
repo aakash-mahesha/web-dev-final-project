@@ -12,13 +12,20 @@ import { useSelector } from 'react-redux';
 function EventForm() {
     const dispatch = useDispatch();
     const {loading, submittedForm, message} = useSelector(state => state.eventFormState);
+    const {currentUser} = useSelector(state => state.auth);
   const uploadAPI = "http://localhost:4000/api/files/upload"
   const UploadMultipleAPI = "http://localhost:4000/api/files/multi-upload"
   const [eventName, setEventName] = useState('');
   const [startDateAndTime, setStartDateAndTime] = useState(dayjs());
   const [endDateAndTime, setEndDateAndTime] = useState(dayjs());
   const [eventDescription, setEventDescription] = useState('');
-  const [address, setAddress] = useState('');
+  const [venueName, setVenueName] = useState('');
+  const [streetName, setStreetName] = useState('');
+  const [cityName, setCityName] = useState('');
+  const [stateName, setStateName] = useState('');
+  const [countryName, setCountryName] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [address, setAddress] = useState({});
   const [isReservation, setIsReservation] = useState(false);
   const [maxPeople, setMaxPeople] = useState('0');
   const [tags, setTags] = useState([]);
@@ -34,6 +41,12 @@ function EventForm() {
     setStartDateAndTime(dayjs());
     setEndDateAndTime(dayjs());
     setEventDescription('');
+    setCityName('');
+    setStreetName('');
+    setCountryName('');
+    setStateName('');
+    setVenueName('');
+    setZipCode('');
     setAddress('');
     setIsReservation(false);
     setMaxPeople('0');
@@ -97,12 +110,23 @@ function EventForm() {
       startDateAndTimeString,
       endDateAndTimeString,
       eventDescription,
-      address,
+      address: {
+        venueName,
+        streetName,
+        cityName,
+        stateName,
+        countryName,
+        zipCode
+      },
       isReservation,
       maxPeople,
       tags,
       uploadLinks,
-      publish: publishBool
+      publish: publishBool,
+      hostDetails: {
+        name: currentUser.details.firstname + " " + currentUser.details.lastname,
+        email: currentUser.details.email
+      }
     }
     return formData;
   }
