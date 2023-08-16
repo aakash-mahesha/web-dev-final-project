@@ -8,11 +8,10 @@ import { useState } from 'react';
 import InterestTabBox from './interest-tab-box';
 import ToggleButton from '@mui/material/ToggleButton';
 import Button from '@mui/material/Button';
+import { useSelector } from 'react-redux';
 
 
-const UserRegisterPage = ({interestTabsList, onSubmit }) => {
-
-    // console.log(interestTabs)
+const OrgRegisterPage = ({interestTabsList, onSubmit }) => {
 
     const [username, setUsername] = useState('');
     const [firstname, setFirstname] = useState('');
@@ -23,8 +22,10 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
     const [addressLine2, setAddressLine2] = useState('');
     const [city, setCity] = useState('');
     const [selectedTags, setSelectedTags] = useState([]);
+    const [orgId, setOrgId] = useState('');
+    const [orgName, setOrgName] = useState('');
 
-    const handleRegRegisterSubmit = (event)=>{
+    const handleOrgRegisterSubmit = (event)=>{
         event.preventDefault();
         const formData = {
           username,
@@ -32,6 +33,10 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
           lastname,
           password,
           email,
+          orgData:{
+            orgId: orgId,
+            orgName: orgName,
+          },
           address:{
             addressLine1,
             addressLine2,
@@ -39,7 +44,7 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
           },
           tags : selectedTags,
         }
-        onSubmit({form_type:"reg-user", formData})
+        onSubmit({form_type:"org-user", formData})
     }
 
     const handleTagChange = (event, newTags) => {
@@ -51,7 +56,7 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
       <Box
         component="form"
         noValidate
-        onSubmit={handleRegRegisterSubmit}
+        onSubmit={handleOrgRegisterSubmit}
         sx={{ mt: 3, width: "100%" }}
       >
         <Grid container spacing={3} maxWidth="xl" sx={{ marginTop: 3 }}>
@@ -121,6 +126,32 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
                   autoFocus
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ mb: 2 }}>
+                <TextField
+                  autoComplete="Organization Id"
+                  name="orgId"
+                  required
+                  fullWidth
+                  id="orgId"
+                  label="Enter Organization Id"
+                  placeholder="Your Org ID"
+                  autoFocus
+                  onChange={(e) => setOrgId(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ mb: 2 }}>
+                <TextField
+                  autoComplete="Oganization Name"
+                  name="orgName"
+                  required
+                  fullWidth
+                  id="orgName"
+                  label="Enter Organization Name"
+                  placeholder="EventBrite, Amazon"
+                  autoFocus
+                  onChange={(e) => setOrgName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sx={{ mb: 2 }}>
@@ -217,4 +248,4 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
       </Box>
   );
 };
-export default UserRegisterPage;
+export default OrgRegisterPage;

@@ -13,10 +13,14 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 import { Padding } from "@mui/icons-material";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useNavigate } from "react-router";
 import UserRegisterPage from "./user-register";
 import { Link } from 'react-router-dom';
 import tabs from './tabs.json'
+import { useState } from "react";
+import OrgRegisterPage from "./org-user-register";
+import { useDispatch } from "react-redux";
+import { registerThunk } from "../../thunks/auth-thunks";
 
 // function Copyright(props) {
 //   return (
@@ -30,10 +34,26 @@ import tabs from './tabs.json'
 //     </Typography>
 //   );
 // }
-const interestTabs = tabs;
+
+const interestTabsList = tabs;
 const defaultTheme = createTheme();
 
 export default function Register() {
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [registerStatus, setRegisterStatus] = useState("");
+
+  const handleFormSubmit = async (data) =>{
+    console.log("in handleFormSubmit in index.js")
+    const response = await dispatch(registerThunk(data))
+    if(response.error){
+      setRegisterStatus('error')
+    }else{
+      setRegisterStatus('success')
+      navigate("/")
+    }
+  }
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
@@ -69,9 +89,9 @@ export default function Register() {
               </div>
             </div>
             <Routes>
-              <Route path="/userRegister" element={<UserRegisterPage interestTabs = {interestTabs} />}/>
-              {/* <Route path="/orgRegister"/>
-              <Route path="/adminRegister"/> */}
+              <Route path="/userRegister" element={<UserRegisterPage interestTabsList = {interestTabsList} onSubmit= {handleFormSubmit}/>}/>
+              <Route path="/orgRegister"  element= {<OrgRegisterPage interestTabsList= {interestTabsList} onSubmit={handleFormSubmit}/>}/>
+              {/* <Route path="/adminRegister"/> */}
             </Routes>
             {/* <UserRegisterPage/> */}
           </Box>
