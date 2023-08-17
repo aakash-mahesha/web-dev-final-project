@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -31,7 +32,7 @@ const EventPopup = (
             }}
         >
             <Grid item xs={8}>
-                <Typography variant='h6'>{event.title}</Typography>
+                <Typography variant='h6'>{event.name}</Typography>
             </Grid>
             <Grid item xs={4}>
                 <Grid container
@@ -40,7 +41,7 @@ const EventPopup = (
                     }}
                 >
                     <Grid item xs={12}>
-                        <Typography variant='body2'>{event.date.start_date}</Typography>
+                        <Typography variant='body2'>{dayjs(event.dates[0]).format('MMM D')}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Box
@@ -48,7 +49,7 @@ const EventPopup = (
                             sx={{
                                 width: "100%",
                             }}
-                            src={event.thumbnail} />
+                            src={event.image.url} />
                     </Grid>
                 </Grid>
             </Grid>

@@ -43,10 +43,10 @@
 // export default Map
 
 // --- (1), (2) & (3): install and import ---
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import Markers from './markers';
+import Markers, { bounds } from './markers';
 
 // -----------------------------------------------------
 
@@ -64,7 +64,9 @@ function ResetSize({ map }) {
 
 }
 
-function Map() {
+const getBounds = (events) => events.map(event => [Number(event.pos[0]), Number(event.pos[1])]);
+
+function Map({ events }) {
     // Berlin coordinates
     // const position = [52.51, 13.38];
     // denver -> update to be dynamically centerred
@@ -78,7 +80,7 @@ function Map() {
             <div className='map-component'>
                 {/* --- (5) Add leaflet map container --- */}
                 <div className='map'>
-                    <MapContainer center={position} zoom={6} scrollWheelZoom={false} ref={setMap}>
+                    <MapContainer scrollWheelZoom={false} ref={setMap}>
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -94,13 +96,22 @@ function Map() {
                             Popup test
                         </Popup>
                     </Marker> */}
-                        <Markers />
+                        <Markers events={events} />
                     </MapContainer>
                 </div>
             </div>
         ),
         [],
     );
+
+    const setBounds = useCallback(
+
+        () => console.log((map ? map.fitBounds(getBounds(events)) : null)),
+        [map, events]
+    );
+
+    setBounds();
+
     try {
         return (
             <div>

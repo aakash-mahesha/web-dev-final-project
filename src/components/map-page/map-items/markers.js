@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import EventPopup from './event-popup';
 import events from "./events.json";
 
-const Markers = (
+const Markers = ({events}
     // {
     //     // markers = [
     //     //     {
@@ -73,7 +73,7 @@ const Markers = (
             {
                 events.map(event =>
                     <Marker
-                        key={event.title}
+                        key={event._id}
                         position={event.pos}
                         icon={customIcon}>
                         <Popup>

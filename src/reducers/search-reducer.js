@@ -3,7 +3,7 @@ import { apiSearchThunk, dbSearchThunk, launchSearchThunk } from "../services/se
 
 const initialState = {
     results: [],
-    loading: false
+    loading: false,
 }
 
 const searchSlice = createSlice({

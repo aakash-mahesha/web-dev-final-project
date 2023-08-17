@@ -2,7 +2,7 @@
 // drawer nesting functionality based on Alkesh Desai's answer to https://stackoverflow.com/questions/63087007/nested-drawer-in-material-ui-reactjs
 
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
@@ -17,6 +17,7 @@ import LayoutPage from '../layout-page';
 import Map from "./map-items/search-map";
 
 function MapPage({ Component }) {
+    const { results, loading } = useSelector(state => state.results);
     // const { drawerWidth } = useSelector(state => state.drawerWidth);
 
     const [drawerWidth, setDrawerWidth] = React.useState(400);
@@ -139,7 +140,7 @@ function MapPage({ Component }) {
                 </Drawer>
                 {showMain && <Main open={open}>
                     <DrawerHeader />
-                    <Map />
+                    <Map events={results}/>
                 </Main>}
             </>
         );

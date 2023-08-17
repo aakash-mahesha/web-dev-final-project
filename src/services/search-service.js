@@ -58,9 +58,9 @@ export const dbSearch = async (query) => {
 export const apiSearch = async (query) => {
     const searchParams = formatApiQuery(query);
     const searchUrl = `${TICKEMASTER_SEARCH_API}&${searchParams}`;
-    console.log('searchUrl',searchUrl)
+    console.log('searchUrl', searchUrl)
     const response = await axios.get(searchUrl);
-    const parsedResponse = _parsedApiResponse(response);
+    const parsedResponse = _parseApiResponse(response);
     // console.log(parsedResponse[0]);
 
     return parsedResponse;
@@ -79,13 +79,13 @@ const formatApiQuery = (query) => {
         }
     })
     const searchParams = queryList.join('&').replace(/ /g, '+');
-    
-    console.log('searchParams',searchParams)
+
+    console.log('searchParams', searchParams)
 
     return searchParams;
 }
 
-const _parsedApiResponse = (response) => {
+const _parseApiResponse = (response) => {
     const embedded = _getIfExists(response.data, "_embedded");
     if (!embedded) {
         console.log('houston, we have a problem')
@@ -93,22 +93,31 @@ const _parsedApiResponse = (response) => {
     } else {
         const events = embedded.events;
         console.log('response events', events)
-        const reformattedEvents = events.map((event) => ({
-            _id: event.id,
-            name: event.name,
-            url: event.url,
-            dates: _parseDate(event),
-            image: _chooseImage(event),
-            pos: event._embedded.venues[0].location,
-            venues: event._embedded.venues,
-            description: _generateDescriptionObject(event),
-        }));
+        const reformattedEvents = events.map((event) => {
+            const embedded = _getIfExists(event, "_embedded");
+
+            return (
+                {
+                    _id: event.id,
+                    name: _getIfExists(event, "name"),
+                    url: _getIfExists(event, "url"),
+                    dates: _parseDate(event),
+                    image: _chooseImage(event),
+                    pos: _parsePos(embedded),
+                    ...embedded && {venues: embedded.venues},
+                    description: _generateDescriptionObject(event, embedded),
+                })
+        }
+        );
         return reformattedEvents;
     }
 }
 
 const _chooseImage = (event) => {
-    const images = event.images;
+    const images = _getIfExists(event, "images");
+    if (!images) {
+        return [];
+    }
     const selectedImage = images.find((image) => image.ratio === '3_2');
 
     if (selectedImage) {
@@ -119,7 +128,10 @@ const _chooseImage = (event) => {
 }
 
 const _parseDate = (event) => {
-    const dates = event.dates;
+    const dates = _getIfExists(event, "dates");
+    if (!dates) {
+        return [];
+    }
     const startDateTime = dates.start.dateTime;
     if (dates.spanMultipleDays) {
         const endDateTIme = dates.date.dateTime;
@@ -128,14 +140,25 @@ const _parseDate = (event) => {
     return [startDateTime, startDateTime];
 }
 
-const _generateDescriptionObject = (event) => {
-    const classifications = event.classifications[0];
+const _parsePos = (embedded) => {
+    if (embedded) {
+        const location = embedded.venues[0].location
+        return [location.latitude, location.longitude];
+    }
+    return [];
+}
+
+const _generateDescriptionObject = (event, embedded) => {
+    let classifications = _getIfExists(event, "classifications");
+    if (!classifications) {
+        return [];
+    }
+    classifications = classifications[0];
     let eventType = _filterOutUndefined([classifications.segment, classifications.genre, classifications.subGenre]);
     if (eventType) {
         eventType = eventType.map((element) => element.name)
     }
     let featured = [];
-    const embedded = _getIfExists(event, "_embedded");
     if (embedded) {
         featured = embedded.atttractions;
     }

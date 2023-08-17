@@ -2,7 +2,7 @@
 // and mui freeSolo multiple values autocomplete tutorial: https://mui.com/material-ui/react-autocomplete/
 // search params functionality based on: https://reactrouter.com/zh/main/hooks/use-search-params and https://www.robinwieruch.de/react-router-search-params/
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
@@ -46,9 +46,9 @@ const apiCallZip = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKI
 const SearchForm = () => {
     const { results, loading } = useSelector(state => state.results);
 
-    const initialResponse = (results ? results : []);
+    // const initialResponse = (results ? results : []);
 
-    const [response, setResponse] = useState(initialResponse);
+    // const [response, setResponse] = useState(initialResponse);
 
     // const paramStruct = {
     //     savedEvents: true,
@@ -60,9 +60,19 @@ const SearchForm = () => {
     //     tags: '' // - separated string
     // }
 
-    var submit = false;
+    // var submit = false;
 
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const dispatch = useDispatch();
+
+
+    //replace with db search thunk!!
+    // const firstRender = useMemo(
+
+    //     () => dispatch(dbSearchThunk(searchParams)),
+    //     []
+    // );
 
     // const paramList = [
     //     "savedEvents",
@@ -186,18 +196,20 @@ const SearchForm = () => {
         return query;
     }
 
-    const dispatch = useDispatch();
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        submit = true;
+        // submit = true;
         // The serialize function here would be responsible for
         // creating an object of { key: value } pairs from the
         // fields in the form that make up the query.
         let params = serializeFormQuery();
         setSearchParams(params);
         console.log('search params', params)
-        dispatch(apiSearchThunk(params));
+        if (scope === 'api') {
+            dispatch(apiSearchThunk(params));
+        } else {
+            console.log('db')
+        }
     }
 
     // const [results, setResults] = useState([]);
