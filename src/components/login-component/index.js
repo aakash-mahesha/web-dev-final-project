@@ -2,8 +2,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,7 +11,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import LoginStateDisplay from './login-state-display';
 import { loginThunk } from '../../thunks/auth-thunks';
 
 const defaultTheme = createTheme();
@@ -22,13 +19,33 @@ const LoginComponent = () =>{
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [loginStauts, setLoginStatus ] = useState(null);
+    const [errors, setErrors] = useState({
+      username: false,
+      password: false
+    })
     const clickSubmitHandler = async (event) =>{
         event.preventDefault()
         const data = new FormData(event.currentTarget)
+
+        const newErrors = {}
+        if(data.get('username') === ''){
+          newErrors['username']  = true;
+        }
+        
+        if(data.get('password') === ''){
+          newErrors['password'] = true;
+        }
+
+        setErrors(newErrors)
+
+        if(Object.values(newErrors).some((error) => error)){
+          return;
+        }
         const authData = {
-            username:data.get('email')
+            username:data.get('username')
             ,password:data.get('password')
         }
+
         const response = await dispatch(loginThunk(authData))
         if(response.error){
           setLoginStatus('error');
@@ -62,11 +79,17 @@ const LoginComponent = () =>{
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
+              helperText={errors.username ? 'Field cannot be empty' : ''}
+                    sx={{
+                      '& .MuiFormHelperText-root': {
+                        color: errors.username ? 'red' : 'inherit', 
+                      },
+                    }}
             />
             <TextField
               margin="normal"
@@ -77,10 +100,12 @@ const LoginComponent = () =>{
               type="password"
               id="password"
               autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              helperText={errors.password ? 'Field cannot be empty' : ''}
+                    sx={{
+                      '& .MuiFormHelperText-root': {
+                        color: errors.password ? 'red' : 'inherit', 
+                      },
+                    }}
             />
             <Button
               type="submit"
@@ -91,11 +116,6 @@ const LoginComponent = () =>{
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link href="#/register" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -105,7 +125,6 @@ const LoginComponent = () =>{
           </Box>
                 </Box>
             </Container>
-            {/* <LoginStateDisplay/> */}
         </ThemeProvider>
 
         

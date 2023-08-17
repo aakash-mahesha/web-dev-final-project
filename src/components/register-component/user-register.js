@@ -2,27 +2,44 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import { width } from '@mui/system';
-import { ToggleButtonGroup } from '@mui/material';
 import { useState } from 'react';
 import InterestTabBox from './interest-tab-box';
-import ToggleButton from '@mui/material/ToggleButton';
 import Button from '@mui/material/Button';
+
 
 
 const UserRegisterPage = ({interestTabsList, onSubmit }) => {
 
-    // console.log(interestTabs)
+    
 
     const [username, setUsername] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
     const [addressLine1, setAddressLine1] = useState('');
     const [addressLine2, setAddressLine2] = useState('');
     const [city, setCity] = useState('');
+    const [stateName, setStateName] = useState('');
+    const [zipcode, setZipcode] = useState(null);
+    const [country, setCountry] = useState('');
     const [selectedTags, setSelectedTags] = useState([]);
+
+    const[errors, setErrors] = useState({
+      username: false,
+      firstname: false,
+      lastname: false,
+      password: false,
+      confirmPassword: false,
+      email: false,
+      addressLine1: false,
+      addressLine2: false,
+      city: false,
+      stateName:false,
+      zipcode: false,
+      country : false
+    })
 
     const handleRegRegisterSubmit = (event)=>{
         event.preventDefault();
@@ -35,15 +52,50 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
           address:{
             addressLine1,
             addressLine2,
-            city, 
+            city,
+            stateName,
+            zipcode,
+            country, 
           },
           tags : selectedTags,
         }
+
+        const newErrors = {};
+        for(const field in formData){
+          if(field === 'address'){
+            for(const subfield in formData[field]){
+              if (formData[field][subfield] === '' || formData[field][subfield] === null){
+                newErrors[subfield] = true
+              }
+              else{
+                newErrors[subfield] = false
+              }
+            }
+          }
+          else{
+            if (formData[field] === ''){
+              newErrors[field] = true
+            }
+            else{
+              newErrors[field] = false
+            }
+          }
+        }
+        if(confirmPassword === ""){
+          newErrors["confirmPassword"] = true  
+        }
+
+        setErrors(newErrors)
+
+        if(Object.values(newErrors).some((error) => error)){
+          return;
+        }
+        
         onSubmit({form_type:"reg-user", formData})
     }
 
-    const handleTagChange = (event, newTags) => {
-      setSelectedTags(newTags)
+    const handleTagChange = (event, newTag) => {
+      setSelectedTags(newTag)
     }
 
   return (
@@ -78,6 +130,12 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
                     placeholder="First Name"
                     autoFocus
                     onChange={(e) => setFirstname(e.target.value)}
+                    helperText={errors.firstname ? 'Field cannot be empty' : ''}
+                    sx={{
+                      '& .MuiFormHelperText-root': {
+                        color: errors.firstname ? 'red' : 'inherit', 
+                      },
+                    }}
                   />
                 </Grid>
 
@@ -90,23 +148,33 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
                     id="lastName"
                     label="Enter Last Name"
                     placeholder="Last Name"
-                    autoFocus
                     onChange={(e) => setLastname(e.target.value)}
+                    helperText={errors.lastname ? 'Field cannot be empty' : ''}
+                    sx={{
+                      '& .MuiFormHelperText-root': {
+                        color: errors.lastname ? 'red' : 'inherit', 
+                      },
+                    }}
                   />
                 </Grid>
               </Grid>
 
               <Grid item xs={12} sx={{ mb: 2 }}>
                 <TextField
-                  // autoComplete="given-name"
+                  
                   name="username"
                   required
                   fullWidth
                   id="userName"
                   label="Enter Username"
                   placeholder="Username"
-                  autoFocus
                   onChange={(e) => setUsername(e.target.value)}
+                  helperText={errors.username ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.username ? 'red' : 'inherit', 
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sx={{ mb: 2 }}>
@@ -118,36 +186,52 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
                   id="email"
                   label="Enter Email"
                   placeholder="youremail@xyz.com"
-                  autoFocus
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
+                  helperText={errors.email ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.email ? 'red' : 'inherit', 
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sx={{ mb: 2 }}>
                 <TextField
-                  // autoComplete="given-n"
+                  
                   name="Password"
                   required
                   fullWidth
                   id="password"
                   label="Enter Password"
                   placeholder="password"
-                  autoFocus
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
+                  helperText={errors.password ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.password ? 'red' : 'inherit',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sx={{ mb: 2 }}>
                 <TextField
-                  // autoComplete="given-name"
+                  
                   name="Confirm Password"
                   required
                   fullWidth
                   id="confirmPassword"
                   label="Confirm Password"
                   placeholder="confirm password"
-                  autoFocus
                   type="password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  helperText={errors.confirmPassword ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.confirmPassword ? 'red' : 'inherit', 
+                    },
+                  }}
                 />
               </Grid>
 
@@ -160,8 +244,13 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
                   id="address-line1"
                   label="Address"
                   placeholder="Address"
-                  autoFocus
                   onChange={(e) => setAddressLine1(e.target.value)}
+                  helperText={errors.addressLine1 ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.addressLine1 ? 'red' : 'inherit', 
+                    },
+                  }}
                 />
               </Grid>
 
@@ -174,8 +263,13 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
                   id="address-line2"
                   label="Apt/Unit No."
                   placeholder="Ex: Apt 3 or Unit 2"
-                  autoFocus
                   onChange={(e) => setAddressLine2(e.target.value)}
+                  helperText={errors.addressLine2 ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.addressLine2 ? 'red' : 'inherit', 
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sx={{ mb: 2 }}>
@@ -187,6 +281,64 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
                   name="city"
                   autoComplete="address-level2"
                   onChange={(e) => setCity(e.target.value)}
+                  helperText={errors.city ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.city ? 'red' : 'inherit', 
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ mb: 2 }}>
+                <TextField
+                  required
+                  fullWidth
+                  id="state"
+                  label="State"
+                  name="state"
+                  autoComplete="address-level1"
+                  onChange={(e) => setStateName(e.target.value)}
+                  helperText={errors.stateName ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.stateName ? 'red' : 'inherit', 
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ mb: 2 }}>
+                <TextField
+                  required
+                  fullWidth
+                  id="zipcode"
+                  label="Zipcode"
+                  name="zipcode"
+                  autoComplete="postal-code"
+                  onChange={(e) => setZipcode(e.target.value)}
+                  helperText={errors.zipcode ? 'Field cannot be empty' : ''}
+                  type = "number"
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.zipcode ? 'red' : 'inherit', 
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ mb: 2 }}>
+                <TextField
+                  required
+                  fullWidth
+                  id="country"
+                  label="Country"
+                  name="country"
+                  autoComplete="country"
+                  onChange={(e) => setCountry(e.target.value)}
+                  helperText={errors.country ? 'Field cannot be empty' : ''}
+                  sx={{
+                    '& .MuiFormHelperText-root': {
+                      color: errors.country ? 'red' : 'inherit', 
+                    },
+                  }}
                 />
               </Grid>
             </Grid>
@@ -198,9 +350,8 @@ const UserRegisterPage = ({interestTabsList, onSubmit }) => {
               Select the tags that interest you!
             </Typography>
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item sx={{ display: 'flex', justifyContent: 'center'}}>
                 <InterestTabBox interestTabsList={interestTabsList} selectedTags={selectedTags}  handleTagChange={handleTagChange}/>
-                {/* <ToggleButton key={interestTabsList[0].value} value = {interestTabsList[0].value}>{interestTabsList[0].value}</ToggleButton> */}
               </Grid>
             </Grid>
           </Grid>
