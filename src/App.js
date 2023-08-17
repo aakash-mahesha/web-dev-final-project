@@ -14,12 +14,13 @@ import eventFormReducer from "./reducers/event-form-reducer"
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
 import Register from './components/register-component';
-// import ProfileScreen from './pages/user-profile-page';
-import ExamplePage from './components/layout-page/example-test-page';
-import UserTable from './pages/user-table/user-table';
-// import ProfileScreen from './pages/user-profile-page';
-import ProfileForm from './pages/edit-profile/edit-profile.js';
 
+import ExamplePage from './components/layout-page/example-test-page';
+
+import ProfileScreen from './components/dashboard/pages/profile-page';
+import Events from './components/dashboard/pages/event-page';
+import Admin from './components/dashboard/pages/admin-page';
+import Home from './components/dashboard/pages/home-page';
 function App() {
   const store = configureStore({
     reducer: {
@@ -46,8 +47,16 @@ function App() {
               <Route path="/login" element = {<LoginComponent/>}/>
               <Route path="/register/*" element = {<Register/>}/>
               <Route path="/example" element={<ExamplePage />} />
-              <Route path="/usertable" element={<UserTable />} />
-              <Route path="/create-profile" element={< ProfileForm/>} />
+              <Route path="/dashboard/home" element={< Home/>} />
+              <Route path="/dashboard/events" element={< Events/>} />
+              <Route path="/dashboard/profile" element={< ProfileScreen/>} />
+              <Route path="/dashboard/dashboard" element={<Admin/>} />  
+             
+            
+              
+    
+
+              
             </Routes>
           </div>
         </HashRouter>

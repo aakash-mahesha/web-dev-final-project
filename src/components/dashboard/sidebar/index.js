@@ -23,6 +23,7 @@ import {
     SettingsOutlined,
     ChevronLeft,
     ChevronRightOutlined,
+    HomeOutlined,
     
 
   } from "@mui/icons-material";
@@ -31,22 +32,25 @@ import {
  
   
 const navItems = [
-    {
-      text: "Dashboard",
-      icon: <DashboardIcon/>,
-    },
+  {
+    text: "Home",
+    icon: <HomeOutlined/>,
+  },
+  {
+    text: "Events",
+    icon: <ChecklistIcon />,
+  },
+  
+   
     {
       text: "Profile",
       icon: <AccountCircleIcon/>,
     },
     {
-      text: "My Events",
-      icon: <ChecklistIcon />,
+      text: "Dashboard",
+      icon: <DashboardIcon/>,
     },
-    {
-      text: "WishList",
-      icon: < FavoriteIcon/>,
-    },
+    
   ];
  
   const Sidebar = ({
@@ -114,7 +118,7 @@ const navItems = [
                     <ListItem key={text} disablePadding>
                       <ListItemButton
                         onClick={() => {
-                          navigate(`/${lcText}`);
+                          navigate(`/dashboard/${lcText}`);
                           setActive(lcText);
                         }}
                         sx={{
