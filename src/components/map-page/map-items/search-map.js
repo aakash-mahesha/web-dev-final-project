@@ -64,7 +64,17 @@ function ResetSize({ map }) {
 
 }
 
-const getBounds = (events) => events.map(event => [Number(event.pos[0]), Number(event.pos[1])]);
+const getBounds = (events) => {
+    let bounds = [
+        [45.140009, -69.218322],
+        [16.43333, -93.79528],
+        [47.6062100, -122.3320700]
+    ];
+    if (events.length) {
+        bounds = events.map(event => [Number(event.pos[0]), Number(event.pos[1])]);
+    }
+    return bounds;
+}
 
 function Map({ events }) {
     // Berlin coordinates
@@ -104,9 +114,14 @@ function Map({ events }) {
         [],
     );
 
+    const bounds = getBounds(events);
+
     const setBounds = useCallback(
 
-        () => console.log((map ? map.fitBounds(getBounds(events)) : null)),
+        () => (map ? map.fitBounds(bounds) : null),
+
+        // () => (map && bounds.length ? map.fitBounds(bounds) : console.log('no bounds')),
+        // () => console.log(bounds.length ? true : false),
         [map, events]
     );
 
