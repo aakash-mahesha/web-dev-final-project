@@ -8,14 +8,14 @@ const Header = ({title, subtitle}) =>{
   return (
     <Box>
       <Typography
-        variant="h4"
+        variant="h2"
         color={theme.palette.main}
         fontWeight="bold"
         sx={{ mb: "5px" }}
       >
        {title}
       </Typography>
-      <Typography variant="h6" color={theme.palette.main}>
+      <Typography variant="h5" color={theme.palette.main}>
         {subtitle}
       </Typography>
     </Box>

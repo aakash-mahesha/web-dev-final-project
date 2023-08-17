@@ -16,39 +16,37 @@ import {
 import { Password } from '@mui/icons-material';
 
 const initialRows = [
-    {   id: 1,
-        username: 'Snow',
-        password: '123456',
-        fistname: 'John',
-        lastname: 'Snow',
-        email: 'Jsnow@gmail.com',
-        user_type: 'regular',
+    {   id: 12,
+        name: 'Pink Concert',
+        date: '2023-10-10',
+        location: 'san jose',
+        host: 'Pink',
+        email: 'pink@gmail.com',
+        status: 'active',
     },
-    {   id: 2,
-        username: 'lin',
-        password: '123456',
-        fistname: 'Lin',
-        lastname: 'Li',
-        email: 'lilin@gmail.com',
-        user_type: 'regular',
+    {   id: 23,
+        name: 'Pink Concert',
+        date: '2023-10-10',
+        location: 'san jose',
+        host: 'Pink',
+        email: 'pink@gmail.com',
+        status: 'active',
     },
-    {   id: 3,
-        username: 'SCC',
-        password: '123456',
-        fistname: 'SCC',
-        lastname: 'SCC',
-        email: 'SCC@gmail.com',
-        user_type: 'organization',
-
+    {   id: 45,
+        name: 'Pink Concert',
+        date: '2023-10-10',
+        location: 'san jose',
+        host: 'Pink',
+        email: 'pink@gmail.com',
+        status: 'active',
     },
-    {   id: 4,
-        username: 'NEU',
-        password: '123456',
-        fistname: 'Library',
-        lastname: 'NEU',
-        email: 'neulibrary@gmail.com',
-        user_type: 'organization',
-
+    {   id: 45,
+        name: 'Pink Concert',
+        date: '2023-10-10',
+        location: 'san jose',
+        host: 'Pink',
+        email: 'pink@gmail.com',
+        status: 'active',
     },
 ]
 
@@ -58,22 +56,22 @@ function EditToolbar(props) {
     const handleClick = () => {
         const id = Math.floor(Math.random() * 100);
         
-        setRows((oldRows) => [...oldRows, { id, username: '', firstname: '', lastname: '', email: '' }]);
+        setRows((oldRows) => [...oldRows, { id, name: '', date: '', location: '', host: '',email: '' }]);
         setRowModesModel((oldModel) => ({
             ...oldModel,
-            [id]: { mode: GridRowModes.Edit, fieldToFocus: 'username' },
+            [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
         }));
     };
 
     return (
         <GridToolbarContainer>
             <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-                Add user
+                Add New Event
             </Button>
         </GridToolbarContainer>
     );
 }
-export default function UserTable() {
+function EventTable() {
     const [rows, setRows] = React.useState(initialRows);
     const [rowModesModel, setRowModesModel] = React.useState({});
 
@@ -117,15 +115,16 @@ export default function UserTable() {
         setRowModesModel(newRowModesModel);
     };
     const columns = [
-        { field: 'username', headerName: 'Username', width: 150, editable: true },
+        { field: 'id', headerName: 'EventId', width: 150, editable: true },
 
-        { field: 'password', headerName: 'Password', type: Password, width: 150, editable: true },
-        { field: 'fistname', headerName: 'First name', width: 150, editable: true },
-        { field: 'lastname', headerName: 'Last name', width: 150, editable: true },
+        { field: 'name', headerName: 'Name', width: 150,editable: true},
+        { field: 'date', headerName: 'Date', width: 150,editable: true },
+        { field: 'location', headerName: 'Location', width: 150, editable: true },
+        { field: 'host', headerName: 'Host', width: 150, editable: true },
         { field: 'email', headerName: 'Email', width: 150, editable: true },
         {
-            field: 'user_type', headerName: 'User type', type: 'singleSelect',
-            valueOptions: ['regular', 'organization'], width: 150, editable: true
+            field: 'status', headerName: 'Status', type: 'singleSelect',
+            valueOptions: ['active', 'pending'], width: 150, editable: true
         },
         {
             field: 'action', type: 'actions',headerName: 'Action', width: 100, cellClassName: 'actions',
@@ -203,9 +202,7 @@ export default function UserTable() {
             </Box>
           );
         }
-
-
-
+export default EventTable;
 
 
 

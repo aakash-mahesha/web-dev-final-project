@@ -1,43 +1,22 @@
-import React, { useState } from "react";
-import { Box, Grid, useMediaQuery } from "@mui/material";
-import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Header from"./header";
-
-import Sidebar from "./sidebar";
-import EventTable from "./eventTable";
-import TGrid from "./grid";
-import Navtab from "./navtab";
-
-const Layout = () => {
-    const isNonMobile = useMediaQuery("(min-width: 600px)");
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    //const userId = useSelector((state) => state.global.userId);
-    //const { data } = useGetUserQuery(userId);
-  
+import { Routes, Route } from "react-router";
+import Home from "./pages/home-page";
+import Events from "./pages/event-page";
+import ProfileScreen from "./pages/profile-page";
+import Admin from "./pages/admin-page";
+function Dashboard(){
     return (
-      <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">
-        <Sidebar
-          //user={data || {}}
-          isNonMobile={isNonMobile}
-          drawerWidth="250px"
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-        />
-        <Box flexGrow={1}>
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard"/> 
-        <Navtab
-          user= "admin"
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-        />
-        <div style={{ padding: '20px' }}>
+      <div>
         
-          <TGrid display ="flex"/>
+        <Routes>
+          <Route path="/" element={< Home/>}/>
             
+              <Route path="/dashboard/home" element={< Home/>} />
+              <Route path="/dashboard/events" element={< Events/>} />
+              <Route path="/dashboard/profile" element={< ProfileScreen/>} />
+              <Route path="/dashboard/admin" element={<Admin/>} />  
+
+        </Routes>
         </div>
-        </Box>
-        </Box>
-  );
-};
-export default Layout;
+    );
+}
+    export default Dashboard;
