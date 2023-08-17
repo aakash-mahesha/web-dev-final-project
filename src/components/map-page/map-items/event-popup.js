@@ -26,34 +26,48 @@ const EventPopup = (
     { event }
 ) => {
     return (
-        <Grid container spacing={2}
+        // <Grid container spacing={2}
+        //     sx={{
+        //         p: 1, textAlign: "left", display: "flex", justifyContent: "flex-start", alignItems: "center"
+        //     }}
+        // >
+        //     <Grid item xs={8}>
+        //         <Typography>{event.name}</Typography>
+        //     </Grid>
+        //     <Grid item xs={4}>
+        //         <Grid container
+        //             sx={{
+        //                 display: "flex", justifyContent: "flex-end", textAlign: "right"
+        //             }}
+        //         >
+        //             <Grid item xs={12}>
+        //                 <Typography variant='body2'>{dayjs(event.dates[0]).format('MMM D')}</Typography>
+        //             </Grid>
+        //             {/* <Grid item xs={12}>
+        //                 <Box
+        //                     component="img"
+        //                     sx={{
+        //                         width: "100%",
+        //                     }}
+        //                     src={event.image.url} />
+        //             </Grid> */}
+        //         </Grid>
+        //     </Grid>
+        // </Grid>
+
+        <Grid container spacing={1}
             sx={{
-                p: 1, textAlign: "left", display: "flex", justifyContent: "flex-start", alignItems: "center"
+                p: 0, textAlign: "left", display: "flex", justifyContent: "flex-start", alignItems: "center"
             }}
         >
-            <Grid item xs={8}>
-                <Typography variant='h6'>{event.name}</Typography>
-            </Grid>
             <Grid item xs={4}>
-                <Grid container
-                    sx={{
-                        display: "flex", justifyContent: "flex-end", textAlign: "right"
-                    }}
-                >
-                    <Grid item xs={12}>
-                        <Typography variant='body2'>{dayjs(event.dates[0]).format('MMM D')}</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Box
-                            component="img"
-                            sx={{
-                                width: "100%",
-                            }}
-                            src={event.image.url} />
-                    </Grid>
-                </Grid>
+                <Typography variant='body2'>{dayjs(event.dates[0]).format('MMM D')}</Typography>
+            </Grid>
+            <Grid item xs={8}>
+                <Typography variant='body2'>{event.name}</Typography>
             </Grid>
         </Grid>
+
     )
 }
 

@@ -92,7 +92,6 @@ const _parseApiResponse = (response) => {
         return [];
     } else {
         const events = embedded.events;
-        console.log('response events', events)
         const reformattedEvents = events.map((event) => {
             const embedded = _getIfExists(event, "_embedded");
 
