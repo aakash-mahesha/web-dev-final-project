@@ -3,6 +3,7 @@
 // search params functionality based on: https://reactrouter.com/zh/main/hooks/use-search-params and https://www.robinwieruch.de/react-router-search-params/
 
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -19,6 +20,9 @@ import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -31,12 +35,21 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 
 import SearchResults from './search-results.js';
 import Tags from "./tags.js";
+import * as service from "../../../services/search-service.js";
+
+import { apiSearchThunk, launchSearchThunk } from '../../../services/search-thunks.js';
 
 
 const exampleApiCall = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-08-26T14:00:00Z&city=new%20york';
 const apiCallZip = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&postalCode=02114&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-10-31T14:00:00Z';
 
 const SearchForm = () => {
+    const { results, loading } = useSelector(state => state.results);
+
+    const initialResponse = (results ? results : []);
+
+    const [response, setResponse] = useState(initialResponse);
+
     // const paramStruct = {
     //     savedEvents: true,
     //     publicEvents: false,
@@ -47,7 +60,9 @@ const SearchForm = () => {
     //     tags: '' // - separated string
     // }
 
-    let [searchParams, setSearchParams] = useSearchParams();
+    var submit = false;
+
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // const paramList = [
     //     "savedEvents",
@@ -76,20 +91,18 @@ const SearchForm = () => {
     }
 
 
-    const [scope, setScope] = useState({
-        db: true,
-        api: false,
-    });
+    const [scope, setScope] = useState('db');
 
     const handleScopeChange = (event) => {
-        setScope({
-            ...scope,
-            [event.target.name]: event.target.checked,
-        });
+        // setScope({
+        //     ...scope,
+        //     [event.target.name]: event.target.checked,
+        // });
+        setScope(event.target.value);
     }
 
-    const { db, api } = scope;
-    const error = [db, api].filter((v) => v).length === 0;
+    // const { db, api } = scope;
+    // const error = [db, api].filter((v) => v).length === 0;
 
     const [startDateAndTime, setStartDateAndTime] = useState(dayjs());
     const [endDateAndTime, setEndDateAndTime] = useState(dayjs());
@@ -120,10 +133,9 @@ const SearchForm = () => {
     const initializeExistingParams = () => {
         // const params = ["savedEvents", "publicEvents", "keyword", "location", "startDateTime", "endDateTime", "tags"];
         // const setters = [((dbVal) => setScope({...scope, db: dbVal,})), ((apiVal) => setScope({...scope, api: apiVal,})), setKeyword, setLocation, setStartDateAndTime, setEndDateAndTime, setTags];
-        const params = ["savedEvents", "publicEvents", "keyword", "location", "startDateTime", "endDateTime", "tags"];
+        const params = ["scope", "keyword", "postalCode", "startDateTime", "endDateTime", "tags"];
         const setters = [
-            ((dbVal) => setScope({ ...scope, db: Boolean(dbVal), })),
-            ((apiVal) => setScope({ ...scope, api: Boolean(apiVal), })),
+            setScope,
             setKeyword,
             setLocation,
             ((dateStartString) => setStartDateAndTime(dayjs(dateStartString))),
@@ -148,55 +160,90 @@ const SearchForm = () => {
         const startDateAndTimeString = startDateAndTime.toString();
         const endDateAndTimeString = endDateAndTime.toString();
         const tagString = tags.join('-'); // - separated string
-        const conditionalInclusion = (name, value) => value && { [name]: value };
+        const conditionalInclusion = (name, value) => {
+            console.log('incl val', value);
+            return value && { [name]: value }
+        };
 
         const query = {
-            savedEvents: db,
-            publicEvents: api,
+            // savedEvents: db,
+            // publicEvents: api,
             // ...keyword && { keyword: keyword },
             // ...location && { location: location },
             // ...startDateAndTimeString && { startDateTime: startDateAndTimeString },
             // ...endDateAndTimeString && { endDateTime: endDateAndTimeString },
             // ...tagString && { tags: tagString },
+            scope: scope,
             ...conditionalInclusion("keyword", keyword),
-            ...conditionalInclusion("location", location),
+            ...conditionalInclusion("postalCode", location),
             ...conditionalInclusion("startDateTime", startDateAndTimeString),
             ...conditionalInclusion("endDateTime", endDateAndTimeString),
             ...conditionalInclusion("tags", tagString),
         }
 
+        console.log('ser query', query)
+
         return query;
     }
 
+    const dispatch = useDispatch();
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        submit = true;
         // The serialize function here would be responsible for
         // creating an object of { key: value } pairs from the
         // fields in the form that make up the query.
         let params = serializeFormQuery();
         setSearchParams(params);
-        console.log(searchParams)
+        console.log('search params', params)
+        dispatch(apiSearchThunk(params));
     }
 
-    const [results, setResults] = useState([]);
+    // const [results, setResults] = useState([]);
 
-    const testFn = (input) => ['hi'];
+    // // const testFn = (input) => ['hi'];
 
-    const search = async (params) => {
-        const response = await testFn(params); // this will be search function from services
-        const results = 'hi'; //response.search.data;
-        setResults(results);
-    }
+    // const search = async (params) => {
+    //     const response = await service.fullSearch(params); // this will be search function from services
+    //     setResults(response);
+    // }
 
-    useEffect(() => {
-        search(searchParams)
-    }, [searchParams]);
+    // useEffect(() => {
+    //     initializeExistingParams();
+    //     console.log(scope)
+    //     // search(searchParams)
+    //     if (scope === 'api') {
+    //         // async function apiResults() {
+    //         //     const { payload } = dispatch(apiSearchThunk(searchParams));
+    //         //     setResponse(payload);
+    //         // };
+    //         // apiResults();
+    //         dispatch(apiSearchThunk(searchParams));
+    //     }
+    //     console.log(results)
+    // }, [searchParams]);
+
+    // useEffect(() => {
+    //     initializeExistingParams();
+    //     console.log(scope)
+    //     // search(searchParams)
+    //     if (scope === 'api') {
+    //         // async function apiResults() {
+    //         //     const { payload } = dispatch(apiSearchThunk(searchParams));
+    //         //     setResponse(payload);
+    //         // };
+    //         // apiResults();
+    //         dispatch(apiSearchThunk(searchParams));
+    //     }
+    //     console.log(results)
+    // }, [searchParams, submit]);
 
     // make it so that values below are set based on url!!! (like ex)
 
     return (
         <div>
-            <Box component="form" noValidate onSubmit={handleSubmit}
+            <Box component="form" noValidate
                 sx={{
                     '& > :not(style)': { m: 1, width: '90%' },
                 }}
@@ -223,20 +270,20 @@ const SearchForm = () => {
                         <TextField
                             fullWidth
                             id="search-location"
-                            label="Enter city"
+                            label="Enter zip code"
                             value={location}
                             onChange={handleLocationChange}
                         />
                     </Grid>
                     <FormControl
                         component="fieldset"
-                        error={error}
+                        // error={error}
                         sx={{ ml: 2, mt: 1 }}
                         variant="standard"
                     >
                         <FormLabel component="legend">Search scope</FormLabel>
                         <FormGroup>
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 control={
                                     <Checkbox checked={db} onChange={handleScopeChange} name="db" />
                                 }
@@ -247,9 +294,18 @@ const SearchForm = () => {
                                     <Checkbox checked={api} onChange={handleScopeChange} name="api" />
                                 }
                                 label="Public events"
-                            />
+                            /> */}
+                            <RadioGroup
+                                aria-labelledby="demo-controlled-radio-buttons-group"
+                                name="scope"
+                                value={scope}
+                                onChange={handleScopeChange}
+                            >
+                                <FormControlLabel value="db" control={<Radio />} label="MapVerse" />
+                                <FormControlLabel value="api" control={<Radio />} label="Ticketmaster" />
+                            </RadioGroup>
                         </FormGroup>
-                        <FormHelperText>Please select at least one scope to search</FormHelperText>
+                        {/* <FormHelperText>Please select at least one scope to search</FormHelperText> */}
                     </FormControl>
                     {scope.db && <FormControl
                         component="fieldset"
@@ -311,12 +367,13 @@ const SearchForm = () => {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
+                    onClick={handleSubmit}
                 >
                     Search
                 </Button>
             </Box>
             <Divider />
-            {/* <SearchResults /> */}
+            <SearchResults results={results} loading={loading} />
         </div>
     );
 }

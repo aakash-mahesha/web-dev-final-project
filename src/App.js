@@ -12,6 +12,7 @@ import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
 import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
+import searchReducer from './reducers/search-reducer';
 import ExamplePage from './components/layout-page/example-test-page';
 import UserTable from './pages/user-table';
 // import ProfileScreen from './pages/user-profile-page';
@@ -22,6 +23,7 @@ function App() {
   const store = configureStore({
     reducer: {
       eventFormState: eventFormReducer,
+      results: searchReducer,
     }
   })
   return (

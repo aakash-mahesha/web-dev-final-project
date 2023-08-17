@@ -1,4 +1,7 @@
 import React from 'react';
+import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
+
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -6,49 +9,107 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
-import { Link } from 'react-router-dom';
+// import events from "../../map-page/map-items/events.json";
 
-import events from "../../map-page/map-items/events.json";
+// const SearchResults = ({results}) => {
+const SearchResults = ({ results, loading }) => {
 
-const SearchResults = ({results}) => {
-    // update to pass event id to details link so that clicked event is the one that pops up
+    const resultsList = results.map((event) => (
+        <ListItem key={event._id} disablePadding>
+            <ListItemButton component={Link} to='/details/:id'>
+                <Grid container spacing={2}
+                    sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
+                >
+                    <Grid item xs={12}>
+                        <Grid container
+                            sx={{
+                                py: 2
+                            }}
+                        >
+                            <Grid item xs={2}
+                                sx={{
+                                    pr: 1
+                                }}
+                            >
+                                <Typography>
+                                    {dayjs(event.dates[0]).format('MMM D')}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={7}
+                                sx={{
+                                    pr: 2
+                                }}
+                            >
+                                <Typography variant='h6'>{event.name}</Typography>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Box
+                                    component="img"
+                                    sx={{
+                                        pr: 2,
+                                        width: "100%",
+                                    }}
+                                    src={event.image.url} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ListItemButton>
+        </ListItem>
+    ))
+
+    const noResults = (
+        <ListItem>
+            No matches for given search. Please search again.
+        </ListItem>
+    )
+
+    console.log(!results)
 
     return (
         <Box sx={{ display: 'flex' }}>
             <List>
-                {results.map((event, index) => (
-                    <ListItem key={event.title} disablePadding>
-                        <ListItemButton component={Link} to='/details'>
-                            <Grid container spacing={2}
-                                sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
-                            >
-                                <Grid item xs={12}>
-                                    <Grid container
-                                        sx={{
-                                            py: 2
-                                        }}
-                                    >
-                                        <Grid item xs={2}>
-                                            {event.date.start_date}
-                                        </Grid>
-                                        <Grid item xs={7}>
-                                            <Typography variant='h6'>{event.title}</Typography>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Box
-                                                component="img"
-                                                sx={{
-                                                    pr: 2,
-                                                    width: "100%",
-                                                }}
-                                                src={event.thumbnail} />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </ListItemButton>
+                {
+                    loading &&
+                    <ListItem>
+                        Loading...
                     </ListItem>
-                ))}
+                }
+                {results.length ? resultsList : noResults
+                    // results.map((event) => (
+                    //     <ListItem key={event._id} disablePadding>
+                    //         <ListItemButton component={Link} to='/details/:id'>
+                    //             <Grid container spacing={2}
+                    //                 sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
+                    //             >
+                    //                 <Grid item xs={12}>
+                    //                     <Grid container
+                    //                         sx={{
+                    //                             py: 2
+                    //                         }}
+                    //                     >
+                    //                         <Grid item xs={2}>
+                    //                             {dayjs(event.dates[0]).format('D MMM')}
+                    //                         </Grid>
+                    //                         <Grid item xs={7}>
+                    //                             <Typography variant='h6'>{event.name}</Typography>
+                    //                         </Grid>
+                    //                         <Grid item xs={3}>
+                    //                             <Box
+                    //                                 component="img"
+                    //                                 sx={{
+                    //                                     pr: 2,
+                    //                                     width: "100%",
+                    //                                 }}
+                    //                                 src={event.image.url} />
+                    //                         </Grid>
+                    //                     </Grid>
+                    //                 </Grid>
+                    //             </Grid>
+                    //         </ListItemButton>
+                    //     </ListItem>
+                    // ))
+                }
             </List>
         </Box>
     );
