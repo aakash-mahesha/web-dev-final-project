@@ -9,7 +9,6 @@ import { Provider } from 'react-redux';
 import EventPage from './components/event-page/index.js';
 import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
-// import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
