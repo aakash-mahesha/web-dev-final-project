@@ -32,6 +32,7 @@ import {
     const isOpen = Boolean(anchorEl);
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
+    
 
   return (
     <AppBar
@@ -63,9 +64,9 @@ import {
         {/* RIGHT SIDE */}
         <FlexBetween gap="1.5rem">
           
-          <IconButton>
+          {/* <IconButton>
             <SettingsOutlined sx={{ fontSize: "25px" }} />
-          </IconButton>
+          </IconButton> */}
 
           <FlexBetween>
             <Button
@@ -78,7 +79,7 @@ import {
                 gap: "1rem",
               }}
             >
-              <Box
+              {/* <Box
                 component="img"
                 alt="profile"
                 src="../../assets/profile1.jpeg"
@@ -86,14 +87,15 @@ import {
                 width="32px"
                 borderRadius="50%"
                 sx={{ objectFit: "cover" }}
-              />
+              /> */}
               <Box textAlign="left">
                 <Typography
                   fontWeight="bold"
                   fontSize="0.85rem"
                   sx={{ color: theme.palette.secondary[100] }}
                 >
-                  {/* {user.name} */}
+                  Jack
+                 {/* // {user.name} */}
                 </Typography>
                 <Typography
                   fontSize="0.75rem"
@@ -102,18 +104,18 @@ import {
                   {/* {user.occupation} */}
                 </Typography>
               </Box>
-              <ArrowDropDownOutlined
+              {/* <ArrowDropDownOutlined
                 sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
-              />
+              /> */}
             </Button>
-            <Menu
+            {/* <Menu
               anchorEl={anchorEl}
               open={isOpen}
               onClose={handleClose}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
               <MenuItem onClick={handleClose}>Log Out</MenuItem>
-            </Menu>
+            </Menu> */}
           </FlexBetween>
         </FlexBetween>
       </Toolbar>

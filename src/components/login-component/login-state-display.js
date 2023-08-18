@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 const LoginStateDisplay = ()=>{
     const current_user = useSelector((state) => state.auth.currentUser)
-    // const {username, password, user_type, user_privileges } = 
     return(
         <>
         {current_user.loggedIn?

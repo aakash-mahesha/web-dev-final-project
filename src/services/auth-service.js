@@ -7,8 +7,10 @@ const api = axios.create({
 });
 //auth
 
-export const register = async ({ username, password }) => {
-    const response = await  api.post(`${USERS_API_URL}/register`,{username,password});
+export const register = async (regFormData) => {
+    console.log("in register service")
+    console.log(regFormData)
+    const response = await  api.post(`${USERS_API_URL}/register`,regFormData);
     const user =response.data;
     return user;
 }
@@ -35,6 +37,7 @@ export const profile = async () => {
 
 };
 export const updateUser = async (user) => {
-    const response = await api.put(`${USERS_API_URL}`, user);
+    // match the update in the backend
+    const response = await api.put(`${USERS_API_URL}/{user._id}`, user);
     return response.data;
 };
