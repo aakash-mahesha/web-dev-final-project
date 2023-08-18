@@ -22,7 +22,7 @@ const Events = () => {
             <MainLayout/>
 
         </Box>
-        <Container item xs={8} lg={10}>
+        <Container xs={8} lg={10}>
         <Box>
             <Header subtitle ="Hosting Event"/>
             <Box m={1}

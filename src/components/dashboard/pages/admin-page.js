@@ -19,14 +19,14 @@ const Admin= () => {
             <MainLayout/>
 
         </Box>
-        <Container item xs={8} lg={10} >
+        <Container xs={8} lg={10} >
         <Box>
-            <Grid Container justify="center"> 
+            <Grid container justify="center"> 
                 <Header subtitle ="Users Management"/> 
                 </Grid>
             <UserTable/>
             <Divider/>
-            <Grid Container justify="center"> 
+            <Grid container justify="center"> 
                 <Header subtitle ="Event Management"/> 
                 </Grid>
             <EventTable/>

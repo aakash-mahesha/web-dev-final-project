@@ -12,7 +12,7 @@ const ProfileScreen = () => {
             <MainLayout/>
 
         </Box>
-        <Container item md={6} lg={10} xl={12}>
+        <Container md={6} lg={10} xl={12}>
             <Paper>
                 <Grid justify = "center">
             <Header subtitle ="Profile"/>

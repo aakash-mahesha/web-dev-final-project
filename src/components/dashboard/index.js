@@ -3,17 +3,18 @@ import Home from "./pages/home-page";
 import Events from "./pages/event-page";
 import ProfileScreen from "./pages/profile-page";
 import Admin from "./pages/admin-page";
+import {Navigate} from "react-router-dom";
 function Dashboard(){
     return (
       <div>
         
         <Routes>
-          <Route path="/" element={< Home/>}/>
-            
-              <Route path="/dashboard/home" element={< Home/>} />
-              <Route path="/dashboard/events" element={< Events/>} />
-              <Route path="/dashboard/profile" element={< ProfileScreen/>} />
-              <Route path="/dashboard/admin" element={<Admin/>} />  
+          {/* <Route path="/" element={< Home/>}/> */}
+          <Route path="/" element={<Navigate to="/dashboard/home" />}/>
+          <Route path="/home" element={< Home/>} /> 
+          <Route path="/events" element={<Events/>} />
+          <Route path="/profile" element={<ProfileScreen/>} />
+          <Route path="/admin" element={<Admin/>} />  
 
         </Routes>
         </div>

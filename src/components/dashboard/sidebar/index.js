@@ -47,7 +47,7 @@ const navItems = [
       icon: <AccountCircleIcon/>,
     },
     {
-      text: "Dashboard",
+      text: "Admin",
       icon: <DashboardIcon/>,
     },
     
@@ -118,6 +118,7 @@ const navItems = [
                     <ListItem key={text} disablePadding>
                       <ListItemButton
                         onClick={() => {
+                          console.log({lcText})
                           navigate(`/dashboard/${lcText}`);
                           setActive(lcText);
                         }}

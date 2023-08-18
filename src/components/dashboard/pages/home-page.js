@@ -10,7 +10,7 @@ const Home = () => {
             <MainLayout/>
 
         </Box>
-        <Container item md={6} lg={10} xl={12}>
+        <Container md={6} lg={10} xl={12}>
             <Paper>
             <Header subtitle ="Upcomming Event"/>
             </Paper>

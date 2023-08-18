@@ -49,7 +49,7 @@ const EventCard = () =>{
                 //     'YYYY-MM-DD H:mm:ss'
                 //   )}`}
                 />
-                <Button variant="outlined" onclick ={info_url}> See Details</Button>
+                <Button variant="outlined" onClick ={info_url}> See Details</Button>
               </ListItem>
               {i !== 3 && <Divider variant="inset" />}
             </Box>
