@@ -9,7 +9,7 @@ const apiCallZip = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKI
 // const request = axios.create(); //add with credentials
 
 const TICKEMASTER_API_BASE = 'https://app.ticketmaster.com/discovery/v2';
-const API_KEY = process.env.REACT_APP_TICKETMASTER_API_KEY || 'pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo';
+const API_KEY = process.env.REACT_APP_TICKETMASTER_API_KEY;
 const TICKEMASTER_SEARCH_API = `${TICKEMASTER_API_BASE}/events?apikey=${API_KEY}`;
 
 
