@@ -1,90 +1,26 @@
-// import axios from "axios";
-// import dayjs from "dayjs";
-const dayjs = require('dayjs');
-const axios = require('axios');
-
-const exampleApiCall = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-08-26T14:00:00Z&city=new%20york';
-const apiCallZip = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&postalCode=02114&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-10-31T14:00:00Z';
+import axios from "axios";
+import dayjs from "dayjs";
 
 // const request = axios.create(); //add with credentials
 
 const TICKEMASTER_API_BASE = 'https://app.ticketmaster.com/discovery/v2';
 const API_KEY = process.env.REACT_APP_TICKETMASTER_API_KEY;
-const TICKEMASTER_SEARCH_API = `${TICKEMASTER_API_BASE}/events?apikey=${API_KEY}`;
+const TICKEMASTER_DETAILS_API = (id) => (`${TICKEMASTER_API_BASE}/events/${id}?apikey=${API_KEY}`);
 
-const exquery = {
-    // savedEvents: true,
-    // publicEvents: true,
-    keyword: "music",
-    postalCode: "02114",
-    startDateTime: "Tue, 15 Aug 2023 08:13:09 GMT",
-    endDateTime: "Tue, 31 Oct 2023 08:13:09 GMT",
-    tags: "tag1-tag2"
-}
 
-const exdbquery = {
-    keyword: "music",
-    postalCode: "02114",
-    startDateTime: "Tue, 15 Aug 2023 08:13:09 GMT",
-    endDateTime: "Tue, 31 Oct 2023 08:13:09 GMT",
-    tags: ["tag1, tag2"]
-}
-
-const exurl = 'http://localhost:3000/#/search?savedEvents=true&publicEvents=true&keyword=music&location=02114&startDateTime=Tue%2C+15+Aug+2023+08%3A13%3A09+GMT&endDateTime=Tue%2C+31+Oct+2023+08%3A13%3A09+GMT&tags=tag1-tag2'
-
-// !!!!!TO DO: make api and db search two seperate services/thunks
-// have them each concat onto the current results (see create tuit)
-// handle which thunk to call in search form 
-//( scope no longer passed as part of query)
-// export const fullSearch = async (query) => {
-// // const fullSearch = async (query) => {
-//     const db = query.savedEvents;
-//     const api = query.publicEvents;
-//     console.log(api)
-//     // let response = [];
-//     if (db) {
-//         // const dbResponse = await dbSearch(query);
-//         // response = response.concat(dbResponse);
-//         console.log('db')
-//     }
-//     // if (api) {
-//         const apiResponse = await apiSearch(query);
-//         console.log('api response', apiResponse)
-
-//         // response = response.concat(apiResponse);
-//     //}
-//     // console.log('service response', response)
-//     // return response;
-//     return apiResponse
-// }
-
-export const dbSearch = async (query) => {
-    const searchBody =
-    {
-        ...query,
-    };
-    if (query.tags) {
-        searchBody.tags = query.tags.split('-');
-
-    }
-    if (query.startDateTime) {
-        searchBody.startDateTime = dayjs(query.startDateTime).toISOString();
-    }
-    if (query.endDateTime) {
-        searchBody.endDateTime = dayjs(query.endDateTime).toISOString();
-    }
-    const searchUrl = '';
-    // const response = await axios.get(searchUrl, searchBody);
+export const dbDetails = async (id) => {
+    // const detailsUrl = '';
+    // const response = await axios.get(detailsUrl, {_id: id});
     // const parsedResponse = {
     //     image: response.data.imgs[0],
     //     ...response.data
     // }
     // return parsedResponse;
-    console.log('db search:', searchBody);
+    console.log('db details:', id);
     return [];
 }
 
-export const apiSearch = async (query) => {
+export const apiDetails = async (id) => {
     const searchParams = formatApiQuery(query);
     const searchUrl = `${TICKEMASTER_SEARCH_API}&${searchParams}`;
     console.log('searchUrl', searchUrl)

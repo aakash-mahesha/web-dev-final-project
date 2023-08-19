@@ -12,10 +12,10 @@ import Grid from '@mui/material/Grid';
 // import events from "../../map-page/map-items/events.json";
 
 // const SearchResults = ({results}) => {
-const SearchResults = ({ results, loading }) => {
-    const { search } = useLocation();
+const SearchResults = ({ results, loading, noResults }) => {
+    // const { search } = useLocation();
 
-    console.log('search',search)
+    // console.log('search', search)
 
     const resultsList = results.map((event) => (
         <ListItem key={event._id} disablePadding>
@@ -61,7 +61,7 @@ const SearchResults = ({ results, loading }) => {
         </ListItem>
     ))
 
-    const noResults = (
+    const noResultsResponse = (
         <ListItem>
             No matches for given search. Please search again.
         </ListItem>
@@ -76,7 +76,7 @@ const SearchResults = ({ results, loading }) => {
                         Loading...
                     </ListItem>
                 }
-                {results.length ? resultsList : noResults
+                {noResults ? noResultsResponse : resultsList
                     // results.map((event) => (
                     //     <ListItem key={event._id} disablePadding>
                     //         <ListItemButton component={Link} to='/details/:id'>

@@ -4,6 +4,7 @@ import { apiSearchThunk, dbSearchThunk, launchSearchThunk } from "../services/se
 const initialState = {
     results: [],
     loading: false,
+    noResults: false,
 }
 
 const searchSlice = createSlice({
@@ -30,17 +31,20 @@ const searchSlice = createSlice({
             (state) => {
                 console.log('pending')
                 state.loading = true
+                state.noResults = false
             },
         [apiSearchThunk.fulfilled]:
             (state, { payload }) => {
                 console.log('fulfilled', payload)
                 state.loading = false
                 state.results = payload
+                state.noResults = !Boolean(state.results)
             },
         [apiSearchThunk.rejected]:
             (state, action) => {
                 console.log('rejected')
                 state.loading = false
+                state.noResults = true
                 state.error = action.error
                 console.log(state.error)
             },
@@ -48,17 +52,20 @@ const searchSlice = createSlice({
             (state) => {
                 console.log('pending')
                 state.loading = true
+                state.noResults = false
             },
         [dbSearchThunk.fulfilled]:
             (state, { payload }) => {
                 console.log('fulfilled', payload)
                 state.loading = false
                 state.results = payload
+                state.noResults = !Boolean(state.results)
             },
         [dbSearchThunk.rejected]:
             (state, action) => {
                 console.log('rejected')
                 state.loading = false
+                state.noResults = true
                 state.error = action.error
                 console.log(state.error)
             },

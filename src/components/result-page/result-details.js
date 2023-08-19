@@ -63,9 +63,12 @@ const ResultDetails = (
     console.log('params', useParams())
     console.log('id', id);
     const { results } = useSelector(state => state.results);
-    console.log('results', results)
+    console.log('details results', results)
     const event = results.find((event) => event._id === id);
     console.log('event', event)
+    // const currEvent = results.find((event) => event._id === id);
+    // const [event, setEvent] = useState(currEvent);
+    // console.log('event', event)
     // when calling, pass only selected event (via url) (update to take event arg w/o default)
     // const [place, street] = event.address[0].split(',');
 
@@ -153,8 +156,8 @@ const ResultDetails = (
                             </Grid>
                             {/* Start here */}
                             <Grid item xs={11}>
-                                {dayjs(event.startDate).format('D MMM YYYY')}
-                                {event.endDate && (- dayjs(event.endDate).format('D MMM YYYY'))}
+                                {dayjs(event.startDate).format('D MMM YYYY H:mm')}
+                                {event.endDate && (- dayjs(event.endDate).format('D MMM YYYY H:mm'))}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -210,8 +213,8 @@ const ResultDetails = (
                     </IconButton> */}
                     <IconButton color="primary" aria-label="going"
                         onClick={handleGoing}>
+                        {going ? <CheckCircleIcon sx={{ mr: 1 }} /> : <CheckCircleOutlineIcon sx={{ mr: 1 }} />}
                         <Typography>Going?</Typography>
-                        {going ? <CheckCircleIcon sx={{ ml: 1 }} /> : <CheckCircleOutlineIcon sx={{ ml: 1 }} />}
                     </IconButton>
                 </Grid>
             </Grid>

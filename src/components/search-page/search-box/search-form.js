@@ -44,7 +44,7 @@ const exampleApiCall = 'https://app.ticketmaster.com/discovery/v2/events?apikey=
 const apiCallZip = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&postalCode=02114&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-10-31T14:00:00Z';
 
 const SearchForm = () => {
-    const { results, loading } = useSelector(state => state.results);
+    const { results, loading, noResults } = useSelector(state => state.results);
 
     // const initialResponse = (results ? results : []);
 
@@ -390,7 +390,7 @@ const SearchForm = () => {
                 </Button>
             </Box>
             <Divider />
-            <SearchResults results={results} loading={loading} />
+            <SearchResults results={results} loading={loading} noResults={noResults}/>
         </div>
     );
 }
