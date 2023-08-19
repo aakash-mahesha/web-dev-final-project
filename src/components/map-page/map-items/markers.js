@@ -80,13 +80,13 @@ const Markers = ({ events }
         let markerObj = {};
         for (let i = 0; i < events.length; i++) {
             const event = events[i];
-            const venues = event.venues;
-            if (venues) {
-                const venue = venues[0].name;
-                if (venue in markerObj) {
-                    markerObj[venue].venueEvents.push(event);
+            const address = event.address;
+            if (address) {
+                const venueName = address.venueName;
+                if (venueName in markerObj) {
+                    markerObj[venueName].venueEvents.push(event);
                 } else {
-                    markerObj[venue] = { pos: event.pos, venueEvents: [event,] };
+                    markerObj[venueName] = { coordinates: event.coordinates, venueEvents: [event,] };
                 }
             }
         }
@@ -105,10 +105,10 @@ const Markers = ({ events }
                     <EventPopup key={event._id} event={event} />
                 </ListItem>
             ))
-            const pos = markerData[venue].pos;
+            const coordinates = markerData[venue].coordinates;
             markerList.push(
                 <Marker
-                    position={pos}
+                    position={coordinates}
                     icon={customIcon}>
                     <Popup>
                         <List>

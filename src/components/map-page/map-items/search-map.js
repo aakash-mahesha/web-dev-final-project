@@ -71,7 +71,7 @@ const getBounds = (events) => {
         [47.6062100, -122.3320700]
     ];
     if (events.length) {
-        bounds = events.map(event => [Number(event.pos[0]), Number(event.pos[1])]);
+        bounds = events.map(event => [Number(event.coordinates[0]), Number(event.coordinates[1])]);
     }
     return bounds;
 }

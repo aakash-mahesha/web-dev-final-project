@@ -17,6 +17,8 @@ import ExamplePage from './components/layout-page/example-test-page';
 import UserTable from './pages/user-table';
 // import ProfileScreen from './pages/user-profile-page';
 import ProfileForm from './pages/edit-profile.js';
+import ResultDetails from './components/result-page';
+import ResultPage from './components/result-page';
 
 
 function App() {
@@ -41,6 +43,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/search" />} />
               <Route path="/search/*" element={<SearchPage />} />
+              <Route path="/results/:id" element={<ResultPage />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
               <Route path="/table" element={<EventTable />} />
               <Route path="/create-event" element={<EventForm />} />
@@ -48,7 +51,7 @@ function App() {
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/example" element={<ExamplePage />} />
               <Route path="/usertable" element={<UserTable />} />
-              <Route path="/create-profile" element={< ProfileForm/>} />
+              <Route path="/create-profile" element={< ProfileForm />} />
             </Routes>
           </div>
         </HashRouter>

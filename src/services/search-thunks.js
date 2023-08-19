@@ -19,11 +19,11 @@ export const apiSearchThunk = createAsyncThunk(
     }
 );
 
-// export const dbSearchThunk = createAsyncThunk(
-//     'search/db',
-//     async (query) => {
-//         const results = await service.dbSearch(query)
-//         console.log('db thunk results', results)
-//         return results
-//     }
-// );
+export const dbSearchThunk = createAsyncThunk(
+    'search/db',
+    async (query) => {
+        const results = await service.dbSearch(query)
+        console.log('db thunk results', results)
+        return results
+    }
+);

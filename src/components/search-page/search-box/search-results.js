@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -13,10 +13,13 @@ import Grid from '@mui/material/Grid';
 
 // const SearchResults = ({results}) => {
 const SearchResults = ({ results, loading }) => {
+    const { search } = useLocation();
+
+    console.log('search',search)
 
     const resultsList = results.map((event) => (
         <ListItem key={event._id} disablePadding>
-            <ListItemButton component={Link} to='/details/:id'>
+            <ListItemButton component={Link} to={`/results/${event._id}`}>
                 <Grid container spacing={2}
                     sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
                 >
@@ -32,7 +35,7 @@ const SearchResults = ({ results, loading }) => {
                                 }}
                             >
                                 <Typography>
-                                    {dayjs(event.dates[0]).format('MMM D')}
+                                    {dayjs(event.startDate).format('MMM D')}
                                 </Typography>
                             </Grid>
                             <Grid item xs={7}
@@ -40,7 +43,7 @@ const SearchResults = ({ results, loading }) => {
                                     pr: 2
                                 }}
                             >
-                                <Typography variant='h6'>{event.name}</Typography>
+                                <Typography variant='h6'>{event.eventName}</Typography>
                             </Grid>
                             <Grid item xs={3}>
                                 <Box
@@ -63,8 +66,6 @@ const SearchResults = ({ results, loading }) => {
             No matches for given search. Please search again.
         </ListItem>
     )
-
-    console.log(!results)
 
     return (
         <Box sx={{ display: 'flex' }}>

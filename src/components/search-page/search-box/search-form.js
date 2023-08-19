@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -37,7 +37,7 @@ import SearchResults from './search-results.js';
 import Tags from "./tags.js";
 import * as service from "../../../services/search-service.js";
 
-import { apiSearchThunk, launchSearchThunk } from '../../../services/search-thunks.js';
+import { apiSearchThunk, dbSearchThunk, launchSearchThunk } from '../../../services/search-thunks.js';
 
 
 const exampleApiCall = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-08-26T14:00:00Z&city=new%20york';
@@ -204,11 +204,13 @@ const SearchForm = () => {
         // fields in the form that make up the query.
         let params = serializeFormQuery();
         setSearchParams(params);
-        console.log('search params', params)
+        console.log('search params', searchParams)
+        delete params.scope;
         if (scope === 'api') {
             dispatch(apiSearchThunk(params));
         } else {
             console.log('db')
+            dispatch(dbSearchThunk(params))
         }
     }
 
@@ -252,6 +254,10 @@ const SearchForm = () => {
     // }, [searchParams, submit]);
 
     // make it so that values below are set based on url!!! (like ex)
+    // const searchPath = useLocation();
+    // console.log('searchpath', searchPath)
+    // const { search } = useLocation();
+    // console.log('searchpath', search)
 
     return (
         <div>
@@ -271,7 +277,6 @@ const SearchForm = () => {
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
-                            autoFocus
                             id="search-keyword"
                             label="Enter keyword"
                             value={keyword}
@@ -319,7 +324,7 @@ const SearchForm = () => {
                         </FormGroup>
                         {/* <FormHelperText>Please select at least one scope to search</FormHelperText> */}
                     </FormControl>
-                    {scope.db && <FormControl
+                    {(scope === "db") && <FormControl
                         component="fieldset"
                         sx={{ ml: 2, mt: 3, width: "95%" }}
                         variant="standard"
@@ -359,7 +364,7 @@ const SearchForm = () => {
                     <Grid item xs={12}
                         sx={{ display: "flex", justifyContent: "flex-start", pl: 2 }}
                     >
-                        <FormLabel component="legend">Filter by event start date</FormLabel>
+                        <FormLabel component="legend">Select start date range</FormLabel>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <DateTimePicker

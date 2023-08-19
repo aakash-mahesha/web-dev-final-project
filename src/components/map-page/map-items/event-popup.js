@@ -61,10 +61,10 @@ const EventPopup = (
             }}
         >
             <Grid item xs={4}>
-                <Typography variant='body2'>{dayjs(event.dates[0]).format('MMM D')}</Typography>
+                <Typography variant='body2'>{dayjs(event.startDate).format('MMM D')}</Typography>
             </Grid>
             <Grid item xs={8}>
-                <Typography variant='body2'>{event.name}</Typography>
+                <Typography variant='body2'>{event.eventName}</Typography>
             </Grid>
         </Grid>
 

@@ -44,6 +44,24 @@ const searchSlice = createSlice({
                 state.error = action.error
                 console.log(state.error)
             },
+        [dbSearchThunk.pending]:
+            (state) => {
+                console.log('pending')
+                state.loading = true
+            },
+        [dbSearchThunk.fulfilled]:
+            (state, { payload }) => {
+                console.log('fulfilled', payload)
+                state.loading = false
+                state.results = payload
+            },
+        [dbSearchThunk.rejected]:
+            (state, action) => {
+                console.log('rejected')
+                state.loading = false
+                state.error = action.error
+                console.log(state.error)
+            },
         // [dbSearchThunk.pending]:
         //     (state) => {
         //         state.loading = true

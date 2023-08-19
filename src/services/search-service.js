@@ -23,6 +23,14 @@ const exquery = {
     tags: "tag1-tag2"
 }
 
+const exdbquery = {
+    keyword: "music",
+    postalCode: "02114",
+    startDateTime: "Tue, 15 Aug 2023 08:13:09 GMT",
+    endDateTime: "Tue, 31 Oct 2023 08:13:09 GMT",
+    tags: ["tag1, tag2"]
+}
+
 const exurl = 'http://localhost:3000/#/search?savedEvents=true&publicEvents=true&keyword=music&location=02114&startDateTime=Tue%2C+15+Aug+2023+08%3A13%3A09+GMT&endDateTime=Tue%2C+31+Oct+2023+08%3A13%3A09+GMT&tags=tag1-tag2'
 
 // !!!!!TO DO: make api and db search two seperate services/thunks
@@ -52,6 +60,22 @@ const exurl = 'http://localhost:3000/#/search?savedEvents=true&publicEvents=true
 // }
 
 export const dbSearch = async (query) => {
+    const searchBody =
+    {
+        ...query,
+    };
+    if (query.tags) {
+        searchBody.tags = query.tags.split('-');
+
+    }
+    const searchUrl = '';
+    // const response = await axios.get(searchUrl, searchBody);
+    // const parsedResponse = {
+    //     image: response.data.imgs[0],
+    //     ...response.data
+    // }
+    // return parsedResponse;
+    console.log('db search:', searchBody);
     return [];
 }
 
@@ -67,17 +91,29 @@ export const apiSearch = async (query) => {
 }
 
 const formatApiQuery = (query) => {
-    const queryList = [];
+    // const queryList = [];
+    // const acceptedParams = ['keyword', 'postalCode', 'startDateTime', 'endDateTime']
+    // acceptedParams.map((param) => {
+    //     let value = query[param];
+    //     if (value) {
+    //         if (param.includes('DateTime')) {
+    //             value = dayjs(value).format('YYYY-MM-DDTHH:mm:ssZ');
+    //         }
+    //         queryList.push(`${param}=${value}`);
+    //     }
+    // })
+
     const acceptedParams = ['keyword', 'postalCode', 'startDateTime', 'endDateTime']
-    acceptedParams.map((param) => {
+    const queryList = acceptedParams.reduce((result, param) => {
         let value = query[param];
         if (value) {
             if (param.includes('DateTime')) {
                 value = dayjs(value).format('YYYY-MM-DDTHH:mm:ssZ');
             }
-            queryList.push(`${param}=${value}`);
+            result.push(`${param}=${value}`);
         }
-    })
+        return result;
+    }, []);
     const searchParams = queryList.join('&').replace(/ /g, '+');
 
     console.log('searchParams', searchParams)
@@ -91,23 +127,54 @@ const _parseApiResponse = (response) => {
         console.log('houston, we have a problem')
         return [];
     } else {
-        const events = embedded.events;
-        const reformattedEvents = events.map((event) => {
-            const embedded = _getIfExists(event, "_embedded");
+        // const events = embedded.events;
+        // const reformattedEvents = events.map((event) => {
+        //     const embedded = _getIfExists(event, "_embedded");
 
-            return (
-                {
-                    _id: event.id,
-                    name: _getIfExists(event, "name"),
-                    url: _getIfExists(event, "url"),
-                    dates: _parseDate(event),
-                    image: _chooseImage(event),
-                    pos: _parsePos(embedded),
-                    ...embedded && {venues: embedded.venues},
-                    description: _generateDescriptionObject(event, embedded),
-                })
-        }
-        );
+        //     return (
+        //         {
+        //             _id: event.id,
+        //             name: _getIfExists(event, "name"),
+        //             url: _getIfExists(event, "url"),
+        //             dates: _parseDate(event),
+        //             image: _chooseImage(event),
+        //             pos: _parsePos(embedded),
+        //             ...embedded && { venues: embedded.venues },
+        //             description: _generateDescriptionObject(event, embedded),
+        //         })
+        // }
+        // );
+        // return reformattedEvents;
+        const events = embedded.events;
+        const reformattedEvents = events.reduce((result, event) => {
+            const embedded = _getIfExists(event, "_embedded");
+            if (embedded) {
+                if (embedded.venues) {
+                    if (embedded.venues[0].location) {
+                        const dates = _parseDate(event);
+                        const reformatted = {
+                            _id: event.id,
+                            eventName: _getIfExists(event, "name"),
+                            url: _getIfExists(event, "url"),
+                            startDate: dates[0],
+                            endDate: dates[1],
+                            image: _chooseImage(event),
+                            coordinates: _parsePos(embedded),
+                            // ...embedded && { venues: embedded.venues },
+                            address: _parseAddress(embedded),
+                            description: _generateDescriptionObject(event, embedded),
+                            imgs: event.images || [],
+                            hostDetails: {
+                                name: "Ticketmaster",
+                                email: "customer_support@ticketmaster.com"
+                            }
+                        };
+                        result.push(reformatted);
+                    }
+                }
+            }
+            return result;
+        }, []);
         return reformattedEvents;
     }
 }
@@ -136,15 +203,36 @@ const _parseDate = (event) => {
         const endDateTIme = dates.date.dateTime;
         return [startDateTime, endDateTIme];
     }
-    return [startDateTime, startDateTime];
+    return [startDateTime, '']; // CHECK WHETHER THIS STILL WORKS?!?!
 }
 
 const _parsePos = (embedded) => {
-    if (embedded) {
-        const location = embedded.venues[0].location
-        return [location.latitude, location.longitude];
-    }
-    return [];
+    // if (embedded) {
+    const location = embedded.venues[0].location;
+    return [location.latitude, location.longitude];
+    // }
+}
+
+const _parseAddress = (embedded) => {
+    const venue = embedded.venues[0];
+    const venueName = venue.name;
+    const street = _getIfExists(venue.address, "line1")
+        + ' ' + _getIfExists(venue.address, "line2");
+    const city = _getIfExists(venue.city, "name");
+    const state = _getIfExists(venue.state, "name");
+    const country = _getIfExists(venue.country, "name");
+    const zipcode = _getIfExists(venue, "postalCode");
+
+    const addressObject = {
+        venueName,
+        street,
+        city,
+        state,
+        country,
+        zipcode
+    };
+
+    return addressObject;
 }
 
 const _generateDescriptionObject = (event, embedded) => {
@@ -184,6 +272,6 @@ const _getIfExists = (object, key) => {
         return object[key];
     } catch (error) {
         console.log(error);
-        return [];
+        return '';
     }
 }
