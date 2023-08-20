@@ -390,7 +390,7 @@ const SearchForm = () => {
                 </Button>
             </Box>
             <Divider />
-            <SearchResults results={results} loading={loading} noResults={noResults}/>
+            <SearchResults results={results} loading={loading} noResults={noResults} origin={scope}/>
         </div>
     );
 }

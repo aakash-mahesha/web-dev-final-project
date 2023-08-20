@@ -1,6 +1,8 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router";
+import { Link, useFetcher, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -9,18 +11,37 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
+import { apiDetailsThunk, dbDetailsThunk } from '../../../services/event-details-thunks';
+
+
 // import events from "../../map-page/map-items/events.json";
 
 // const SearchResults = ({results}) => {
-const SearchResults = ({ results, loading, noResults }) => {
+const SearchResults = ({ results, loading, noResults, origin }) => {
     // const { search } = useLocation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // console.log('search', search)
+    const handleLoadEvent = async (origin, id) => {
+        try {
+            if (origin === 'db') {
+                await dispatch(dbDetailsThunk(id));
+                navigate(`/results/${origin}/${id}`);
+
+            } else {
+                await dispatch(apiDetailsThunk(id));
+                navigate(`/results/${origin}/${id}`);
+            }
+        } catch (e) {
+            alert(e);
+        }
+    };
 
     const resultsList = results.map((event) => (
         <ListItem key={event._id} disablePadding>
-            <ListItemButton component={Link} to={`/results/${event._id}`}>
-                <Grid container spacing={2}
+            <ListItemButton >
+                <Grid container spacing={2} onClick={async () => await handleLoadEvent(origin, event._id)}
                     sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
                 >
                     <Grid item xs={12}>
@@ -46,13 +67,13 @@ const SearchResults = ({ results, loading, noResults }) => {
                                 <Typography variant='h6'>{event.eventName}</Typography>
                             </Grid>
                             <Grid item xs={3}>
-                                <Box
+                                {event.image && (<Box
                                     component="img"
                                     sx={{
                                         pr: 2,
                                         width: "100%",
                                     }}
-                                    src={event.image.url} />
+                                    src={event.image} />)}
                             </Grid>
                         </Grid>
                     </Grid>

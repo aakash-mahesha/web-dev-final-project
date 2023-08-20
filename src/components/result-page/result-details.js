@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import dayjs from "dayjs";
 
@@ -21,6 +21,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
+import { apiDetailsThunk, dbDetailsThunk } from '../../services/event-details-thunks';
 
 // update to reflect revised event structure from api and backend
 // to know whether to format description, 
@@ -58,19 +60,43 @@ const ResultDetails = (
     // }
     //}
 ) => {
-    const navigate = useNavigate();
-    const { id } = useParams();
+    const { eventDetails } = useSelector(state => state.eventDetails);
+    const [event, setEvent] = useState(eventDetails);
+
+    const { origin, id } = useParams();
     console.log('params', useParams())
     console.log('id', id);
-    const { results } = useSelector(state => state.results);
-    console.log('details results', results)
-    const event = results.find((event) => event._id === id);
-    console.log('event', event)
-    // const currEvent = results.find((event) => event._id === id);
-    // const [event, setEvent] = useState(currEvent);
-    // console.log('event', event)
-    // when calling, pass only selected event (via url) (update to take event arg w/o default)
-    // const [place, street] = event.address[0].split(',');
+    const dispatch = useDispatch();
+    console.log('from reducer', eventDetails);
+
+    // async function loadEvent(origin, id) {
+    //     if (origin === 'db') {
+    //         const { payload } = await dispatch(dbDetailsThunk(id));
+    //         return payload;
+
+    //     } else {
+    //         const { payload } = await dispatch(apiDetailsThunk(id));
+    //         return payload;
+    //     }
+    // };
+
+    useEffect(() => {
+        async function loadEvent() {
+            if (origin === 'db') {
+                const { payload } = await dispatch(dbDetailsThunk(id));
+                setEvent(payload);
+
+            }
+            if (origin === 'api') {
+                const { payload } = await dispatch(apiDetailsThunk(id));
+                setEvent(payload);
+                console.log('effect')
+            }
+        };
+        loadEvent();
+    }, []);
+    // console.log('reducer',eventDetails)
+    console.log('state', event)
 
     // update to get initial value from state
     const [liked, setLiked] = useState(false);
@@ -88,136 +114,141 @@ const ResultDetails = (
         setGoing(!going);
     }
 
+    const navigate = useNavigate();
+
     const handleBackClick = () => {
         navigate(-1);
     }
 
-    const address = event.address;
-    const cityStateCountry = [address.city, address.state, address.country].filter((x) => x).join(', ');
-
-    // might need to take url as arg to preserve url params
+    const getCityStateCountry = (event) => {
+        const address = event.address;
+        const cityStateCountry = [address.city, address.state, address.country].filter((x) => x).join(', ');
+        return cityStateCountry;
+}
 
     return (
         <div>
-            <ListItem disablePadding>
-                <ListItemButton onClick={handleBackClick}>
-                    <ArrowBackIcon />
-                    <ListItemText primary="Back to results" />
-                </ListItemButton>
-            </ListItem>
-            <Divider />
-            <Grid container spacing={2}
-                sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
-            >
-                <Grid item xs={12}
-                    sx={{ textAlign: "right", justifyContent: "flex-end" }} >
-                    {/* <IconButton color="primary" aria-label="add to bookmarks"
-                        onClick={handleGoing}>
-                        {going ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
-                    </IconButton> */}
-                    <IconButton color="primary" aria-label="add to bookmarks"
-                        onClick={handleLiked}>
-                        {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                    </IconButton>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container
+           {event && (<div>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={handleBackClick}>
+                        <ArrowBackIcon />
+                        <ListItemText primary="Back to results" />
+                    </ListItemButton>
+                </ListItem>
+                <Divider />
+                <Grid container spacing={2}
+                    sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
+                >
+                    <Grid item xs={12}
+                        sx={{ textAlign: "right", justifyContent: "flex-end" }} >
+                        {/* <IconButton color="primary" aria-label="add to bookmarks"
+                            onClick={handleGoing}>
+                            {going ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
+                        </IconButton> */}
+                        <IconButton color="primary" aria-label="add to bookmarks"
+                            onClick={handleLiked}>
+                            {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                        </IconButton>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Grid container
+                            sx={{
+                                py: 2
+                            }}
+                        >
+                            <Grid item xs={9}>
+                                <Typography variant='h5'>{event.eventName}</Typography>
+                            </Grid>
+                            {event.image && (<Grid item xs={3}>
+                                <Box
+                                    component="img"
+                                    sx={{
+                                        pr: 2,
+                                        width: "100%",
+                                    }}
+                                    src={event.image} />
+                            </Grid>)}
+                        </Grid>
+                    </Grid>
+                    <Divider style={{ width: '100%' }} />
+                    <Grid item xs={12}>
+                        <Typography variant='h5'>
+                            Details
+                        </Typography>
+                        <Grid item xs={12}>
+                            <Grid container
+                                sx={{
+                                    pt: 2
+                                }}
+                            >
+                                <Grid item xs={1}>
+                                    <AccessTimeIcon />
+                                </Grid>
+                                {/* Start here */}
+                                <Grid item xs={11}>
+                                    {dayjs(event.startDate).format('D MMM YYYY H:mm')}
+                                    {event.endDate && (- dayjs(event.endDate).format('D MMM YYYY H:mm'))}
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Grid container
+                            sx={{
+                                pb: 2
+                            }}
+                        >
+                            <Grid item xs={1}>
+                                <LocationOnIcon />
+                            </Grid>
+                            <Grid item xs={11}>
+                                <Grid item xs={12} sx={{ fontWeight: 'bold' }}>
+                                    {event.address.venueName}
+                                </Grid>
+                                <Grid item xs={12}>{event.address.street}</Grid>
+                                <Grid item xs={12}>{getCityStateCountry(event)} {event.address.zipcode}</Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} >
+                        {/* <Typography>
+                            {event.description}
+                        </Typography> */}
+                        {/* <a target='_blank' rel='noopener noreferrer' href={event.url}> */}
+                        <Typography component={Link} to={`/details/${event._id}`}>
+                            See event details
+                        </Typography>
+                        {/* </a> */}
+                    </Grid>
+                    <Grid item xs={12}
                         sx={{
                             py: 2
                         }}
                     >
-                        <Grid item xs={9}>
-                            <Typography variant='h5'>{event.eventName}</Typography>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Box
-                                component="img"
-                                sx={{
-                                    pr: 2,
-                                    width: "100%",
-                                }}
-                                src={event.image.url} />
-                        </Grid>
+                        <Typography variant='h6'>
+                            Host
+                        </Typography>
+                        <Typography>
+                            {event.hostDetails.name}
+                        </Typography>
+                        <Typography>
+                            {event.hostDetails.email}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}
+                        sx={{ textAlign: "left", justifyContent: "flex-start" }} >
+                        {/* <IconButton color="primary" aria-label="like"
+                            onClick={handleLiked}>
+                            {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                        </IconButton> */}
+                        <IconButton color="primary" aria-label="going"
+                            onClick={handleGoing}>
+                            {going ? <CheckCircleIcon sx={{ mr: 1 }} /> : <CheckCircleOutlineIcon sx={{ mr: 1 }} />}
+                            <Typography>Going?</Typography>
+                        </IconButton>
                     </Grid>
                 </Grid>
-                <Divider style={{ width: '100%' }} />
-                <Grid item xs={12}>
-                    <Typography variant='h5'>
-                        Details
-                    </Typography>
-                    <Grid item xs={12}>
-                        <Grid container
-                            sx={{
-                                pt: 2
-                            }}
-                        >
-                            <Grid item xs={1}>
-                                <AccessTimeIcon />
-                            </Grid>
-                            {/* Start here */}
-                            <Grid item xs={11}>
-                                {dayjs(event.startDate).format('D MMM YYYY H:mm')}
-                                {event.endDate && (- dayjs(event.endDate).format('D MMM YYYY H:mm'))}
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container
-                        sx={{
-                            pb: 2
-                        }}
-                    >
-                        <Grid item xs={1}>
-                            <LocationOnIcon />
-                        </Grid>
-                        <Grid item xs={11}>
-                            <Grid item xs={12} sx={{ fontWeight: 'bold' }}>
-                                {address.venueName}
-                            </Grid>
-                            <Grid item xs={12}>{address.street}</Grid>
-                            <Grid item xs={12}>{cityStateCountry} {address.zipcode}</Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12} >
-                    {/* <Typography>
-                        {event.description}
-                    </Typography> */}
-                    {/* <a target='_blank' rel='noopener noreferrer' href={event.url}> */}
-                    <Typography component={Link} to={`/details/${event._id}`}>
-                        See event details
-                    </Typography>
-                    {/* </a> */}
-                </Grid>
-                <Grid item xs={12}
-                    sx={{
-                        py: 2
-                    }}
-                >
-                    <Typography variant='h6'>
-                        Host
-                    </Typography>
-                    <Typography>
-                        {event.hostDetails.name}
-                    </Typography>
-                    <Typography>
-                        {event.hostDetails.email}
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}
-                    sx={{ textAlign: "left", justifyContent: "flex-start" }} >
-                    {/* <IconButton color="primary" aria-label="like"
-                        onClick={handleLiked}>
-                        {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                    </IconButton> */}
-                    <IconButton color="primary" aria-label="going"
-                        onClick={handleGoing}>
-                        {going ? <CheckCircleIcon sx={{ mr: 1 }} /> : <CheckCircleOutlineIcon sx={{ mr: 1 }} />}
-                        <Typography>Going?</Typography>
-                    </IconButton>
-                </Grid>
-            </Grid>
+           </div>)}
         </div>
     )
 }

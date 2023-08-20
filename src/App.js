@@ -13,6 +13,7 @@ import Dashboard from './components/dashboard';
 import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
 import searchReducer from './reducers/search-reducer';
+import eventDetailsReducer from './reducers/event-details-reducer';
 import ExamplePage from './components/layout-page/example-test-page';
 import UserTable from './pages/user-table';
 // import ProfileScreen from './pages/user-profile-page';
@@ -26,6 +27,7 @@ function App() {
     reducer: {
       eventFormState: eventFormReducer,
       results: searchReducer,
+      eventDetails: eventDetailsReducer,
     }
   })
   return (
@@ -43,7 +45,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/search" />} />
               <Route path="/search/*" element={<SearchPage />} />
-              <Route path="/results/:id" element={<ResultPage />} />
+              <Route path="/results/:origin/:id" element={<ResultPage />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
               <Route path="/table" element={<EventTable />} />
               <Route path="/create-event" element={<EventForm />} />
