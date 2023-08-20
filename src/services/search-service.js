@@ -1,8 +1,9 @@
 import axios from "axios";
 import dayjs from "dayjs";
+import { getIfExists, reformatEvent } from './service-utils';
+
 // const dayjs = require('dayjs');
 // const axios = require('axios');
-import { getIfExists, reformatEvent } from './service-utils';
 
 // const exampleApiCall = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-08-26T14:00:00Z&city=new%20york';
 // const apiCallZip = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&postalCode=02114&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-10-31T14:00:00Z';
@@ -13,16 +14,18 @@ const TICKEMASTER_API_BASE = 'https://app.ticketmaster.com/discovery/v2';
 const API_KEY = process.env.REACT_APP_TICKETMASTER_API_KEY;
 const TICKEMASTER_SEARCH_API = `${TICKEMASTER_API_BASE}/events?apikey=${API_KEY}`;
 
-const REACT_APP_API_BASE = 'https://mapverse-server.onrender.com/api';
+// const REACT_APP_API_BASE = 'https://mapverse-server.onrender.com/api';
+const REACT_APP_API_BASE = 'http://localhost:4000/api';
+
 
 const exquery = {
     // savedEvents: true,
     // publicEvents: true,
-    keyword: "music",
-    postalCode: "02114",
-    startDateTime: "Tue, 15 Aug 2023 08:13:09 GMT",
-    endDateTime: "Tue, 31 Oct 2023 08:13:09 GMT",
-    tags: "tag1-tag2"
+    keyword: "test",
+    // postalCode: "02114",
+    // startDateTime: "Tue, 15 Aug 2023 08:13:09 GMT",
+    // endDateTime: "Tue, 31 Oct 2023 08:13:09 GMT",
+    // tags: "tag1-tag2"
 }
 
 const exdbquery = {
@@ -62,6 +65,8 @@ const exdbquery = {
 // }
 
 export const dbSearch = async (query) => {
+// const dbSearch = async (query) => {
+
     const searchBody =
     {
         ...query,
@@ -77,7 +82,7 @@ export const dbSearch = async (query) => {
         searchBody.endDateTime = dayjs(query.endDateTime).toISOString();
     }
     const searchUrl = `${REACT_APP_API_BASE}/events`;
-    const response = await axios.get(searchUrl, { query: searchBody });
+    const response = await axios.get(searchUrl, { params: searchBody });
 
     // console.log(response)
 
@@ -303,7 +308,7 @@ const parseApiResponse = (response) => {
 //     return array.filter((item) => item);
 // }
 
-// const _getIfExists = (object, key) => {
+// const getIfExists = (object, key) => {
 //     try {
 //         const value = object[key];
 //         return value || '';

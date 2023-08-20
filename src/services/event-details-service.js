@@ -1,8 +1,9 @@
 import axios from "axios";
 import dayjs from "dayjs";
+import { getIfExists, reformatEvent } from './service-utils';
+
 // const dayjs = require('dayjs');
 // const axios = require('axios');
-import { getIfExists, reformatEvent } from './service-utils';
 
 // const request = axios.create(); //add with credentials
 
@@ -10,27 +11,27 @@ const TICKEMASTER_API_BASE = 'https://app.ticketmaster.com/discovery/v2';
 const API_KEY = process.env.REACT_APP_TICKETMASTER_API_KEY;
 const TICKEMASTER_DETAILS_API = (id) => (`${TICKEMASTER_API_BASE}/events/${id}?apikey=${API_KEY}`);
 
-const REACT_APP_API_BASE = 'https://mapverse-server.onrender.com/api';
+// const REACT_APP_API_BASE = 'https://mapverse-server.onrender.com/api';
+const REACT_APP_API_BASE = 'http://localhost:4000/api';
 
 
+// export const dbDetails = async (id) => {
 export const dbDetails = async (id) => {
+
     const detailsUrl = `${REACT_APP_API_BASE}/events`;
-    const response = await axios.get(detailsUrl, { query: { _id: id } });
-    // console.log(response.data)
+    const response = await axios.get(detailsUrl, { params: { _id: id } });
+    console.log(response.data)
     // const parsedResponse = {
     //     image: _getIfExists(response.data, 'imgs')[0] || '',
     //     ...response.data
     // }
     // console.log(_getIfExists(response.data, 'imgs'));
     // console.log(parsedResponse)
-    const parsedResponse = [];
-    for (var key in response.data) { // might need to update depending on response format
-        const event = response.data[key];
-        parsedResponse.push({
-            image: getIfExists(event, 'imgs')[0] || '',
-            ...event
-        });
-    }
+    const event = response.data;
+    const parsedResponse = {
+        image: getIfExists(event, 'imgs')[0] || '',
+        ...event
+    };
     return parsedResponse;
     // console.log('db details:', id);
     // return [];
@@ -181,7 +182,7 @@ const parseApiResponse = (response) => {
 //     return array.filter((item) => item);
 // }
 
-// const _getIfExists = (object, key) => {
+// const getIfExists = (object, key) => {
 //     try {
 //         const value = object[key];
 //         return value || '';
