@@ -20,11 +20,12 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 export default function SiteMenu() {
 
-    const { currentUser } = useSelector((state) => state.user);
+    const { currentUser } = useSelector(state => state.auth);
     // const [currentUser] = React.useState(true);
     const [drawerState, setDrawerState] = React.useState(false);
 

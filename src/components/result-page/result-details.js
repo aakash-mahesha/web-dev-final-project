@@ -159,7 +159,7 @@ const ResultDetails = (
                 <ListItem disablePadding>
                     <ListItemButton onClick={handleBackClick}>
                         <ArrowBackIcon />
-                        <ListItemText primary="Back to results" />
+                        <ListItemText primary="Back" />
                     </ListItemButton>
                 </ListItem>
                 <Divider />
