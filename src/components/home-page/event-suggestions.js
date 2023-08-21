@@ -5,7 +5,8 @@ import Grid from '@mui/material/Grid';
 import Box from "@mui/material/Box";
 
 import { findAllUsersThunk } from "../../thunks/user-thunks";
-import SearchResults from "../search-page/search-box/search-results";
+import EventList from "./event-list";
+import { Typography } from "@mui/material";
 
 const EventSuggestions = () => {
     const { currentUser } = useSelector(state => state.auth);
@@ -21,8 +22,12 @@ const EventSuggestions = () => {
         const endsList = [];
         userList.map((user) => {
             const fieldList = user[field];
-            const lastElement = fieldList[field.length - 1];
-            endsList.push(lastElement);
+            if (fieldList) {
+                const lastElement = fieldList[field.length - 1];
+                if (lastElement) {
+                    endsList.push(lastElement);
+                }
+            }
         });
 
         return endsList;
@@ -30,7 +35,8 @@ const EventSuggestions = () => {
 
     useEffect(() => {
         async function loadEvents() {
-            const { payload } = await dispatch(findAllUsersThunk);
+            const { payload } = await dispatch(findAllUsersThunk());
+            console.log(payload)
             if (payload) {
                 const tenUsersList = arrTenOrLess(payload);
                 setTenLikedEvents(findEndFieldList(tenUsersList, "likedEventIds"));
@@ -50,21 +56,27 @@ const EventSuggestions = () => {
     return (
         <Box>
             <Grid container spacing={2}
-                sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
+                sx={{ textAlign: "center", p: 10 }}
             >
                 <Grid item xs={6}>
-                    <SearchResults
-                        results={tenLikedEvents}
-                        loading={false}
-                        noResults={false}
-                        origin={'db'} />
+                    <Typography variant="h6"
+                        sx={{ color: "text.secondary" }}
+                    >
+                        {currentUser.loggedIn ?
+                            "You recently liked" : "Users recently liked"
+                        }
+                    </Typography>
+                    <EventList events={tenLikedEvents} />
                 </Grid>
                 <Grid item xs={6}>
-                    <SearchResults
-                        results={tenGoingEvents}
-                        loading={false}
-                        noResults={false}
-                        origin={'db'} />
+                    <Typography variant="h6"
+                        sx={{ color: "text.secondary" }}
+                    >
+                        {currentUser.loggedIn ?
+                            "You are going to" : "Users are going to"
+                        }
+                    </Typography>
+                    <EventList events={tenGoingEvents} />
                 </Grid>
             </Grid>
         </Box>
