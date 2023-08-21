@@ -14,9 +14,15 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import BookmarkOutlinedIcon from '@mui/icons-material/BookmarkOutlined';
 
+// update to reflect revised event structure from api and backend
+// to know whether to format description, 
+// check whether object (ie from api)
+// (already formatted type (from db) should be string):
+// https://www.w3docs.com/snippets/javascript/how-to-check-if-a-value-is-an-object-in-javascript.html
+
 const EventDetails = ({
     event = {
-        "title": "2021 Austin City Limits Music Festival",
+        "name": "2021 Austin City Limits Music Festival",
         "date": {
             "start_date": "Oct 1",
             "when": "Oct 1 – 10"
@@ -26,15 +32,15 @@ const EventDetails = ({
             "Austin, TX"
         ],
         "pos": ["39.742043", "-104.991531"],
-        "link": "https://www.austintexas.org/event/austin-city-limits-music-festival/350781/",
+        "url": "https://www.austintexas.org/event/austin-city-limits-music-festival/350781/",
         "description": "One of the country's largest celebrations of live music, this two weekend, six-day festival brings the magic of the famed public TV series \"Austin City Limits\" outside the studio and into Austin's...",
         "venue": {
             "name": "Zilker Park",
             "rating": 4.8,
             "reviews": 837,
-            "link": "https://www.google.com/search?q=Zilker+Park&ludocid=11191514603003015866&ibp=gwp%3B0,7"
+            "url": "https://www.google.com/search?q=Zilker+Park&ludocid=11191514603003015866&ibp=gwp%3B0,7"
         },
-        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8mRlkCYd_eqWXP6BjfIHI8_m35omm6PkpHEYS9jFoq1wz3O4ra2i8mz4&s",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8mRlkCYd_eqWXP6BjfIHI8_m35omm6PkpHEYS9jFoq1wz3O4ra2i8mz4&s",
         "host": {
             "firstname": "Alice",
             "lastname": "Wonderland",
@@ -76,7 +82,7 @@ const EventDetails = ({
                         }}
                     >
                         <Grid item xs={9}>
-                            <Typography variant='h5'>{event.title}</Typography>
+                            <Typography variant='h5'>{event.name}</Typography>
                         </Grid>
                         <Grid item xs={3}>
                             <Box
@@ -85,7 +91,7 @@ const EventDetails = ({
                                     pr: 2,
                                     width: "100%",
                                 }}
-                                src={event.thumbnail} />
+                                src={event.image} />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -128,7 +134,7 @@ const EventDetails = ({
                     <Typography>
                         {event.description}
                     </Typography>
-                    <a target='_blank' rel='noopener noreferrer' href={event.link}>
+                    <a target='_blank' rel='noopener noreferrer' href={event.url}>
                         <Typography>Read more on event site</Typography>
                     </a>
                 </Grid>

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { submitProfileForm } from "./profile-form-service";
+import { submitProfileForm } from "../services/profile-form-service";
 export const submitProfileFormThunk = createAsyncThunk(
     "user/submitProfileForm",
     async (formData) => {

@@ -1,4 +1,3 @@
-// import logo from './logo.svg';
 import './App.css';
 import { HashRouter, Routes, Navigate } from 'react-router-dom';
 import { Route } from 'react-router-dom';
@@ -10,25 +9,32 @@ import { Provider } from 'react-redux';
 import EventPage from './components/event-page/index.js';
 import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
-import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
 import UserTable from './pages/user-table';
 import ProfileForm from './pages/edit-profile.js';
 import authReducer from './reducers/auth-reducer';
+import searchReducer from './reducers/search-reducer';
+import eventDetailsReducer from './reducers/event-details-reducer';
+import ExamplePage from './components/layout-page/example-test-page';
+import ResultPage from './components/result-page';
+import tagsReducer from './reducers/tags-reducer';
+import LoginComponent from "./components/login-component"
+import authReducers from './reducers/auth-reducer';
+import Register from './components/register-component';
 
 function App() {
   const store = configureStore({
     reducer: {
       eventFormState: eventFormReducer,
-      auth: authReducer
+      results: searchReducer,
+      eventDetails: eventDetailsReducer,
+      tagOptions: tagsReducer,
+      eventFormState: eventFormReducer,
+      auth: authReducers,
+      eventFormState: eventFormReducer
     }
   })
   return (
-
-    // <div className='App'>
-    //   <SearchPage />
-    //   <TemporaryDrawer />
-    // </div>
 
     //new:
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -38,20 +44,21 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/search" />} />
               <Route path="/search/*" element={<SearchPage />} />
+              <Route path="/results/:origin/:id" element={<ResultPage />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
-              <Route path="/table" element={<EventTable />} />
+              {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<EventForm />} />
-              {/* <Route path="/search/*" element={<MapPage Component={SearchBox} />} /> */}
               <Route path="/details/*" element={<EventPage />} />
-              <Route path="/usertable" element={<UserTable />} />
-              <Route path="/create-profile" element={< ProfileForm/>} />
-              
+              <Route path="/login" element = {<LoginComponent/>}/>
+              <Route path="/register/*" element = {<Register/>}/>
+              <Route path="/example" element={<ExamplePage />} />
             </Routes>
           </div>
         </HashRouter>
       </Provider>
     </LocalizationProvider>
+
   );
-}
+};
 
 export default App;
