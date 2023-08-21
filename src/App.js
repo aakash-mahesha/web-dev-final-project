@@ -12,15 +12,26 @@ import Dashboard from './components/dashboard';
 import eventFormReducer from "./reducers/event-form-reducer"
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
+import userReducers from './reducers/user-reducer';
 import Register from './components/register-component';
 import ExamplePage from './components/layout-page/example-test-page';
+import TabsComponent from './components/dashboard/tab/tab';
+import MiniDrawer from './components/dashboard/sidebar/nav-item';
+import LayoutExample from './components/dashboard/sidebar/layout-expample';
+import ProfileScreen from './form/edit-profile/user-profile';
+import LoginScreen from './form/login-screen';
+import ProfileContent from './form/edit-profile/profile';
+import ProfileForm from './form/edit-profile/edit-profile';
+
 
 function App() {
   const store = configureStore({
     reducer: {
         eventFormState: eventFormReducer,
         auth: authReducers,
+        user: userReducers,
       eventFormState: eventFormReducer
+      
     }
   })
   return (
@@ -40,6 +51,7 @@ function App() {
               <Route path="/login" element = {<LoginComponent/>}/>
               <Route path="/register/*" element = {<Register/>}/>
               <Route path="/example" element={<ExamplePage />} />
+              
             </Routes>
           </div>
         </HashRouter>

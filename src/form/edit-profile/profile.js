@@ -2,9 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { TextField, Button, Grid} from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import submitProfileFormThunk from '../../thunks/profile-form-thunks';
+import { useNavigate } from 'react-router';
+import { submitProfileFormThunk } from '../../thunks/profile-form-thunks';
 function ProfileContent(){
+
+    //const user = useSelector((state) => state.global.user);
+    const { currentUser } = useSelector((state) => state.auth);
+    const [profile, setProfile] = useState(currentUser);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+   
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -16,23 +23,23 @@ function ProfileContent(){
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
     const [shouldSubmit, setShouldSubmit] = useState(false);
-    const user ={firstName:"Lee", lastName:"Lee", email:"lii@gmail.com",
-    password:"123",confirmPassword:"123",address:"123 main street",city:"San Jose",zipCode:"95123",
-    state:"CA",country:"USA"}
-    //const user = useSelector((state) => state.global.user);
-    useEffect(() => {
-        if (user) {
-        setFirstName(user.firstName);
-        setLastName(user.lastName);
+    // const user ={firstName:"Lee", lastName:"Lee", email:"lii@gmail.com",
+    // password:"123",confirmPassword:"123",address:"123 main street",city:"San Jose",zipCode:"95123",
+    // state:"CA",country:"USA"}
+ 
+    // useEffect(() => {
+    //     if (user) {
+    //     setFirstName(user.firstName);
+    //     setLastName(user.lastName);
         
-        setEmail(user.email);
-        setAddress(user.address);
-        setCity(user.city);
-        setZipCode(user.zipCode);
-        setState(user.state);
-        setCountry(user.country);
-        }
-    }, [user]);
+    //     setEmail(user.email);
+    //     setAddress(user.address);
+    //     setCity(user.city);
+    //     setZipCode(user.zipCode);
+    //     setState(user.state);
+    //     setCountry(user.country);
+    //     }
+    // }, [user]);
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
     };
@@ -64,31 +71,49 @@ function ProfileContent(){
     const handleCountryChange = (event) => {
         setCountry(event.target.value);
     };
+    // update user profile
     const handleSubmit = (event) => {
         event.preventDefault();
         setShouldSubmit(true);
     };
+    // useEffect(() => {
+    //     if (shouldSubmit) {
+    //     dispatch(
+    //         submitProfileFormThunk({
+    //         firstName,
+    //         lastName,
+    //         email,
+    //         password,
+    //         confirmPassword,
+    //         address,
+    //         city,
+    //         zipCode,
+    //         state,
+    //         country,
+    //         })                  
+    //     );
+    //     setShouldSubmit(false); 
+    //     }
+    // }, [shouldSubmit])
     useEffect(() => {
-        if (shouldSubmit) {
-        dispatch(
-            submitProfileFormThunk({
-            firstName,
-            lastName,
-            email,
-            password,
-            confirmPassword,
-            address,
-            city,
-            zipCode,
-            state,
-            country,
-            })                  
-        );
-        setShouldSubmit(false); 
-        }
-    }, [shouldSubmit])
+        const loadProfile = async () => {
+          
+            try {
+                const { payload } =  await dispatch(submitProfileFormThunk());
+                setProfile(payload);
+                
+            } catch (error) {
+                console.error(error);
+                navigate("/login");
+            }
+        };
+    
+        loadProfile();
+    }, []);
+    console.log(profile)
     return (
         <div>
+        {profile && (
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
@@ -98,7 +123,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value={user.firstName}
+                            value={profile.firstName}
                             onChange={handleFirstNameChange}
                         />
                     </Grid>
@@ -109,7 +134,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value={user.lastName}
+                            value={profile.lastName}
                             onChange={handleLastNameChange}
                         />
                     </Grid>
@@ -120,7 +145,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value = {user.email}
+                            value = {profile.email}
                             onChange = {handleEmailChange}
                         />  
 
@@ -132,7 +157,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value = {user.password}
+                            value = {profile.password}
                             onChange = {handlePasswordChange}
                         />
                     </Grid>
@@ -143,7 +168,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value = {user.confirmPassword}
+                            value = {profile.confirmPassword}
                             onChange = {handleConfirmPasswordChange}
                         />
                     </Grid>
@@ -154,7 +179,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value = {user.address}
+                            value = {profile.address}
                             onChange = {handleAddressChange}
                         />  
                     </Grid>
@@ -165,7 +190,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value = {user.city}
+                            value = {profile.city}
                             onChange = {handleCityChange}
                         />
                     </Grid>
@@ -176,7 +201,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value = {user.zipCode}
+                            value = {profile.zipCode}
                             onChange = {handleZipCodeChange}
                         />
                     </Grid>
@@ -187,7 +212,7 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value = {user.state}
+                            value = {profile.state}
                             onChange = {handleStateChange}
 
                         />
@@ -199,11 +224,12 @@ function ProfileContent(){
                             fullWidth
                             autoFocus
                             required
-                            value = {user.country}
+                            value = {profile.country}
                             onChange = {handleCountryChange}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={6} justifyContent="flex-end"
+                        alignItems="flex-end">
                         <Button 
                             type="submit"
                             variant="contained"
@@ -215,7 +241,10 @@ function ProfileContent(){
                     </Grid>
                 </Grid>
             </form>
+        )}
         </div>
+
+       
 
                             
                         

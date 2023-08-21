@@ -4,6 +4,7 @@ import {
   Divider,
   Drawer,
   IconButton,
+  InputBase,
   List,
   ListItem,
   ListItemButton,
@@ -12,10 +13,12 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import Search from "@mui/icons-material/Search";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import  AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import HomeIcon from '@mui/icons-material/Home';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../flex-between";
@@ -34,10 +37,10 @@ import {
 const navItems = [
   {
     text: "Home",
-    icon: <HomeOutlined/>,
+    icon: <HomeIcon/>,
   },
   {
-    text: "Events",
+    text: "MyEvents",
     icon: <ChecklistIcon />,
   },
   
@@ -70,9 +73,9 @@ const navItems = [
     }, [pathname]);
   
     return (
-      <Box component="nav">
+      <Box component="nav" >
         {isSidebarOpen && (
-          <Drawer
+          <Drawer 
             open={isSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
             variant="persistent"
@@ -92,9 +95,7 @@ const navItems = [
               <Box m="1.5rem 2rem 2rem 3rem">
                 <FlexBetween color={theme.palette.info.light}>
                   <Box display="flex" alignItems="center" gap="0.5rem">
-                    <Typography variant="h4" fontWeight="bold">
-                      MAPVERSE
-                    </Typography>
+                    
                   </Box>
                   {!isNonMobile && (
                     <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
@@ -115,7 +116,7 @@ const navItems = [
                   const lcText = text.toLowerCase();
   
                   return (
-                    <ListItem key={text} disablePadding>
+                    <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                       <ListItemButton
                         onClick={() => {
                           console.log({lcText})
@@ -123,28 +124,22 @@ const navItems = [
                           setActive(lcText);
                         }}
                         sx={{
-                          backgroundColor:
-                            active === lcText
-                              ? theme.palette.secondary[300]
-                              : "transparent",
-                          color:
-                            active === lcText
-                              ? theme.palette.primary[600]
-                              : theme.palette.secondary[100],
+                          minHeight: 48,
+                          justifyContent: isSidebarOpen ? 'initial' : 'center',
+                          px: 2.5,
                         }}
                       >
                         <ListItemIcon
                           sx={{
-                            ml: "2rem",
-                            color:
-                              active === lcText
-                                ? theme.palette.primary[600]
-                                : theme.palette.secondary[200],
+                            minWidth: 0,
+                            mr: isSidebarOpen ? 3 : 'auto',
+                            justifyContent: 'center',
+                          
                           }}
                         >
                           {icon}
                         </ListItemIcon>
-                        <ListItemText primary={text} />
+                        <ListItemText primary={text} sx={{ opacity: isSidebarOpen ? 1 : 0 }} />
                         {active === lcText && (
                           <ChevronRightOutlined sx={{ ml: "auto" }} />
                         )}

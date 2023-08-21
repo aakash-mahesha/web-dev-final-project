@@ -5,7 +5,7 @@ const {
     createUserThunk, 
     deleteUserThunk,
     updateUserThunk 
-    } = require("../services/users/user-thunks");
+    } = require("../thunks/user-thunks");
     const initialState = {
         users: [],
         loading: false,
@@ -14,7 +14,7 @@ const {
     };
 
 const usersSlice = createSlice({
-    name: "users",
+    name: "user",
   initialState,
   reducers: {},
   extraReducers: {

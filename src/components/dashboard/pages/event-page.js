@@ -5,7 +5,7 @@ import Header from "../header";
 import EventCard from "../card/eventCard";
 import { useNavigate } from "react-router";
 import EditEventCard from "../card/editEventCard";
-import EventTab from "../event-tab"
+import TabsComponent from "../tab/tab";
 import { Router, Route, BrowserRouter, Switch, Link } from "react-router-dom";
 
 const Events = () => {
@@ -32,11 +32,7 @@ const Events = () => {
                 alignItems="flex-end">
             <Button  color="primary" onClick={handleClick}>Create Event</Button> 
             </Box>
-            <EventTab/>
-            
-            
-
-            <EditEventCard/>
+            <TabsComponent/>
 
         </Box>
         </Container>

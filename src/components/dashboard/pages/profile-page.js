@@ -4,6 +4,7 @@ import Header from "../header";
 
 import ProfileContent from "../../../form/edit-profile/profile";
 import CheckboxesGroup from "../checkbox";
+import ProfileForm from "../../../form/edit-profile/edit-profile";
 const ProfileScreen = () => {
     return(
         <>
@@ -20,7 +21,7 @@ const ProfileScreen = () => {
             </Paper>
         <Box>
             
-        <ProfileContent/>
+        <ProfileForm/>
         <CheckboxesGroup/>
 
         </Box>

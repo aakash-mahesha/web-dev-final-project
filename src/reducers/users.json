@@ -1,0 +1,276 @@
+[{
+  "_id": {
+    "$oid": "64dd35c74617cfd0c511352d"
+  },
+  "username": "akm1",
+  "password": "123",
+  "privileges": [
+    "view",
+    "create",
+    "attend"
+  ],
+  "createdEventIds": [123,234,345],
+  "goingEventIds": [11,12,13],
+  "likedEventIds": [1,2,3],
+  "firstname": "asdfas",
+  "lastname": "asdfsd",
+  "tags": [],
+  "address": {
+    "addressLine1": "sdf",
+    "addressLine2": "asdf",
+    "city": "asdfas"
+  },
+  "user_type": "regular",
+  "createdDate": {
+    "$date": "2023-08-16T20:47:03.422Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd37e799b43af5eaa1afa5"
+  },
+  "username": "akm2",
+  "password": "123",
+  "orgData": {
+    "orgName": "Amazon",
+    "orgId": "123"
+  },
+  "privileges": [
+    "view",
+    "create"
+  ],
+  "createdEventIds": [],
+  "guestList": {
+    "usersInterested": []
+  },
+  "firstname": "asdf",
+  "lastname": "asdfas",
+  "tags": [
+    "gallery",
+    "food",
+    "dance",
+    "family"
+  ],
+  "address": {
+    "addressLine1": "asdf",
+    "addressLine2": "asdfsa",
+    "city": "asdfsa"
+  },
+  "user_type": "organization",
+  "createdDate": {
+    "$date": "2023-08-16T20:56:07.073Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd637cebc454ca6dd49d28"
+  },
+  "username": "asd",
+  "password": "asds",
+  "privileges": [
+    "view",
+    "create",
+    "attend"
+  ],
+  "createdEventIds": [],
+  "goingEventIds": [],
+  "likedEventIds": [],
+  "firstname": "Aakash",
+  "lastname": "Mahesha",
+  "tags": [],
+  "address": {
+    "addressLine1": "846 Huntington Avenue",
+    "addressLine2": "3",
+    "city": "Boston",
+    "stateName": "Massachusetts",
+    "zipcode": 2115,
+    "country": "US"
+  },
+  "user_type": "regular",
+  "createdDate": {
+    "$date": "2023-08-17T00:02:04.290Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd676aebc454ca6dd49d2b"
+  },
+  "username": "dsfaasfsadf",
+  "password": "122321",
+  "orgData": {
+    "orgName": "asdfsadf",
+    "orgId": "3443"
+  },
+  "privileges": [
+    "view",
+    "create"
+  ],
+  "createdEventIds": [],
+  "guestList": {
+    "usersInterested": []
+  },
+  "firstname": "adsfa",
+  "lastname": "asdfsa",
+  "tags": [],
+  "address": {
+    "addressLine1": "846 Huntington Avenue",
+    "addressLine2": "3",
+    "city": "Boston",
+    "stateName": "Massachusetts",
+    "zipcode": 2115,
+    "country": "US"
+  },
+  "user_type": "organization",
+  "createdDate": {
+    "$date": "2023-08-17T00:18:50.745Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd69f6ebc454ca6dd49d32"
+  },
+  "username": "akm3",
+  "password": "asdfsa",
+  "privileges": [
+    "view",
+    "create",
+    "attend"
+  ],
+  "createdEventIds": [],
+  "goingEventIds": [],
+  "likedEventIds": [],
+  "firstname": "Aakash",
+  "lastname": "Mahesha",
+  "tags": [],
+  "address": {
+    "addressLine1": "846 Huntington Avenue",
+    "addressLine2": "3",
+    "city": "Boston",
+    "stateName": "Massachusetts",
+    "zipcode": 2115,
+    "country": "US"
+  },
+  "user_type": "regular",
+  "createdDate": {
+    "$date": "2023-08-17T00:29:42.680Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64de798049185e10bfb5a9d3"
+  },
+  "username": "akm4",
+  "password": "12322433",
+  "privileges": [
+    "view",
+    "create",
+    "attend"
+  ],
+  "createdEventIds": [],
+  "goingEventIds": [],
+  "likedEventIds": [],
+  "firstname": "Aakash",
+  "lastname": "Mahesha",
+  "tags": [
+    "dance",
+    "family",
+    "party",
+    "gallery"
+  ],
+  "address": {
+    "addressLine1": "846 Huntington Avenue",
+    "addressLine2": "3",
+    "city": "Boston",
+    "stateName": "Massachusetts",
+    "zipcode": 2115,
+    "country": "US"
+  },
+  "user_type": "regular",
+  "createdDate": {
+    "$date": "2023-08-17T19:48:16.527Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64debb5949185e10bfb5a9de"
+  },
+  "username": "akm5",
+  "password": "123",
+  "privileges": [
+    "view",
+    "create",
+    "attend"
+  ],
+  "createdEventIds": [],
+  "goingEventIds": [],
+  "likedEventIds": [],
+  "firstname": "Aakash",
+  "lastname": "Mahesha",
+  "tags": [
+    "music",
+    "family",
+    "gallery",
+    "party",
+    "food"
+  ],
+  "address": {
+    "addressLine1": "846 Huntington Avenue",
+    "addressLine2": "3",
+    "city": "Boston",
+    "stateName": "Massachusetts",
+    "zipcode": 2115,
+    "country": "US"
+  },
+  "user_type": "regular",
+  "createdDate": {
+    "$date": "2023-08-18T00:29:13.317Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64debb8249185e10bfb5a9e1"
+  },
+  "username": "akm6",
+  "password": "123",
+  "orgData": {
+    "orgName": "asdfsadf",
+    "orgId": "asdf"
+  },
+  "privileges": [
+    "view",
+    "create"
+  ],
+  "createdEventIds": [],
+  "guestList": {
+    "usersInterested": []
+  },
+  "firstname": "Aakash",
+  "lastname": "Mahesha",
+  "tags": [
+    "voluntary",
+    "family",
+    "music",
+    "food",
+    "sports"
+  ],
+  "address": {
+    "addressLine1": "846 Huntington Avenue",
+    "addressLine2": "3",
+    "city": "Boston",
+    "stateName": "Massachusetts",
+    "zipcode": 2115,
+    "country": "US"
+  },
+  "user_type": "organization",
+  "createdDate": {
+    "$date": "2023-08-18T00:29:54.395Z"
+  },
+  "__v": 0
+}]

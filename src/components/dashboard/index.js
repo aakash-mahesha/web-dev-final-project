@@ -4,6 +4,7 @@ import Events from "./pages/event-page";
 import ProfileScreen from "./pages/profile-page";
 import Admin from "./pages/admin-page";
 import {Navigate} from "react-router-dom";
+
 function Dashboard(){
     return (
       <div>
@@ -12,7 +13,7 @@ function Dashboard(){
           {/* <Route path="/" element={< Home/>}/> */}
           <Route path="/" element={<Navigate to="/dashboard/home" />}/>
           <Route path="/home" element={< Home/>} /> 
-          <Route path="/events" element={<Events/>} />
+          <Route path="/myevents" element={<Events/>} />
           <Route path="/profile" element={<ProfileScreen/>} />
           <Route path="/admin" element={<Admin/>} />  
 

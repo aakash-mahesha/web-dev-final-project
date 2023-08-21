@@ -1,0 +1,645 @@
+[{
+  "_id": {
+    "$oid": "64dc7161b2e6a56456e8b294"
+  },
+  "eventName": "PartyAgainAgain3",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Fenway Park",
+    "street": "100 Boylston",
+    "city": "Boston",
+    "state": "MA",
+    "country": "USA",
+    "zipcode": "02113",
+    "_id": {
+      "$oid": "64dc7161b2e6a56456e8b295"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "0"
+    },
+    {
+      "$numberDecimal": "0"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd61c25ab3dc6f5acaedb7"
+  },
+  "eventName": "PartyAgainAgain4",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Fenway Park",
+    "street": "100 Boylston",
+    "city": "Boston",
+    "state": "MA",
+    "country": "USA",
+    "zipcode": "02113",
+    "_id": {
+      "$oid": "64dd61c25ab3dc6f5acaedb8"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "0"
+    },
+    {
+      "$numberDecimal": "0"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sam",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64dd61c25ab3dc6f5acaedb9"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd64d3f15e8c1f049f904b"
+  },
+  "eventName": "PartyAgainAgain5",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Fenway Park",
+    "street": "100 Boylston",
+    "city": "Boston",
+    "state": "MA",
+    "country": "USA",
+    "zipcode": "02113",
+    "_id": {
+      "$oid": "64dd64d3f15e8c1f049f904c"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "0"
+    },
+    {
+      "$numberDecimal": "0"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sam",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64dd64d3f15e8c1f049f904d"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd654243e0798b596aae0b"
+  },
+  "eventName": "PartyAgainAgain6",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Fenway Park",
+    "street": "100 Boylston",
+    "city": "Boston",
+    "state": "MA",
+    "country": "USA",
+    "zipcode": "02113",
+    "_id": {
+      "$oid": "64dd654243e0798b596aae0c"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "0"
+    },
+    {
+      "$numberDecimal": "0"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sam",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64dd654243e0798b596aae0d"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd6585e6687673289f34e6"
+  },
+  "eventName": "PartyAgainAgain7",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Northeastern University",
+    "_id": {
+      "$oid": "64dd65c9e6687673289f34ea"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "42.3390301"
+    },
+    {
+      "$numberDecimal": "-71.08791294953176"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sam",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64dd6585e6687673289f34e8"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd66b2e6687673289f34ec"
+  },
+  "eventName": "Checking if this works",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Seaport",
+    "street": "100 Boylston",
+    "city": "Boston",
+    "state": "MA",
+    "country": "USA",
+    "zipcode": "02113",
+    "_id": {
+      "$oid": "64dd66b2e6687673289f34ed"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "42.3464621"
+    },
+    {
+      "$numberDecimal": "-71.0971002033302"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sammy boi",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64dd66b2e6687673289f34ee"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64dd762436517a74561b2b99"
+  },
+  "eventName": "Party Again Again 8",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Fenway Park",
+    "street": "100 Boylston",
+    "city": "Boston",
+    "state": "MA",
+    "country": "USA",
+    "zipcode": "02113",
+    "_id": {
+      "$oid": "64dd762436517a74561b2b9a"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "42.3464621"
+    },
+    {
+      "$numberDecimal": "-71.0971002033302"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sam",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64dd762436517a74561b2b9b"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e03e6459a2f5a7fcd7fb38"
+  },
+  "eventName": "Austin Party",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Wingzup Bar and Grill",
+    "street": "123",
+    "city": "Austin",
+    "state": "Texas",
+    "country": "USA",
+    "zipcode": "78751",
+    "_id": {
+      "$oid": "64e03e6459a2f5a7fcd7fb39"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "0"
+    },
+    {
+      "$numberDecimal": "0"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sam",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64e03e6459a2f5a7fcd7fb3a"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e0453f59a2f5a7fcd7fb43"
+  },
+  "eventName": "Burger Party",
+  "startDate": "2023-08-20T04:28:21.000Z",
+  "endDate": "2023-08-21T04:00:00.000Z",
+  "address": {
+    "venueName": "Jack in the Box",
+    "street": "100 E",
+    "city": "Austin",
+    "state": "Texas",
+    "country": "USA",
+    "zipcode": "78751",
+    "_id": {
+      "$oid": "64e0453f59a2f5a7fcd7fb44"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "30.442078000000002"
+    },
+    {
+      "$numberDecimal": "-97.66643011893531"
+    }
+  ],
+  "description": "Burger party at jack in the box",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 13,
+  "tags": [
+    "party",
+    "burger",
+    "austin"
+  ],
+  "imgs": [
+    "https://storage.googleapis.com/mapverse-e16e8.appspot.com/mapverse_images%2Fthanos_meme18a0c0e7bf3.jpg"
+  ],
+  "hostDetails": {
+    "name": "Test",
+    "email": "testing@nomail.com",
+    "_id": {
+      "$oid": "64e0453f59a2f5a7fcd7fb45"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e053862cd815703c1e0d15"
+  },
+  "eventName": "Austin Party Pt2",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Wingzup Bar and Grill",
+    "street": "123",
+    "city": "Austin",
+    "state": "Texas",
+    "country": "USA",
+    "zipcode": "78751",
+    "_id": {
+      "$oid": "64e053862cd815703c1e0d16"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "0"
+    },
+    {
+      "$numberDecimal": "0"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sam",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64e053862cd815703c1e0d17"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e055422e0cf9684b60945b"
+  },
+  "eventName": "Austin Party Pt3",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Wingzup Bar and Grill",
+    "street": "123",
+    "city": "Austin",
+    "state": "Texas",
+    "country": "USA",
+    "zipcode": "78751",
+    "_id": {
+      "$oid": "64e055422e0cf9684b60945c"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "0"
+    },
+    {
+      "$numberDecimal": "0"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sam",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64e055422e0cf9684b60945d"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e05df85c74b4f35fb88c45"
+  },
+  "eventName": "Checking if this works pt 2",
+  "startDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "endDate": "Wed, 16 Aug 2023 06:32:50 GMT",
+  "address": {
+    "venueName": "Seaport",
+    "street": "123",
+    "city": "Austin",
+    "state": "Texas",
+    "country": "USA",
+    "zipcode": "78751",
+    "_id": {
+      "$oid": "64e05df85c74b4f35fb88c46"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "0"
+    },
+    {
+      "$numberDecimal": "0"
+    }
+  ],
+  "description": "",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 10,
+  "tags": [
+    "pary"
+  ],
+  "imgs": [],
+  "hostDetails": {
+    "name": "Sammy boi",
+    "email": "@@@@",
+    "_id": {
+      "$oid": "64e05df85c74b4f35fb88c47"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e063f330580bf57f01b98d"
+  },
+  "eventName": "Testing",
+  "startDate": "Sat, 19 Aug 2023 06:40:05 GMT",
+  "endDate": "Sat, 19 Aug 2023 06:40:05 GMT",
+  "address": {
+    "venueName": "Test",
+    "street": "test",
+    "city": "test",
+    "state": "t",
+    "country": "test",
+    "zipcode": "test",
+    "_id": {
+      "$oid": "64e063f330580bf57f01b98e"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "30.8443049"
+    },
+    {
+      "$numberDecimal": "-8.3900154"
+    }
+  ],
+  "description": "test",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 8,
+  "tags": [
+    "test"
+  ],
+  "imgs": [
+    "https://storage.googleapis.com/mapverse-e16e8.appspot.com/mapverse_images%2Fthanos_meme18a0c86691e.jpg"
+  ],
+  "hostDetails": {
+    "name": "Test",
+    "email": "testing@nomail.com",
+    "_id": {
+      "$oid": "64e063f330580bf57f01b98f"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e067a00195e6ed05744303"
+  },
+  "eventName": "Testing local to prod",
+  "startDate": "Sat, 19 Aug 2023 06:55:51 GMT",
+  "endDate": "Sat, 19 Aug 2023 06:55:51 GMT",
+  "address": {
+    "venueName": "test",
+    "street": "test",
+    "city": "test",
+    "state": "test",
+    "country": "test",
+    "zipcode": "test",
+    "_id": {
+      "$oid": "64e067a00195e6ed05744304"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "33.4553395"
+    },
+    {
+      "$numberDecimal": "51.1693635"
+    }
+  ],
+  "description": "test",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 9,
+  "tags": [
+    "test"
+  ],
+  "imgs": [
+    "https://storage.googleapis.com/mapverse-e16e8.appspot.com/mapverse_images%2Fthanos_meme18a0c94c06d.jpg"
+  ],
+  "hostDetails": {
+    "name": "Test",
+    "email": "testing@nomail.com",
+    "_id": {
+      "$oid": "64e067a00195e6ed05744305"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64e118a89cee83bb9155bdc4"
+  },
+  "eventName": "Halloween Party",
+  "startDate": "2023-08-20T16:28:26.000Z",
+  "endDate": "2023-08-20T19:28:26.000Z",
+  "address": {
+    "venueName": "Northeastern University",
+    "street": "100 Huntington",
+    "city": "Boston",
+    "state": "MA",
+    "country": "USA",
+    "zipcode": "02115",
+    "_id": {
+      "$oid": "64e118a89cee83bb9155bdc5"
+    }
+  },
+  "coordinates": [
+    {
+      "$numberDecimal": "42.3390301"
+    },
+    {
+      "$numberDecimal": "-71.08791294953176"
+    }
+  ],
+  "description": "Halloweeeeeeeen party at Northeastern!",
+  "published": true,
+  "reservation": true,
+  "maxReservation": 100,
+  "tags": [
+    "halloween",
+    "party",
+    "college"
+  ],
+  "imgs": [
+    "https://storage.googleapis.com/mapverse-e16e8.appspot.com/mapverse_images%2Fthanos_meme18a0f4842ac.jpg"
+  ],
+  "hostDetails": {
+    "name": "Test",
+    "email": "testing@nomail.com",
+    "_id": {
+      "$oid": "64e118a89cee83bb9155bdc6"
+    }
+  },
+  "__v": 0
+}]
