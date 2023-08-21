@@ -9,10 +9,7 @@ import { Provider } from 'react-redux';
 import EventPage from './components/event-page/index.js';
 import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
-import eventFormReducer from "./reducers/event-form-reducer"
-import UserTable from './pages/user-table';
-import ProfileForm from './pages/edit-profile.js';
-import authReducer from './reducers/auth-reducer';
+import eventFormReducer from "./reducers/event-form-reducer";
 import searchReducer from './reducers/search-reducer';
 import eventDetailsReducer from './reducers/event-details-reducer';
 import ExamplePage from './components/layout-page/example-test-page';

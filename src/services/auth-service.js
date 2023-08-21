@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_BASE_URL = "http://localhost:4000/api";
+// const API_BASE_URL = "http://localhost:4000/api";
+const API_BASE_URL = "https://mapverse-server.onrender.com/api";
 const USERS_API_URL = `${API_BASE_URL}/users`;  //shold I add id here?
 
 const api = axios.create({

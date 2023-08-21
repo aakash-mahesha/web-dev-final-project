@@ -5,7 +5,7 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { createEventThunk } from '../../services/event-form-thunks';
+import { createEventThunk } from '../../thunks/event-form-thunks.js';
 import postreq from '../../utils/postreq.js';
 import { useSelector } from 'react-redux';
 

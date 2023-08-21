@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-<<<<<<< HEAD
-import { createEventThunk, deleteEventThunk, editEventThunk } from "../services/event-form-thunks";
-=======
-import { submitEventFormThunk } from "../thunks/event-form-thunks";
->>>>>>> cbebefb786a94c2ee9511b9db63a0b635f3b50c0
+import { createEventThunk, deleteEventThunk, editEventThunk } from "../thunks/event-form-thunks.js";
 
 const initialState = {
     loading: false,
