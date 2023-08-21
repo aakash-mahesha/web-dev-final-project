@@ -2,7 +2,9 @@ import axios from "axios";
 
 const api = axios.create();
 // const API_BASE = process.env.API_BASE;
-const FORM_API = `https://mapverse-server.onrender.com/api/events`
+// const FORM_API = `https://mapverse-server.onrender.com/api/events`
+const REACT_APP_API_BASE = process.env.REACT_APP_API_BASE;
+const FORM_API =  `${REACT_APP_API_BASE}/events`;
 
 export const createEvent = async (formData) => {
     try {

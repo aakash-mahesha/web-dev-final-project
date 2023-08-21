@@ -14,7 +14,8 @@ const TICKEMASTER_API_BASE = 'https://app.ticketmaster.com/discovery/v2';
 const API_KEY = process.env.REACT_APP_TICKETMASTER_API_KEY;
 const TICKEMASTER_SEARCH_API = `${TICKEMASTER_API_BASE}/events?apikey=${API_KEY}`;
 
-const REACT_APP_API_BASE = 'https://mapverse-server.onrender.com/api';
+// const REACT_APP_API_BASE = 'https://mapverse-server.onrender.com/api';
+const REACT_APP_API_BASE = process.env.REACT_APP_API_BASE;
 // const REACT_APP_API_BASE = 'http://localhost:4000/api';
 
 
