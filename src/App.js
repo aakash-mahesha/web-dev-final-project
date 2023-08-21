@@ -13,13 +13,14 @@ import Dashboard from './components/dashboard';
 import EventTable from './components/dashboard/table';
 import eventFormReducer from "./reducers/event-form-reducer"
 import UserTable from './pages/user-table';
-import ProfileScreen from './pages/user-profile-page';
 import ProfileForm from './pages/edit-profile.js';
+import authReducer from './reducers/auth-reducer';
 
 function App() {
   const store = configureStore({
     reducer: {
-      eventFormState: eventFormReducer
+      eventFormState: eventFormReducer,
+      auth: authReducer
     }
   })
   return (
