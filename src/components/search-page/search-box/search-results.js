@@ -11,7 +11,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
-import { apiDetailsThunk, dbDetailsThunk } from '../../../services/event-details-thunks';
+import { apiDetailsThunk, dbDetailsThunk } from '../../../thunks/event-details-thunks';
 
 
 // import events from "../../map-page/map-items/events.json";

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { dbGetTagsThunk } from "../services/tags-thunks";
+import { dbGetTagsThunk } from "../thunks/tags-thunks";
 
 const initialState = {
     tagOptions: [],

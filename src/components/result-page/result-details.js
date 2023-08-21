@@ -22,7 +22,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-import { apiDetailsThunk, dbDetailsThunk } from '../../services/event-details-thunks';
+import { apiDetailsThunk, dbDetailsThunk } from '../../thunks/event-details-thunks';
 
 // update to reflect revised event structure from api and backend
 // to know whether to format description, 

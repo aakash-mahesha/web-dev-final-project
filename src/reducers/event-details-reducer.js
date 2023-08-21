@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiDetailsThunk, dbDetailsThunk, } from "../services/event-details-thunks";
+import { apiDetailsThunk, dbDetailsThunk, } from "../thunk/event-details-thunks";
 
 const initialState = {
     eventDetails: '',

@@ -37,8 +37,8 @@ import SearchResults from './search-results.js';
 import Tags from "./tags.js";
 import * as service from "../../../services/search-service.js";
 
-import { apiSearchThunk, dbSearchThunk, launchSearchThunk } from '../../../services/search-thunks.js';
-import { dbGetTagsThunk } from '../../../services/tags-thunks.js';
+import { apiSearchThunk, dbSearchThunk, launchSearchThunk } from '../../../thunks/search-thunks.js';
+import { dbGetTagsThunk } from '../../../thunks/tags-thunks.js';
 
 
 const exampleApiCall = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-08-26T14:00:00Z&city=new%20york';

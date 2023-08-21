@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import * as service from "./event-details-service"
+import * as service from "../services/event-details-service"
 
 export const apiDetailsThunk = createAsyncThunk(
     'details/api',

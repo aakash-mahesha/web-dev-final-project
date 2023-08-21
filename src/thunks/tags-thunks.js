@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import * as service from "./tags-service"
+import * as service from "../services/tags-service"
 
 export const dbGetTagsThunk = createAsyncThunk(
     'tags/db',

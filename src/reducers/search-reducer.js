@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiSearchThunk, dbSearchThunk, launchSearchThunk } from "../services/search-thunks";
+import { apiSearchThunk, dbSearchThunk } from "../thunks/search-thunks";
 
 const initialState = {
     results: [],
