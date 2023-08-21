@@ -27,5 +27,5 @@ const TabsComponent =  () => {
         </TabContext>
         </Box>
     );
-}
+} 
 export default TabsComponent;

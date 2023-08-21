@@ -1,10 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {createEventThunk, deleteEventThunk, findEventThunk, updateEventThunk} from "../../services/tuits-thunks";
+import {deleteEventThunk, findEventThunk, updateEventThunk} from "../../services/tuits-thunks";
 const currentUser = {
     "userName": "Amelia",
 
 
 };
+const templateEvent = {
+    ...currentUser,
+    "createdEventIds": [123,234,345],
+    "goingEventIds":  [11,12,13],
+    "likedEventIds": [1,2,3],
+    "user_type": "regular",
+    
+}
 const initialState = {
     events: [],
     loading: false,
@@ -29,12 +37,7 @@ const eventsSlice = createSlice({
                 state.error = action.error
         },
     
-        [createEventThunk.fulfilled]:
-            (state, { payload }) => {
-                state.loading = false;
-                //state.events.unshift(payload)
-                state.events.push(payload);
-            },
+      
         [updateEventThunk.fulfilled]:
             (state, { payload }) => {
                 state.loading = false;
@@ -46,12 +49,7 @@ const eventsSlice = createSlice({
 
     },
     reducers: {
-        deleteEvent(state, action) {
-            const index = state.events
-                .findIndex(event =>
-                    event._id === action.payload);
-            state.events.splice(index, 1);
-        },
+       
 
     }
 });

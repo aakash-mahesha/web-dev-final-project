@@ -13,7 +13,7 @@ function LoginScreen(){
         try{
             await  dispatch(loginThunk({username, password}));
             console.log({username, password});
-            navigate("/profile");
+            navigate("/");
             
         }catch (e){
             alert(e);

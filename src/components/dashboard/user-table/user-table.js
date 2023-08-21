@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -14,6 +14,14 @@ import {
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 import { Password } from '@mui/icons-material';
+import React, {useState, useEffect} from "react";
+import {useDispatch} from "react-redux";
+import { useSelector } from "react-redux";
+import {useNavigate} from "react-router";
+import { findAllUsersThunk,findUserByIdThunk,createUserThunk,
+  deleteUserThunk,updateUserThunk } from '../../../thunks/user-thunks';
+
+
 
 const initialRows = [
     {   id: 1,
@@ -74,6 +82,14 @@ function EditToolbar(props) {
     );
 }
 function UserTable() {
+    
+    const { currentUser, users } = useSelector((state) => state.users);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    useEffect(() => {
+        dispatch(findAllUsersThunk());
+    }, []);
+
     const [rows, setRows] = React.useState(initialRows);
     const [rowModesModel, setRowModesModel] = React.useState({});
 
