@@ -13,16 +13,12 @@ import eventFormReducer from "./reducers/event-form-reducer"
 import searchReducer from './reducers/search-reducer';
 import eventDetailsReducer from './reducers/event-details-reducer';
 import ExamplePage from './components/layout-page/example-test-page';
-import UserTable from './pages/user-table';
-// import ProfileScreen from './pages/user-profile-page';
-import ProfileForm from './pages/edit-profile.js';
-import ResultDetails from './components/result-page';
 import ResultPage from './components/result-page';
 import tagsReducer from './reducers/tags-reducer';
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
 import Register from './components/register-component';
-import ExamplePage from './components/layout-page/example-test-page';
+
 function App() {
   const store = configureStore({
     reducer: {
