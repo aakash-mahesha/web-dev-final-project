@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import EventPage from './components/event-page/index.js';
 import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
-import eventFormReducer from "./reducers/event-form-reducer"
+import eventFormReducer from "./reducers/event-form-reducer";
 import searchReducer from './reducers/search-reducer';
 import eventDetailsReducer from './reducers/event-details-reducer';
 import ExamplePage from './components/layout-page/example-test-page';
@@ -26,8 +26,8 @@ function App() {
       results: searchReducer,
       eventDetails: eventDetailsReducer,
       tagOptions: tagsReducer,
-        eventFormState: eventFormReducer,
-        auth: authReducers,
+      eventFormState: eventFormReducer,
+      auth: authReducers,
       eventFormState: eventFormReducer
     }
   })
