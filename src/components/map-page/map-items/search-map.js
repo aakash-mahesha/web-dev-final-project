@@ -43,19 +43,40 @@
 // export default Map
 
 // --- (1), (2) & (3): install and import ---
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import Markers from './markers';
+import Markers, { bounds } from './markers';
 
 // -----------------------------------------------------
 
 function ResetSize({ map }) {
-    setTimeout(function () { map.invalidateSize() }, 200);
+    const safeInvalidateSize = (map) => {
+        try {
+            return map.invalidateSize();
+        } catch (error) {
+            console.log(error);
+            return map;
+        }
+    }
+    // { setTimeout(() => { map.invalidateSize() }, 400); }
+    setTimeout(() => { safeInvalidateSize(map) }, 100);
 
 }
 
-function Map() {
+const getBounds = (events) => {
+    let bounds = [
+        [45.140009, -69.218322],
+        [16.43333, -93.79528],
+        [47.6062100, -122.3320700]
+    ];
+    if (events.length) {
+        bounds = events.map(event => [Number(event.coordinates[0]), Number(event.coordinates[1])]);
+    }
+    return bounds;
+}
+
+function Map({ events }) {
     // Berlin coordinates
     // const position = [52.51, 13.38];
     // denver -> update to be dynamically centerred
@@ -69,7 +90,7 @@ function Map() {
             <div className='map-component'>
                 {/* --- (5) Add leaflet map container --- */}
                 <div className='map'>
-                    <MapContainer center={position} zoom={6} scrollWheelZoom={false} ref={setMap}>
+                    <MapContainer scrollWheelZoom={false} ref={setMap}>
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -85,19 +106,38 @@ function Map() {
                             Popup test
                         </Popup>
                     </Marker> */}
-                        <Markers />
+                        <Markers events={events} />
                     </MapContainer>
                 </div>
             </div>
         ),
         [],
     );
-    return (
-        <div>
-            {map ? <ResetSize map={map} /> : null}
-            {displayMap}
-        </div>
-    )
+
+    const bounds = getBounds(events);
+
+    const setBounds = useCallback(
+
+        () => (map ? map.fitBounds(bounds) : null),
+
+        // () => (map && bounds.length ? map.fitBounds(bounds) : console.log('no bounds')),
+        // () => console.log(bounds.length ? true : false),
+        [map, events]
+    );
+
+    setBounds();
+
+    try {
+        return (
+            <div>
+                {map ? <ResetSize map={map} /> : null}
+                {displayMap}
+            </div>
+        )
+    } catch (error) {
+        console.log(error);
+        return (<div>Map unavailable</div>);
+    }
 }
 
 export default Map

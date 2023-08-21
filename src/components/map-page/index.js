@@ -2,7 +2,10 @@
 // drawer nesting functionality based on Alkesh Desai's answer to https://stackoverflow.com/questions/63087007/nested-drawer-in-material-ui-reactjs
 
 import * as React from 'react';
+import { useSelector } from 'react-redux';
+
 import { useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -12,17 +15,48 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import LayoutPage from '../layout-page';
 import Map from "./map-items/search-map";
-import DrawerHeader from "./drawer-header";
-import Main from "./main";
-
-// export const drawerWidth = 400;
-// export const drawerWidth = `calc(100% - 300px)`;
-// export const drawerWidth = "40%"
-export const drawerWidth = Number(getComputedStyle(document.documentElement)
-    .getPropertyValue('--drawer-width'));
 
 function MapPage({ Component }) {
-    console.log(drawerWidth)
+    const { results, loading } = useSelector(state => state.results);
+    // const { drawerWidth } = useSelector(state => state.drawerWidth);
+
+    const [drawerWidth, setDrawerWidth] = React.useState(400);
+    const [mainSide, setMainSide] = React.useState(true);
+
+    // const calcDrawerWidth = () => {
+    //     const windowWidth = window.innerWidth;
+    //     console.log(windowWidth)
+    //     if (windowWidth > 700) {
+    //         return 400;
+    //     } else {
+    //         return windowWidth;
+    //     }
+    // };
+
+    // const dispatch = useDispatch();
+    const windowResizeHandler = () => {
+        // const calculatedWidth = calcDrawerWidth();
+        // setDrawerWidth(calculatedWidth);
+        // console.log(calculatedWidth)
+        const windowWidth = window.innerWidth;
+        console.log(windowWidth)
+        if (windowWidth > 700) {
+            setDrawerWidth(400);
+            setMainSide(true);
+        } else {
+            setDrawerWidth(windowWidth);
+            setMainSide(false);
+        }
+    }
+
+    try {
+        window.addEventListener("resize", windowResizeHandler);
+    } catch (error) {
+        console.log(error)
+    }
+
+    // console.log(drawerWidth)
+
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
 
@@ -48,6 +82,38 @@ function MapPage({ Component }) {
         );
     }
 
+    const DrawerHeader = styled('div')(({ theme }) => ({
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+    }));
+
+    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+        ({ theme, open }) => ({
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            marginLeft: `-${drawerWidth}px`,
+            ...(open && {
+                transition: theme.transitions.create('margin', {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+                marginLeft: 0,
+                // width: '100%',
+            }),
+        }),
+    );
+
+    const showMain = (mainSide || !open);
+    console.log(showMain)
+
     const mapContent = () => {
         return (
             <>
@@ -72,10 +138,10 @@ function MapPage({ Component }) {
                     <Divider />
                     <Component />
                 </Drawer>
-                <Main open={open}>
+                {showMain && <Main open={open}>
                     <DrawerHeader />
-                    <Map />
-                </Main>
+                    <Map events={results}/>
+                </Main>}
             </>
         );
     }

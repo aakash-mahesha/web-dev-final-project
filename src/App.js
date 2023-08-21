@@ -10,14 +10,26 @@ import EventPage from './components/event-page/index.js';
 import SearchPage from './components/search-page';
 import Dashboard from './components/dashboard';
 import eventFormReducer from "./reducers/event-form-reducer"
+import searchReducer from './reducers/search-reducer';
+import eventDetailsReducer from './reducers/event-details-reducer';
+import ExamplePage from './components/layout-page/example-test-page';
+import UserTable from './pages/user-table';
+// import ProfileScreen from './pages/user-profile-page';
+import ProfileForm from './pages/edit-profile.js';
+import ResultDetails from './components/result-page';
+import ResultPage from './components/result-page';
+import tagsReducer from './reducers/tags-reducer';
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
 import Register from './components/register-component';
 import ExamplePage from './components/layout-page/example-test-page';
-
 function App() {
   const store = configureStore({
     reducer: {
+      eventFormState: eventFormReducer,
+      results: searchReducer,
+      eventDetails: eventDetailsReducer,
+      tagOptions: tagsReducer,
         eventFormState: eventFormReducer,
         auth: authReducers,
       eventFormState: eventFormReducer
@@ -33,6 +45,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/search" />} />
               <Route path="/search/*" element={<SearchPage />} />
+              <Route path="/results/:origin/:id" element={<ResultPage />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
               {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<EventForm />} />
