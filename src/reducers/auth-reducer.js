@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {loginThunk, logoutThunk, profileThunk, registerThunk} from "../services/users/auth-thunks";
+import {loginThunk, logoutThunk, profileThunk, registerThunk} from "../thunks/auth-thunks";
 const initialState = {
-    currentUser: null,
-};
+    currentUser : {details: null, loggedIn: false},
+}
 const authSlice = createSlice({
     name:"auth",
     initialState,
@@ -11,19 +11,22 @@ const authSlice = createSlice({
     extraReducers:{
     
         [registerThunk.fulfilled]: (state, { payload }) => {
-            state.currentUser = payload;
-         },
+            
+            state.currentUser.details = payload;
+            state.currentUser.loggedIn = true;
+        },
 
         [loginThunk.fulfilled]:(state,{payload}) => {
             //in a state variable called currentUser
-            state.currentUser = payload;
+            // console.log('in auth reducer', payload)
+            state.currentUser.details = payload;
+            state.currentUser.loggedIn = true;
         },
         [logoutThunk.fulfilled]: (state,action) => {
-            state.currentUser = null;
+            state.currentUser.details = null;
+            state.currentUser.loggedIn = false;
         },
-        [profileThunk.fulfilled]: (state, { payload }) => {
-            state.currentUser = payload;
-        },
+        
     },
     });
 export default authSlice.reducer;

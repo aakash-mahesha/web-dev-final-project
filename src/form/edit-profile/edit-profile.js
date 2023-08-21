@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextField, Button, Grid} from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import submitProfileFormThunk from '../services/users/profile-form-thunks';
+import submitProfileFormThunk from '../../thunks/profile-form-thunks';
 function ProfileForm(){
     const dispatch = useDispatch();
     const [firstName, setFirstName] = useState('');
