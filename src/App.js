@@ -26,8 +26,8 @@ function App() {
       results: searchReducer,
       eventDetails: eventDetailsReducer,
       tagOptions: tagsReducer,
-        eventFormState: eventFormReducer,
-        auth: authReducers,
+      eventFormState: eventFormReducer,
+      auth: authReducers,
       eventFormState: eventFormReducer
     }
   })
@@ -46,8 +46,8 @@ function App() {
               {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<EventForm />} />
               <Route path="/details/*" element={<EventPage />} />
-              <Route path="/login" element = {<LoginComponent/>}/>
-              <Route path="/register/*" element = {<Register/>}/>
+              <Route path="/login" element={<LoginComponent />} />
+              <Route path="/register/*" element={<Register />} />
               <Route path="/example" element={<ExamplePage />} />
             </Routes>
           </div>

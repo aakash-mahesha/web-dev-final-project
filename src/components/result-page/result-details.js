@@ -23,6 +23,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import { apiDetailsThunk, dbDetailsThunk } from '../../thunks/event-details-thunks';
+import { updateUserThunk } from '../../thunks/auth-thunks';
 
 // update to reflect revised event structure from api and backend
 // to know whether to format description, 
@@ -61,6 +62,7 @@ const ResultDetails = (
     //}
 ) => {
     const { eventDetails } = useSelector(state => state.eventDetails);
+    const { currentUser } = useSelector(state => state.auth);
     const [event, setEvent] = useState(eventDetails);
 
     const { origin, id } = useParams();
@@ -98,12 +100,36 @@ const ResultDetails = (
     // console.log('reducer',eventDetails)
     console.log('state', event)
 
+    // based on https://stackoverflow.com/a/5767357
+    const removeId = (arr, id) => {
+        let index = arr.indexOf(id);
+        if (index > -1) {
+            arr.splice(index, 1);
+        }
+        return arr;
+    }
+
+    const updateUserFieldList = (fieldName, add) => {
+        let fieldList = currentUser[fieldName];
+        if (add) {
+            fieldList.push(id);
+        } else {
+            fieldList = removeId(fieldList, id);
+        }
+        const user = {
+            ...currentUser,
+            fieldName: fieldList
+        }
+        updateUserThunk(user);
+    }
+
     // update to get initial value from state
     const [liked, setLiked] = useState(false);
 
     // update to send new value to server via reducer
     const handleLiked = () => {
         setLiked(!liked);
+        updateUserFieldList("likedEventIds", liked);
     }
 
     // update to get initial value from state
@@ -112,6 +138,7 @@ const ResultDetails = (
     // update to send new value to server via reducer
     const handleGoing = () => {
         setGoing(!going);
+        updateUserFieldList("goingEventIds", going);
     }
 
     const navigate = useNavigate();

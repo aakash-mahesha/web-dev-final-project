@@ -24,16 +24,16 @@ import { Link } from 'react-router-dom';
 
 export default function SiteMenu() {
 
-    // const { currentUser } = useSelector((state) => state.user);
-    const [currentUser] = React.useState(true);
-    const [state, setState] = React.useState(false);
+    const { currentUser } = useSelector((state) => state.user);
+    // const [currentUser] = React.useState(true);
+    const [drawerState, setDrawerState] = React.useState(false);
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
 
-        setState(open);
+        setDrawerState(open);
     };
 
     const menuItems = ['Home', 'Search', 'Create an event', 'Dashboard', 'Logout', 'Login', 'Register'];
@@ -42,7 +42,7 @@ export default function SiteMenu() {
 
     const menuList = menuItems.map((item, index) => {
         let show = true;
-        if (currentUser) {
+        if (currentUser.loggedIn) {
             if (item === 'Login' || item === 'Register') {
                 show = false;
             }
@@ -77,7 +77,7 @@ export default function SiteMenu() {
             </IconButton>
             <Drawer
                 anchor='right'
-                open={state}
+                open={drawerState}
                 onClose={toggleDrawer(false)}
             >
                 <Box sx={{ display: 'flex' }}>
