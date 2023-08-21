@@ -38,6 +38,7 @@ import Tags from "./tags.js";
 import * as service from "../../../services/search-service.js";
 
 import { apiSearchThunk, dbSearchThunk, launchSearchThunk } from '../../../services/search-thunks.js';
+import { dbGetTagsThunk } from '../../../services/tags-thunks.js';
 
 
 const exampleApiCall = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKILJrFzfEJbfLpAXeawuyAnpFgMCPo&keyword=music&locale=*&startDateTime=2023-08-15T14:00:00Z&endDateTime=2023-08-26T14:00:00Z&city=new%20york';
@@ -45,6 +46,7 @@ const apiCallZip = 'https://app.ticketmaster.com/discovery/v2/events?apikey=pCKI
 
 const SearchForm = () => {
     const { results, loading, noResults } = useSelector(state => state.results);
+    const { tagOptions } = useSelector(state => state.tagOptions)
 
     // const initialResponse = (results ? results : []);
 
@@ -65,6 +67,10 @@ const SearchForm = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(dbGetTagsThunk())
+    }, [])
 
 
     //replace with db search thunk!!
@@ -128,14 +134,12 @@ const SearchForm = () => {
     const [tags, setTags] = useState([]);
 
     const handleTagsChange = (event, value) => {
-        console.log(value);
         setTags(value);
     }
 
     const [inputTags, setInputTags] = useState('');
 
     const handleInputTagsChange = (event, value) => {
-        console.log(value);
         setInputTags(value);
     }
     // onChange={(event, value) => console.log(value)}
@@ -171,7 +175,6 @@ const SearchForm = () => {
         const endDateAndTimeString = endDateAndTime.toString();
         const tagString = tags.join('-'); // - separated string
         const conditionalInclusion = (name, value) => {
-            console.log('incl val', value);
             return value && { [name]: value }
         };
 
@@ -357,7 +360,7 @@ const SearchForm = () => {
                             onChange={handleTagsChange}
                             inputValue={inputTags}
                             onInputChange={handleInputTagsChange}
-                            options={Tags}
+                            options={tagOptions}
                             renderInput={(params) => <TextField {...params} label="Select tags" />}
                         />
                     </FormControl>}
@@ -390,7 +393,7 @@ const SearchForm = () => {
                 </Button>
             </Box>
             <Divider />
-            <SearchResults results={results} loading={loading} noResults={noResults} origin={scope}/>
+            <SearchResults results={results} loading={loading} noResults={noResults} origin={scope} />
         </div>
     );
 }

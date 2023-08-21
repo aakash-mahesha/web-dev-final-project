@@ -76,11 +76,14 @@ export const dbSearch = async (query) => {
 
     }
     if (query.startDateTime) {
+        // searchBody.startDateTime = `"${dayjs(query.startDateTime).toString()}"`;
         searchBody.startDateTime = dayjs(query.startDateTime).toISOString();
     }
-    if (query.endDateTime) {
+    // if (query.endDateTime) {
+    //     // searchBody.endDateTime = `"${dayjs(query.endDateTime).toString()}"`;
         searchBody.endDateTime = dayjs(query.endDateTime).toISOString();
-    }
+    // }
+    console.log(searchBody)
     const searchUrl = `${REACT_APP_API_BASE}/events`;
     const response = await axios.get(searchUrl, { params: searchBody });
 
@@ -91,7 +94,8 @@ export const dbSearch = async (query) => {
         const event = response.data[key];
         parsedResponse.push({
             image: getIfExists(event, 'imgs')[0] || '',
-            ...event
+            ...event,
+            coordinates: event.coordinates.map((coord) => coord.$numberDecimal)
         });
     }
 

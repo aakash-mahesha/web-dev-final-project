@@ -30,7 +30,8 @@ export const dbDetails = async (id) => {
     const event = response.data;
     const parsedResponse = {
         image: getIfExists(event, 'imgs')[0] || '',
-        ...event
+        ...event,
+        coordinates: event.coordinates.map((coord) => coord.$numberDecimal)
     };
     return parsedResponse;
     // console.log('db details:', id);

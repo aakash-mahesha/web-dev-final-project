@@ -20,6 +20,7 @@ import UserTable from './pages/user-table';
 import ProfileForm from './pages/edit-profile.js';
 import ResultDetails from './components/result-page';
 import ResultPage from './components/result-page';
+import tagsReducer from './reducers/tags-reducer';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
       eventFormState: eventFormReducer,
       results: searchReducer,
       eventDetails: eventDetailsReducer,
+      tagOptions: tagsReducer
     }
   })
   return (

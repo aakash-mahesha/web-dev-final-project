@@ -124,11 +124,11 @@ const ResultDetails = (
         const address = event.address;
         const cityStateCountry = [address.city, address.state, address.country].filter((x) => x).join(', ');
         return cityStateCountry;
-}
+    }
 
     return (
         <div>
-           {event && (<div>
+            {event && (<div>
                 <ListItem disablePadding>
                     <ListItemButton onClick={handleBackClick}>
                         <ArrowBackIcon />
@@ -186,8 +186,9 @@ const ResultDetails = (
                                 </Grid>
                                 {/* Start here */}
                                 <Grid item xs={11}>
-                                    {dayjs(event.startDate).format('D MMM YYYY H:mm')}
-                                    {event.endDate && (- dayjs(event.endDate).format('D MMM YYYY H:mm'))}
+                                    {dayjs(event.startDate).format('D MMM YYYY h:mm A')}
+                                    {event.endDate && event.endDate !== event.startDate ?
+                                        ` - ${dayjs(event.endDate).format('D MMM YYYY h:mm A')}` : ''}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -220,7 +221,7 @@ const ResultDetails = (
                         </Typography>
                         {/* </a> */}
                     </Grid>
-                    <Grid item xs={12}
+                    {event.hostDetails && (<Grid item xs={12}
                         sx={{
                             py: 2
                         }}
@@ -234,7 +235,7 @@ const ResultDetails = (
                         <Typography>
                             {event.hostDetails.email}
                         </Typography>
-                    </Grid>
+                    </Grid>)}
                     <Grid item xs={12}
                         sx={{ textAlign: "left", justifyContent: "flex-start" }} >
                         {/* <IconButton color="primary" aria-label="like"
@@ -248,7 +249,7 @@ const ResultDetails = (
                         </IconButton>
                     </Grid>
                 </Grid>
-           </div>)}
+            </div>)}
         </div>
     )
 }

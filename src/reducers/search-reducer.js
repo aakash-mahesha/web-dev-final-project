@@ -38,7 +38,7 @@ const searchSlice = createSlice({
                 console.log('fulfilled', payload)
                 state.loading = false
                 state.results = payload
-                state.noResults = !Boolean(state.results)
+                state.noResults = !Boolean(state.results.length)
             },
         [apiSearchThunk.rejected]:
             (state, action) => {
@@ -59,7 +59,7 @@ const searchSlice = createSlice({
                 console.log('fulfilled', payload)
                 state.loading = false
                 state.results = payload
-                state.noResults = !Boolean(state.results)
+                state.noResults = !Boolean(state.results.length)
             },
         [dbSearchThunk.rejected]:
             (state, action) => {
