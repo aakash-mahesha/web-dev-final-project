@@ -76,7 +76,7 @@ const EventSuggestions = () => {
                             "You are going to" : "Users are going to"
                         }
                     </Typography>
-                    <EventList events={tenGoingEvents} />
+                    <EventList eventIds={tenGoingEvents} />
                 </Grid>
             </Grid>
         </Box>

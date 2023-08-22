@@ -100,31 +100,28 @@ const ResultDetails = (
     // console.log('reducer',eventDetails)
     console.log('state', event)
 
-    // based on https://stackoverflow.com/a/5767357
-    const removeId = (arr, id) => {
-        let index = arr.indexOf(id);
-        if (index > -1) {
-            arr.splice(index, 1);
-        }
-        return arr;
-    }
+    const removeEventId = (arr, eid) => arr.filter((idObj) => idObj.event_id !== eid);
 
     const updateUserFieldList = (fieldName, add) => {
         let fieldList = currentUser[fieldName];
         if (add) {
-            fieldList.push(id);
+            const idObj = {event_id: id, source: origin};
+            fieldList.push(idObj);
         } else {
-            fieldList = removeId(fieldList, id);
+            fieldList = removeEventId(fieldList, id);
         }
         const user = {
-            ...currentUser,
+            // ...currentUser,
             fieldName: fieldList
         }
         updateUserThunk(user);
     }
 
+    // check whether event id is in current users liked list
+    const initialLiked = currentUser.likedEventIds.some((idObj) => idObj.event_id === id);
+
     // update to get initial value from state
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState(initialLiked);
 
     // update to send new value to server via reducer
     const handleLiked = () => {
@@ -132,8 +129,11 @@ const ResultDetails = (
         updateUserFieldList("likedEventIds", liked);
     }
 
+    // check whether event id is in current users going list
+    const initialGoing = currentUser.goingEventIds.some((idObj) => idObj.event_id === id);
+
     // update to get initial value from state
-    const [going, setGoing] = useState(false);
+    const [going, setGoing] = useState(initialGoing);
 
     // update to send new value to server via reducer
     const handleGoing = () => {
