@@ -108,6 +108,8 @@ const Markers = ({ events }
             const coordinates = markerData[venue].coordinates;
             markerList.push(
                 <Marker
+                    key={venue}
+                    id={venue}
                     position={coordinates}
                     icon={customIcon}>
                     <Popup>
@@ -123,6 +125,7 @@ const Markers = ({ events }
                     </Popup>
                 </Marker>);
         }
+        console.log(markerList)
         return markerList;
     }
 
