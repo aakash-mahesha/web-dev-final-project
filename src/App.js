@@ -18,6 +18,7 @@ import tagsReducer from './reducers/tags-reducer';
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
 import Register from './components/register-component';
+import HomePage from './components/home-page';
 
 function App() {
   const store = configureStore({
@@ -39,15 +40,16 @@ function App() {
         <HashRouter>
           <div className="App">
             <Routes>
-              <Route path="/" element={<Navigate to="/search" />} />
+              <Route path="/" element={<Navigate to="/home" />} />
+              <Route path="/home" element={<HomePage />} />
               <Route path="/search/*" element={<SearchPage />} />
               <Route path="/results/:origin/:id" element={<ResultPage />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
               {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<EventForm />} />
               <Route path="/details/*" element={<EventPage />} />
-              <Route path="/login" element = {<LoginComponent/>}/>
-              <Route path="/register/*" element = {<Register/>}/>
+              <Route path="/login" element={<LoginComponent />} />
+              <Route path="/register/*" element={<Register />} />
               <Route path="/example" element={<ExamplePage />} />
             </Routes>
           </div>

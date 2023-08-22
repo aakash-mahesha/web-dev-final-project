@@ -23,6 +23,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import { apiDetailsThunk, dbDetailsThunk } from '../../thunks/event-details-thunks';
+import { updateUserThunk } from '../../thunks/auth-thunks';
 
 // update to reflect revised event structure from api and backend
 // to know whether to format description, 
@@ -61,6 +62,7 @@ const ResultDetails = (
     //}
 ) => {
     const { eventDetails } = useSelector(state => state.eventDetails);
+    const { currentUser } = useSelector(state => state.auth);
     const [event, setEvent] = useState(eventDetails);
 
     const { origin, id } = useParams();
@@ -98,13 +100,32 @@ const ResultDetails = (
     // console.log('reducer',eventDetails)
     console.log('state', event)
 
+    const removeEventId = (arr, eid) => arr.filter((idObj) => idObj.event_id !== eid);
+
+    const updateUserFieldList = (fieldName, add) => {
+        let fieldList = currentUser.details[fieldName];
+        if (add) {
+            const idObj = { event_id: id, source: origin };
+            fieldList.push(idObj);
+        } else {
+            fieldList = removeEventId(fieldList, id);
+        }
+        const user = {
+            // ...currentUser,
+            fieldName: fieldList
+        }
+        updateUserThunk(user);
+    }
+
     // update to get initial value from state
     const [liked, setLiked] = useState(false);
 
     // update to send new value to server via reducer
     const handleLiked = () => {
         setLiked(!liked);
+        updateUserFieldList("likedEventIds", liked);
     }
+
 
     // update to get initial value from state
     const [going, setGoing] = useState(false);
@@ -112,7 +133,22 @@ const ResultDetails = (
     // update to send new value to server via reducer
     const handleGoing = () => {
         setGoing(!going);
+        updateUserFieldList("goingEventIds", going);
     }
+
+    const getUserVals = () => {
+        if (currentUser.loggedIn) {
+            // check whether event id is in current users liked list
+            const initialLiked = currentUser.details.likedEventIds.some((idObj) => idObj.event_id === id);
+            setLiked(initialLiked);
+
+            // check whether event id is in current users going list
+            const initialGoing = currentUser.details.goingEventIds.some((idObj) => idObj.event_id === id);
+            setGoing(initialGoing)
+        }
+    }
+
+    useEffect(() => getUserVals(), []);
 
     const navigate = useNavigate();
 
@@ -132,7 +168,7 @@ const ResultDetails = (
                 <ListItem disablePadding>
                     <ListItemButton onClick={handleBackClick}>
                         <ArrowBackIcon />
-                        <ListItemText primary="Back to results" />
+                        <ListItemText primary="Back" />
                     </ListItemButton>
                 </ListItem>
                 <Divider />
@@ -145,10 +181,10 @@ const ResultDetails = (
                             onClick={handleGoing}>
                             {going ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
                         </IconButton> */}
-                        <IconButton color="primary" aria-label="add to bookmarks"
+                        {currentUser.loggedIn && (<IconButton color="primary" aria-label="add to bookmarks"
                             onClick={handleLiked}>
                             {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                        </IconButton>
+                        </IconButton>)}
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container
@@ -236,7 +272,7 @@ const ResultDetails = (
                             {event.hostDetails.email}
                         </Typography>
                     </Grid>)}
-                    <Grid item xs={12}
+                    {currentUser.loggedIn && (<Grid item xs={12}
                         sx={{ textAlign: "left", justifyContent: "flex-start" }} >
                         {/* <IconButton color="primary" aria-label="like"
                             onClick={handleLiked}>
@@ -247,7 +283,7 @@ const ResultDetails = (
                             {going ? <CheckCircleIcon sx={{ mr: 1 }} /> : <CheckCircleOutlineIcon sx={{ mr: 1 }} />}
                             <Typography>Going?</Typography>
                         </IconButton>
-                    </Grid>
+                    </Grid>)}
                 </Grid>
             </div>)}
         </div>
