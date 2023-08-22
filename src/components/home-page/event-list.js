@@ -30,7 +30,7 @@ const EventList = ({ eventIds }) => {
         return events;
     }
 
-    const [events, setEvents] = useState([]);
+    // const [events, setEvents] = useState([]);
 
     const navigate = useNavigate();
 
@@ -44,11 +44,14 @@ const EventList = ({ eventIds }) => {
         }
     };
 
-    const displayEvents = async (eventIds) => {
-        const fetchedEvents = await fetchEvents(eventIds);
-        setEvents(fetchEvents);
+    let listedEvents = '';
 
-        let listedEvents = '';
+    const displayEvents = async (eventIds) => {
+        if (!Array.isArray(eventIds)) {
+            return;
+        }
+        const events = await fetchEvents(eventIds);
+        // setEvents(fetchEvents);
 
         if (events.length) {
             listedEvents = events.map((event) => (
@@ -98,7 +101,7 @@ const EventList = ({ eventIds }) => {
         return listedEvents;
     }
 
-    useEffect(() => displayEvents(eventIds), []);
+    useEffect(() => {displayEvents(eventIds)}, []);
 
 
     return (
