@@ -47,8 +47,8 @@ const EventSuggestions = () => {
     }, []);
 
     if (currentUser.loggedIn) {
-        setTenLikedEvents(arrTenOrLess(currentUser.likedEventIds));
-        setTenGoingEvents(arrTenOrLess(currentUser.goingEventIds));
+        // setTenLikedEvents(arrTenOrLess(currentUser.details.likedEventIds));
+        // setTenGoingEvents(arrTenOrLess(currentUser.details.goingEventIds));
     }
 
     // likedEvents and goingEvents (as lists in side-by-side grids)

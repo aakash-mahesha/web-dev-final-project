@@ -50,7 +50,7 @@ function App() {
               <Route path="/search/*" element={<SearchPage />} />
               {/* <Route path="/results/:origin/:id" element={<ResultPage />} /> */}
               <Route path="/details/:origin/:id" element={<EventPage />} />
-              <Route path="/dashboard/*" element={<Dashboard />} />
+              <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<EventForm />} />
               <Route path="/details/*" element={<EventPage />} />
