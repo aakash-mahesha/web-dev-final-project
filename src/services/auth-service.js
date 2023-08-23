@@ -44,6 +44,6 @@ export const profile = async () => {
 };
 export const updateUser = async (user) => {
     // match the update in the backend
-    const response = await api.put(`${USERS_API_URL}/{user._id}`, user);
+    const response = await api.put(`${USERS_API_URL}/${user._id}`, user);
     return response.data;
 };

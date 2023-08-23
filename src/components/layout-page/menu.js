@@ -19,28 +19,27 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useSelector } from 'react-redux';
-import { logoutThunk } from '../../thunks/auth-thunks';
+import { logoutThunk, registerThunk } from '../../thunks/auth-thunks';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 
 export default function SiteMenu() {
 
-    // const currentUser = JSON.parse(localStorage.getItem('authState'));
-    const { currentUser } = useSelector((state) => state.auth);
+    const { currentUser } = useSelector(state => state.auth);
     // const [currentUser] = React.useState(true);
-    const [state, setState] = React.useState(false);
+    const [drawerState, setDrawerState] = React.useState(false);
     const dispatch = useDispatch();
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
 
-        setState(open);
+        setDrawerState(open);
     };
 
     const menuItems = ['Home', 'Search', 'Create an event', 'Dashboard', 'Logout', 'Login', 'Register'];
-    const menuLinks = ['/', '/search', '/create-event', '/dashboard', '/login', '/login', '/'];
+    const menuLinks = ['/', '/search', '/create-event', '/dashboard', '/login', '/login', '/register'];
     const menuIcons = [<HomeIcon />, <SearchIcon />, <AddCircleIcon />, <DashboardIcon />, <LogoutIcon />, <LoginIcon />, <PersonAddIcon />]
 
     const menuList = menuItems.map((item, index) => {
@@ -84,7 +83,7 @@ export default function SiteMenu() {
             </IconButton>
             <Drawer
                 anchor='right'
-                open={state}
+                open={drawerState}
                 onClose={toggleDrawer(false)}
             >
                 <Box sx={{ display: 'flex' }}>
