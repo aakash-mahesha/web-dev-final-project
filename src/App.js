@@ -13,7 +13,7 @@ import eventFormReducer from "./reducers/event-form-reducer";
 import searchReducer from './reducers/search-reducer';
 import eventDetailsReducer from './reducers/event-details-reducer';
 import ExamplePage from './components/layout-page/example-test-page';
-import ResultPage from './components/result-page';
+// import ResultPage from './components/result-page';
 import tagsReducer from './reducers/tags-reducer';
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
@@ -27,9 +27,9 @@ function App() {
       results: searchReducer,
       eventDetails: eventDetailsReducer,
       tagOptions: tagsReducer,
-      eventFormState: eventFormReducer,
+      // eventFormState: eventFormReducer,
       auth: authReducers,
-      eventFormState: eventFormReducer
+      // eventFormState: eventFormReducer
     }
   })
   return (
@@ -43,7 +43,8 @@ function App() {
               <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/home" element={<HomePage />} />
               <Route path="/search/*" element={<SearchPage />} />
-              <Route path="/results/:origin/:id" element={<ResultPage />} />
+              {/* <Route path="/results/:origin/:id" element={<ResultPage />} /> */}
+              <Route path="/details/:origin/:id" element={<EventPage />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
               {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<EventForm />} />
