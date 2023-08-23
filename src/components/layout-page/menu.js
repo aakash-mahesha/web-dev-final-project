@@ -18,16 +18,19 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-
+import { useSelector } from 'react-redux';
+import { logoutThunk } from '../../thunks/auth-thunks';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 
 export default function SiteMenu() {
 
-    // const { currentUser } = useSelector((state) => state.user);
-    const [currentUser] = React.useState(true);
+    // const currentUser = JSON.parse(localStorage.getItem('authState'));
+    const { currentUser } = useSelector((state) => state.auth);
+    // const [currentUser] = React.useState(true);
     const [state, setState] = React.useState(false);
-
+    const dispatch = useDispatch();
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -37,12 +40,12 @@ export default function SiteMenu() {
     };
 
     const menuItems = ['Home', 'Search', 'Create an event', 'Dashboard', 'Logout', 'Login', 'Register'];
-    const menuLinks = ['/', '/search', '/create-event', '/dashboard', '/', '/', '/'];
+    const menuLinks = ['/', '/search', '/create-event', '/dashboard', '/login', '/login', '/'];
     const menuIcons = [<HomeIcon />, <SearchIcon />, <AddCircleIcon />, <DashboardIcon />, <LogoutIcon />, <LoginIcon />, <PersonAddIcon />]
 
     const menuList = menuItems.map((item, index) => {
         let show = true;
-        if (currentUser) {
+        if (currentUser.loggedIn) {
             if (item === 'Login' || item === 'Register') {
                 show = false;
             }
@@ -51,7 +54,7 @@ export default function SiteMenu() {
                 show = false;
             }
         }
-
+        
         return (
             show &&
             <ListItem key={index} disablePadding>
@@ -59,7 +62,11 @@ export default function SiteMenu() {
                     <ListItemIcon>
                         {menuIcons[index]}
                     </ListItemIcon>
-                    <ListItemText primary={item} />
+                    <ListItemText primary={item} onClick={() => {
+                        if(item === 'Logout'){
+                            dispatch(logoutThunk())
+                        }
+                    }} />
                 </ListItemButton>
             </ListItem>
         );

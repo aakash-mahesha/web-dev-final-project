@@ -18,8 +18,6 @@ import Map from "./map-items/search-map";
 
 function MapPage({ Component }) {
     const { results, loading } = useSelector(state => state.results);
-    // const { drawerWidth } = useSelector(state => state.drawerWidth);
-
     const [drawerWidth, setDrawerWidth] = React.useState(400);
     const [mainSide, setMainSide] = React.useState(true);
 
@@ -46,7 +44,7 @@ function MapPage({ Component }) {
         } else {
             setDrawerWidth(windowWidth);
             setMainSide(false);
-        }
+        }     
     }
 
     try {

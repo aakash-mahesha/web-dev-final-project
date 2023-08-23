@@ -18,6 +18,9 @@ import tagsReducer from './reducers/tags-reducer';
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
 import Register from './components/register-component';
+import AuthContext from './utils/auth-context';
+import ProtectedRoute from './utils/protected-route';
+// import store from './utils/store';
 
 function App() {
   const store = configureStore({
@@ -28,21 +31,24 @@ function App() {
       tagOptions: tagsReducer,
       eventFormState: eventFormReducer,
       auth: authReducers,
-      eventFormState: eventFormReducer
+      eventFormState: eventFormReducer,
     }
   })
+
+  
   return (
 
     //new:
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Provider store={store}>
         <HashRouter>
+        <AuthContext>
           <div className="App">
             <Routes>
               <Route path="/" element={<Navigate to="/search" />} />
               <Route path="/search/*" element={<SearchPage />} />
               <Route path="/results/:origin/:id" element={<ResultPage />} />
-              <Route path="/dashboard/*" element={<Dashboard />} />
+              <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
               {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<EventForm />} />
               <Route path="/details/*" element={<EventPage />} />
@@ -51,6 +57,7 @@ function App() {
               <Route path="/example" element={<ExamplePage />} />
             </Routes>
           </div>
+          </AuthContext>
         </HashRouter>
       </Provider>
     </LocalizationProvider>
