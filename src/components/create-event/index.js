@@ -8,6 +8,11 @@ import { useDispatch } from 'react-redux';
 import { createEventThunk } from '../../thunks/event-form-thunks.js';
 import postreq from '../../utils/postreq.js';
 import { useSelector } from 'react-redux';
+import { updateUserThunk } from '../../thunks/user-thunks.js';
+import { findUserById } from '../../services/user-service.js';
+import { profileThunk } from '../../thunks/auth-thunks.js';
+import { useNavigate } from 'react-router';
+import { updateUser } from '../../utils/update-user-events.js';
 
 function EventForm() {
     const dispatch = useDispatch();
@@ -35,8 +40,12 @@ function EventForm() {
   const [shouldPublish, setShouldPublish] = useState(false);
   const [uploadLinks, setUploadLinks] = useState([]);
   const [formLoading, setFormLoading] = useState(false);
+  const [eventIDCreated, setEventIDCreated] = useState('');
+
+  const navigate = useNavigate()
 
   function resetStates() {
+    setEventIDCreated('');
     setEventName('');
     setStartDateAndTime(dayjs());
     setEndDateAndTime(dayjs());
@@ -119,8 +128,8 @@ function EventForm() {
       uploadLinks,
       publish: publishBool,
       hostDetails: {
-        name: currentUser ? (currentUser.details.firstname + " " + currentUser.details.lastname) : "Test",
-        email: currentUser ? (currentUser.details.email) : "testing@nomail.com"
+        name: currentUser.loggedIn ? (currentUser.details.firstname + " " + currentUser.details.lastname) : "Test",
+        email: currentUser.loggedIn ? (currentUser.details.email) : "testing@nomail.com"
       }
     }
     return formData;
@@ -152,6 +161,18 @@ function EventForm() {
       }
   }
 
+  const uploadFormAndUpdate = async(formData) => {
+    let eventObj = await dispatch(createEventThunk(formData));
+    const newEventID = eventObj.payload;
+    if(newEventID.includes("400")) {
+      alert('There was an error creating this event. Please try again.');
+      return;
+    }
+    else {
+      await updateUser(dispatch, currentUser,"createdEventIds","ADD",newEventID);
+    }
+  }
+
   const handleSubmit = async (event, action) => {
     event.preventDefault();
     setFormLoading(true);
@@ -162,19 +183,56 @@ function EventForm() {
     if (action === 'saveDraft') {
       setShouldPublish(false);
     }
-    setShouldSubmit(true);
+    const formData = constructForm(shouldPublish);  
+    await uploadFormAndUpdate(formData);
+    setFormLoading(false);
+    console.log("Loading, Submitted, Message", loading, submittedForm, message);
+    resetStates();
   };
 
-  useEffect(() => {
-    if(shouldSubmit) {
-      const formData = constructForm(shouldPublish);
-      dispatch(createEventThunk(formData));
-      setShouldSubmit(false);
-      setFormLoading(false);
-      console.log("Loading, Submitted, Message", loading, submittedForm, message);
-      resetStates();
-    }
-  }, [shouldSubmit])
+
+  // useEffect(async () => {
+  //   if(shouldSubmit) {
+  //     const formData = constructForm(shouldPublish);
+
+  //     const uploadFormAndUpdate = async() => {
+  //       let eventObj = await dispatch(createEventThunk(formData));
+  //       console.log("indexjs",eventObj.payload);
+  //       const newEventID = eventObj.payload;
+  //       // setEventIDCreated(eventID.payload);
+  //       if(newEventID.includes("400")) {
+  //         alert('There was an error creating this event. Please try again.');
+  //         return;
+  //       }
+  //       else {
+  //         // func(array name, value to append);
+  //         // const currentUser = await dispatch(findUserById(currentUser.details._id));
+  //         // let events = [...currentUser.details.createdEventIds]
+  //         // events.push(newEventID);
+  //         // const updatedUser = {...currentUser.details, createdEventIds: events}
+  //         // await dispatch(updateUserThunk(updatedUser));
+  //         // await dispatch(profileThunk())
+  //         await updateUser(dispatch, currentUser,"createdEventIds","ADD",newEventID);
+  //         // console.log(payload.details);
+  //       }
+  //       // const updateEventIds = updatedUser.createdEventIds;
+  //       // updateEventIds.push(eventIDCreated);
+  //       // updatedUser.createdEventIds = updateEventIds;
+  //       // console.log(updatedUser);
+  //       // updatedUser.createdEventIds.push(eventIDCreated);
+  //     }
+
+  //     await uploadFormAndUpdate();
+  //     // const updatedUserEvent = currentUser.details;
+  //     // const user = await dispatch(updateUserThunk(updatedUserEvent.createdEventIds.push(eventIDCreated)));
+  //     // console.log("in form, updated user:", user);
+  //     console.log("Updated user: ", currentUser.details);
+  //     setShouldSubmit(false);
+  //     setFormLoading(false);
+  //     console.log("Loading, Submitted, Message", loading, submittedForm, message);
+  //     resetStates();
+  //   }
+  // }, [shouldSubmit])
 
   return (
     <div>
@@ -184,9 +242,9 @@ function EventForm() {
           >
           <CircularProgress color="inherit" />
           </Backdrop>
-          <Grid container spacing={3} maxWidth='sm' alignItems="flex-start">
+          <Grid container spacing={3} alignItems="flex-start">
             <Grid item xs={12}>
-                <Typography variant="h6">Event Details</Typography>
+                <Typography variant="h4">Event Details</Typography>
             </Grid>
             <Grid item xs={12}>
               <TextField

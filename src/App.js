@@ -29,9 +29,7 @@ function App() {
       results: searchReducer,
       eventDetails: eventDetailsReducer,
       tagOptions: tagsReducer,
-      // eventFormState: eventFormReducer,
       auth: authReducers,
-      // eventFormState: eventFormReducer
     }
   })
 
@@ -52,7 +50,7 @@ function App() {
               <Route path="/details/:origin/:id" element={<EventPage />} />
               <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               {/* <Route path="/table" element={<EventTable />} /> */}
-              <Route path="/create-event" element={<EventForm />} />
+              <Route path="/create-event" element={<ProtectedRoute><EventForm /></ProtectedRoute>} />
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/login" element={<LoginComponent />} />
               <Route path="/register/*" element={<Register />} />

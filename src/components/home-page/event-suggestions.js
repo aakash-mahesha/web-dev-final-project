@@ -16,7 +16,10 @@ const EventSuggestions = () => {
 
     const dispatch = useDispatch();
 
-    const arrTenOrLess = (arr) => (arr.length > 10 ? arr.slice(10) : arr);
+    function arrTenOrLess(arr) {
+        console.log("event sugg", arr);
+        return (arr.length > 10 ? arr.slice(10) : arr);
+    }
 
     const findEndFieldList = (userList, field) => {
         const endsList = [];
