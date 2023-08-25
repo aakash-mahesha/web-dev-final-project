@@ -25,8 +25,8 @@ const EventList = ({ eventIds }) => {
                 events.push(payload);
                 console.log('fetcher', events)
             } else {
-                const event = await dispatch(apiDetailsThunk(idObject.event_id));
-                events.push(event);
+                const { payload } = await dispatch(apiDetailsThunk(idObject.event_id));
+                events.push(payload);
             }
         }
         console.log('fetcher events', events)
