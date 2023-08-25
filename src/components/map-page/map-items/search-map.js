@@ -65,12 +65,13 @@ function ResetSize({ map }) {
 }
 
 const getBounds = (events) => {
+    console.log('bounds events', events)
     let bounds = [
         [45.140009, -69.218322],
         [16.43333, -93.79528],
         [47.6062100, -122.3320700]
     ];
-    if (events.length) {
+    if (events.length && events[0]) {
         bounds = events.map(event => [Number(event.coordinates[0]), Number(event.coordinates[1])]);
     }
     return bounds;
@@ -115,9 +116,9 @@ function Map({ events }) {
     );
 
     const bounds = getBounds(events);
+    console.log('bounds', bounds)
 
     const setBounds = useCallback(
-
         () => (map ? map.fitBounds(bounds) : null),
 
         // () => (map && bounds.length ? map.fitBounds(bounds) : console.log('no bounds')),
