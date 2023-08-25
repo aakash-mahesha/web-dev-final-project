@@ -17,41 +17,20 @@ import ExamplePage from './components/layout-page/example-test-page';
 import tagsReducer from './reducers/tags-reducer';
 import LoginComponent from "./components/login-component"
 import authReducers from './reducers/auth-reducer';
-import userReducers from './reducers/user-reducer';
 import Register from './components/register-component';
-<<<<<<< HEAD
-import ExamplePage from './components/layout-page/example-test-page';
-import TabsComponent from './components/dashboard/tab/tab';
-import MiniDrawer from './components/dashboard/sidebar/nav-item';
-import LayoutExample from './components/dashboard/sidebar/layout-expample';
-import ProfileScreen from './form/edit-profile/user-profile';
-import LoginScreen from './form/login-screen';
-import ProfileContent from './form/edit-profile/profile';
-import ProfileForm from './form/edit-profile/edit-profile';
-
-=======
 import AuthContext from './utils/auth-context';
 import ProtectedRoute from './utils/protected-route';
 import HomePage from './components/home-page';
 import EditEventFormBox from './components/edit-event';
->>>>>>> 5f19b7f75fc47e55a8e91cf93967458070bb6d6c
 
 function App() {
   const store = configureStore({
     reducer: {
-<<<<<<< HEAD
-        eventFormState: eventFormReducer,
-        auth: authReducers,
-        user: userReducers,
-      eventFormState: eventFormReducer
-      
-=======
       eventFormState: eventFormReducer,
       results: searchReducer,
       eventDetails: eventDetailsReducer,
       tagOptions: tagsReducer,
       auth: authReducers,
->>>>>>> 5f19b7f75fc47e55a8e91cf93967458070bb6d6c
     }
   })
 
@@ -78,7 +57,6 @@ function App() {
               <Route path="/login" element={<LoginComponent />} />
               <Route path="/register/*" element={<Register />} />
               <Route path="/example" element={<ExamplePage />} />
-              
             </Routes>
           </div>
           </AuthContext>

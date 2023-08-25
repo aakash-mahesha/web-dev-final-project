@@ -13,13 +13,7 @@ export const register = async (regFormData) => {
     return user;
 }
 export const login = async ({username,password}) => {
-<<<<<<< HEAD
-    console.log('in fornt end auth service',{username,password})
     const response = await  api.post(`${USERS_API_URL}/login`,{username,password});
-    console.log(response)
-=======
-    const response = await  api.post(`${USERS_API_URL}/login`,{username,password});
->>>>>>> 5f19b7f75fc47e55a8e91cf93967458070bb6d6c
     const user =response.data;
     return user;
 };
@@ -30,12 +24,10 @@ export const logout = async () => {
 };
 export const profile = async () => {
    
+    try{
         const response = await api.post(`${USERS_API_URL}/profile`);
         return response; 
         
-<<<<<<< HEAD
-    
-=======
     }catch (e){
         const response = {
             data : {
@@ -47,7 +39,6 @@ export const profile = async () => {
         return response
             
     }
->>>>>>> 5f19b7f75fc47e55a8e91cf93967458070bb6d6c
 
 };
 export const updateUser = async (user) => {
