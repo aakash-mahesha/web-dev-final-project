@@ -22,11 +22,15 @@ const EventList = ({ eventIds }) => {
         for (const idObject of eventIds) {
             if (idObject.source === 'db') {
                 const { payload } = await dispatch(dbDetailsThunk(idObject.event_id));
-                events.push(payload);
-                console.log('fetcher', events)
+                if (payload) {
+                    events.push(payload);
+                    console.log('fetcher', events)
+                }
             } else {
                 const { payload } = await dispatch(apiDetailsThunk(idObject.event_id));
-                events.push(payload);
+                if (payload) {
+                    events.push(payload);
+                }
             }
         }
         console.log('fetcher events', events)
@@ -39,8 +43,9 @@ const EventList = ({ eventIds }) => {
 
     const handleLoadEvent = (id) => {
         try {
+            const eventIdObj = eventIds.find((idObject) => idObject.event_id === id);
             // await dispatch(dbDetailsThunk(id));
-            navigate(`/details/${id}`);
+            navigate(`/details/${eventIdObj.source}/${id}`);
 
         } catch (e) {
             alert(e);

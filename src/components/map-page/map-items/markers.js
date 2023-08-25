@@ -80,13 +80,15 @@ const Markers = ({ events }
         let markerObj = {};
         for (let i = 0; i < events.length; i++) {
             const event = events[i];
-            const address = event.address;
-            if (address) {
-                const venueName = address.venueName;
-                if (venueName in markerObj) {
-                    markerObj[venueName].venueEvents.push(event);
-                } else {
-                    markerObj[venueName] = { coordinates: event.coordinates, venueEvents: [event,] };
+            if (event) {
+                const address = event.address;
+                if (address) {
+                    const venueName = address.venueName;
+                    if (venueName in markerObj) {
+                        markerObj[venueName].venueEvents.push(event);
+                    } else {
+                        markerObj[venueName] = { coordinates: event.coordinates, venueEvents: [event,] };
+                    }
                 }
             }
         }

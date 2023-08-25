@@ -1,5 +1,5 @@
 import axios from "axios";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import { getIfExists, reformatEvent } from './service-utils';
 
 // const dayjs = require('dayjs');
@@ -16,7 +16,6 @@ const TICKEMASTER_DETAILS_API = (id) => (`${TICKEMASTER_API_BASE}/events/${id}?a
 const REACT_APP_API_BASE = process.env.REACT_APP_API_BASE;
 
 
-// export const dbDetails = async (id) => {
 export const dbDetails = async (id) => {
 
     const detailsUrl = `${REACT_APP_API_BASE}/events`;
@@ -27,8 +26,9 @@ export const dbDetails = async (id) => {
         console.log("Error with getting details from DB");
         return null;
     }
-    if(response.data === null) {
-        return "event not found";
+    if (response.data === null ) {
+        console.log("event not found")
+        return null;
     }
     // console.log(response.data)
     // const parsedResponse = {
@@ -51,18 +51,52 @@ export const dbDetails = async (id) => {
 
 export const apiDetails = async (id) => {
     const detailsUrl = TICKEMASTER_DETAILS_API(id);
-    console.log('details', detailsUrl)
-    const response = await axios.get(detailsUrl);
-    const parsedResponse = parseApiResponse(response);
-    console.log('api details service',parsedResponse);
 
-    return parsedResponse;
+    let parsedResponse = null;
+    // console.log('details', detailsUrl)
+    try {
+        const response = await axios.get(detailsUrl);
+        parsedResponse = parseApiResponse(response);
+        console.log('api details service', parsedResponse);
+
+        return parsedResponse;
+
+    } catch (err) {
+        console.log("Error response:");
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+    } finally {
+        console.log('api details service', parsedResponse);
+        return parsedResponse;
+    }
+    // console.log('status:', response.status)
+    // if (response.response.data.errors) {
+    //     console.log(response.response.data.errors);
+    //     return null;
+    // }
+    // const parsedResponse = parseApiResponse(response);
+    // console.log('api details service', parsedResponse);
+
+    // return parsedResponse;
 }
+// const detail = apiDetails("hi");
+// console.log(detail === null)
 // apiDetails("rZ7HnEZ1AK860b")
 
 const parseApiResponse = (response) => {
-    const event = response.data;
-    return (reformatEvent(event));
+    try {
+        const event = response.data;
+        const reformatted = reformatEvent(event);
+
+        return reformatted;
+
+    } catch (err) {
+        console.log('Error:', err);
+
+        return null;
+    }
+
 }
 
 

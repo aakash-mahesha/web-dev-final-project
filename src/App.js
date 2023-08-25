@@ -22,6 +22,7 @@ import AuthContext from './utils/auth-context';
 import ProtectedRoute from './utils/protected-route';
 import HomePage from './components/home-page';
 import EditEventFormBox from './components/edit-event';
+import FourOhFourPage from './components/404-page';
 
 function App() {
   const store = configureStore({
@@ -57,6 +58,7 @@ function App() {
               <Route path="/login" element={<LoginComponent />} />
               <Route path="/register/*" element={<Register />} />
               <Route path="/example" element={<ExamplePage />} />
+              <Route path="/404" element={<FourOhFourPage />} />
             </Routes>
           </div>
           </AuthContext>
