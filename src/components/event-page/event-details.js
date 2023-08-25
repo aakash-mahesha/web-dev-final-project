@@ -4,7 +4,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import dayjs from "dayjs";
 
 
-import { IconButton, Typography } from '@mui/material';
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -21,9 +21,13 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 import { apiDetailsThunk, dbDetailsThunk } from '../../thunks/event-details-thunks';
-import { updateUserThunk } from '../../thunks/user-thunks';
+// import { updateUserThunk } from '../../thunks/user-thunks';
+import { updateUser } from '../../utils/update-user-events';
+import { deleteEventThunk } from '../../thunks/event-form-thunks';
 
 // update to reflect revised event structure from api and backend
 // to know whether to format description, 
@@ -31,45 +35,32 @@ import { updateUserThunk } from '../../thunks/user-thunks';
 // (already formatted type (from db) should be string):
 // https://www.w3docs.com/snippets/javascript/how-to-check-if-a-value-is-an-object-in-javascript.html
 
-const EventDetails = (
-    //{
-    // event = {
-    //     "name": "2021 Austin City Limits Music Festival",
-    //     "date": {
-    //         "start_date": "Oct 1",
-    //         "when": "Oct 1 – 10"
-    //     },
-    //     "address": [
-    //         "Zilker Park, 2207 Lou Neff Rd",
-    //         "Austin, TX"
-    //     ],
-    //     "pos": ["39.742043", "-104.991531"],
-    //     "url": "https://www.austintexas.org/event/austin-city-limits-music-festival/350781/",
-    //     "description": "One of the country's largest celebrations of live music, this two weekend, six-day festival brings the magic of the famed public TV series \"Austin City Limits\" outside the studio and into Austin's...",
-    //     "venue": {
-    //         "name": "Zilker Park",
-    //         "rating": 4.8,
-    //         "reviews": 837,
-    //         "url": "https://www.google.com/search?q=Zilker+Park&ludocid=11191514603003015866&ibp=gwp%3B0,7"
-    //     },
-    //     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8mRlkCYd_eqWXP6BjfIHI8_m35omm6PkpHEYS9jFoq1wz3O4ra2i8mz4&s",
-    //     "host": {
-    //         "firstname": "Alice",
-    //         "lastname": "Wonderland",
-    //         "_id": "123"
-    //     }
-    // }
-    //}
-) => {
+const EventDetails = () => {
+    /*
+    details page conditional rendering based on user type (
+        like and going for regular, 
+        edit (link to pg) and delete (dispatch delete event think) for organization if organization is host (use email field to compare)
+    */
+    // const userTypes = ["regular", "organization", "admin"];
     const { eventDetails } = useSelector(state => state.eventDetails);
     const { currentUser } = useSelector(state => state.auth);
-    const [event, setEvent] = useState(eventDetails);
 
     const { origin, id } = useParams();
-    console.log('params', useParams())
-    console.log('id', id);
+    // console.log('params', useParams())
+    // console.log('id', id);
     const dispatch = useDispatch();
-    console.log('from reducer', eventDetails);
+    // console.log('from reducer', eventDetails);
+
+    const [event, setEvent] = useState(eventDetails);
+
+    const isRegularUser = (currentUser.loggedIn ? currentUser.details.user_type === "regular" : false);
+    const isEventOrganizer = (event) => {
+        if (currentUser.loggedIn) {
+            const user = currentUser.details;
+            return (user.user_type !== "admin" && user.email === event.hostDetails.email);
+        }
+        return false;
+    }
 
     // async function loadEvent(origin, id) {
     //     if (origin === 'db') {
@@ -95,26 +86,35 @@ const EventDetails = (
                 console.log('effect')
             }
         };
-        loadEvent();
+        if (event === '') {
+            loadEvent();
+        }
     }, []);
     // console.log('reducer',eventDetails)
     console.log('state', event)
 
-    const removeEventId = (arr, eid) => arr.filter((idObj) => idObj.event_id !== eid);
+    // const removeEventId = (arr, eid) => arr.filter((idObj) => idObj.event_id !== eid);
 
-    const updateUserFieldList = (fieldName, add) => {
-        let fieldList = currentUser.details[fieldName];
-        if (add) {
-            const idObj = { event_id: id, source: origin };
-            fieldList.push(idObj);
-        } else {
-            fieldList = removeEventId(fieldList, id);
-        }
-        const user = {
-            // ...currentUser,
-            fieldName: fieldList
-        }
-        updateUserThunk(user);
+    const updateUserFieldList = async (fieldName, add) => {
+        // let fieldList = currentUser.details[fieldName];
+        // if (add) {
+        //     const idObj = { event_id: id, source: origin };
+        //     fieldList.push(idObj);
+        // } else {
+        //     fieldList = removeEventId(fieldList, id);
+        // }
+        // const user = {
+        //     // ...currentUser,
+        //     fieldName: fieldList
+        // }
+        // updateUserThunk(user);
+        const idObj = { event_id: id, source: origin };
+        const operation = (add ? "ADD" : "REMOVE");
+        console.log(operation);
+        const response = await updateUser(dispatch, currentUser, fieldName, operation, idObj);
+        console.log(response);
+
+
     }
 
     // update to get initial value from state
@@ -122,8 +122,9 @@ const EventDetails = (
 
     // update to send new value to server via reducer
     const handleLiked = () => {
-        setLiked(!liked);
-        updateUserFieldList("likedEventIds", liked);
+        const updated = !liked;
+        setLiked(updated);
+        updateUserFieldList("likedEventIds", updated);
     }
 
 
@@ -132,23 +133,49 @@ const EventDetails = (
 
     // update to send new value to server via reducer
     const handleGoing = () => {
-        setGoing(!going);
-        updateUserFieldList("goingEventIds", going);
+        const updated = !going;
+        setGoing(updated);
+        updateUserFieldList("goingEventIds", updated);
     }
 
     const getUserVals = () => {
         if (currentUser.loggedIn) {
-            // check whether event id is in current users liked list
-            const initialLiked = currentUser.details.likedEventIds.some((idObj) => idObj.event_id === id);
-            setLiked(initialLiked);
+            if (currentUser.details.user_type === "regular") {
+                // check whether event id is in current users liked list
+                const initialLiked = currentUser.details.likedEventIds.some((idObj) => idObj.event_id === id);
+                setLiked(initialLiked);
 
-            // check whether event id is in current users going list
-            const initialGoing = currentUser.details.goingEventIds.some((idObj) => idObj.event_id === id);
-            setGoing(initialGoing)
+                // check whether event id is in current users going list
+                const initialGoing = currentUser.details.goingEventIds.some((idObj) => idObj.event_id === id);
+                setGoing(initialGoing)
+            }
         }
     }
 
     useEffect(() => getUserVals(), []);
+
+    const handleEdit = () => {
+        console.log("edit");
+        navigate(`/edit-event/${id}`)
+    }
+
+    const [deleteDialog, setDeleteDialog] = useState(false);
+
+    const handleDeleteClick = () => {
+        setDeleteDialog(true);
+    }
+
+    const handleCancelDelete = () => {
+        console.log('cancel');
+        setDeleteDialog(false);
+    }
+
+    const handleConfirmDelete = async () => {
+        console.log("delete");
+        const response = await dispatch(deleteEventThunk({"_id": id}));
+        console.log(response)
+        navigate(-1);
+    }
 
     const navigate = useNavigate();
 
@@ -160,6 +187,54 @@ const EventDetails = (
         const address = event.address;
         const cityStateCountry = [address.city, address.state, address.country].filter((x) => x).join(', ');
         return cityStateCountry;
+    }
+
+    const description = (event) => {
+        const description = event.description;
+        if (origin === 'db') {
+            return (
+                <Grid item xs={12}>
+                    <Typography>{description}</Typography>
+                </Grid>
+            );
+        } else {
+            return (
+                <Grid item xs={12}
+                    sx={{ p: 2 }}
+                >
+                    <Grid container>
+                        {description.info &&
+                            <Grid item xs={12}>
+                                <Typography>
+                                    {description.info}
+                                </Typography>
+                            </Grid>}
+                        {description.eventType.length ?
+                            (<Grid item xs={12}>
+                                <Typography
+                                    sx={{ fontWeight: 'bold' }}
+                                >
+                                    Event Type:
+                                </Typography>
+                                <Typography>
+                                    {description.eventType.join(', ')}
+                                </Typography>
+                            </Grid>) : ''}
+                        {description.featured.length ?
+                            (<Grid item xs={12}>
+                                <Typography
+                                    sx={{ fontWeight: 'bold' }}
+                                >
+                                    Featured:
+                                </Typography>
+                                <Typography>
+                                    {description.featured.join(', ')}
+                                </Typography>
+                            </Grid>) : ''}
+                    </Grid>
+                </Grid>
+            )
+        }
     }
 
     return (
@@ -175,13 +250,44 @@ const EventDetails = (
                 <Grid container spacing={2}
                     sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
                 >
-                    <Grid item xs={12}
+                    <Grid item xs={6}
+                        sx={{ textAlign: "left", justifyContent: "flex-start" }} >
+                        {isEventOrganizer(event) &&
+                            (<ButtonGroup>
+                                <IconButton color="primary" title="edit" aria-label="edit event"
+                                    onClick={handleEdit}>
+                                    <EditOutlinedIcon />
+                                </IconButton>
+                                <IconButton color="primary" title="delete" aria-label="delete event"
+                                    onClick={handleDeleteClick}>
+                                    <DeleteOutlinedIcon />
+                                </IconButton>
+                            </ButtonGroup>)}
+                        <Dialog
+                            open={deleteDialog}
+                            onClose={handleCancelDelete}
+                        >
+                            <DialogTitle>
+                                {"Are you sure you want to delete this event?"}
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    This action cannot be undone.
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleConfirmDelete}>Delete</Button>
+                                <Button onClick={handleCancelDelete}>Cancel</Button>
+                            </DialogActions>
+                        </Dialog>
+                    </Grid>
+                    <Grid item xs={6}
                         sx={{ textAlign: "right", justifyContent: "flex-end" }} >
                         {/* <IconButton color="primary" aria-label="add to bookmarks"
                             onClick={handleGoing}>
                             {going ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
                         </IconButton> */}
-                        {currentUser.loggedIn && (<IconButton color="primary" aria-label="add to bookmarks"
+                        {isRegularUser && (<IconButton color="primary" title="like" aria-label="add to bookmarks"
                             onClick={handleLiked}>
                             {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                         </IconButton>)}
@@ -247,16 +353,18 @@ const EventDetails = (
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} >
-                        {/* <Typography>
+                    {description(event)}
+                    {(origin === 'api') &&
+                        (<Grid item xs={12} >
+                            {/* <Typography>
                             {event.description}
                         </Typography> */}
-                        {/* <a target='_blank' rel='noopener noreferrer' href={event.url}> */}
-                        <Typography component={Link} to={`/details/${event._id}`}>
-                            See event details
-                        </Typography>
-                        {/* </a> */}
-                    </Grid>
+                            {/* <a target='_blank' rel='noopener noreferrer' href={event.url}> */}
+                            <Typography >
+                                <a target='_blank' rel='noopener noreferrer' href={event.url}>See on Ticketmaster</a>
+                            </Typography>
+                            {/* </a> */}
+                        </Grid>)}
                     {event.hostDetails && (<Grid item xs={12}
                         sx={{
                             py: 2
@@ -272,13 +380,13 @@ const EventDetails = (
                             {event.hostDetails.email}
                         </Typography>
                     </Grid>)}
-                    {currentUser.loggedIn && (<Grid item xs={12}
+                    {isRegularUser && (<Grid item xs={12}
                         sx={{ textAlign: "left", justifyContent: "flex-start" }} >
                         {/* <IconButton color="primary" aria-label="like"
                             onClick={handleLiked}>
                             {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                         </IconButton> */}
-                        <IconButton color="primary" aria-label="going"
+                        <IconButton color="primary" title="going to event" aria-label="going"
                             onClick={handleGoing}>
                             {going ? <CheckCircleIcon sx={{ mr: 1 }} /> : <CheckCircleOutlineIcon sx={{ mr: 1 }} />}
                             <Typography>Going?</Typography>

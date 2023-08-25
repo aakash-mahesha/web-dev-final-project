@@ -3,7 +3,7 @@ import { HashRouter, Routes, Navigate } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import EventForm from './components/create-event';
+import EventFormBox from './components/create-event-page';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import EventPage from './components/event-page/index.js';
@@ -21,6 +21,7 @@ import Register from './components/register-component';
 import AuthContext from './utils/auth-context';
 import ProtectedRoute from './utils/protected-route';
 import HomePage from './components/home-page';
+import EditEventFormBox from './components/edit-event';
 
 function App() {
   const store = configureStore({
@@ -50,7 +51,8 @@ function App() {
               <Route path="/details/:origin/:id" element={<EventPage />} />
               <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               {/* <Route path="/table" element={<EventTable />} /> */}
-              <Route path="/create-event" element={<ProtectedRoute><EventForm /></ProtectedRoute>} />
+              <Route path="/create-event" element={<ProtectedRoute>< EventFormBox /></ProtectedRoute>} />
+              <Route path="/edit-event/:id" element={<ProtectedRoute>< EditEventFormBox /></ProtectedRoute>} />
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/login" element={<LoginComponent />} />
               <Route path="/register/*" element={<Register />} />

@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { TextField, Button, Grid, Typography, InputLabel, Checkbox, FormControlLabel, Chip, Backdrop, CircularProgress } from '@mui/material';
+import React, { useState } from 'react';
+import { TextField, Button, Grid, Container, Box , Typography, InputLabel, Checkbox, FormControlLabel, Chip, Backdrop, CircularProgress } from '@mui/material';
 import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { createEventThunk } from '../../thunks/event-form-thunks.js';
-import postreq from '../../utils/postreq.js';
+import { createEventThunk } from '../../../thunks/event-form-thunks.js';
+import postreq from '../../../utils/postreq.js';
 import { useSelector } from 'react-redux';
-import { updateUserThunk } from '../../thunks/user-thunks.js';
-import { findUserById } from '../../services/user-service.js';
-import { profileThunk } from '../../thunks/auth-thunks.js';
-import { useNavigate } from 'react-router';
-import { updateUser } from '../../utils/update-user-events.js';
+import { updateUser } from '../../../utils/update-user-events.js';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-function EventForm() {
+const defaultTheme = createTheme();
+
+const EventForm = () => {
+  
     const dispatch = useDispatch();
-    const {loading, submittedForm, message} = useSelector(state => state.eventFormState);
     const {currentUser} = useSelector(state => state.auth);
     // https://mapverse-server.onrender.com/api/events
   const uploadAPI = "https://mapverse-server.onrender.com/api/files/upload"
@@ -36,16 +36,11 @@ function EventForm() {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState('');
   const [selectedImages, setImages] = useState([]);
-  const [shouldSubmit, setShouldSubmit] = useState(false);
   const [shouldPublish, setShouldPublish] = useState(false);
   const [uploadLinks, setUploadLinks] = useState([]);
   const [formLoading, setFormLoading] = useState(false);
-  const [eventIDCreated, setEventIDCreated] = useState('');
-
-  const navigate = useNavigate()
 
   function resetStates() {
-    setEventIDCreated('');
     setEventName('');
     setStartDateAndTime(dayjs());
     setEndDateAndTime(dayjs());
@@ -70,11 +65,11 @@ function EventForm() {
   };
 
   const handleEventStartDateChange = (event) => {
-    setStartDateAndTime(event.toISOString());
+    setStartDateAndTime(event);
   }
 
   const handleEventEndDateChange = (event) => {
-    setEndDateAndTime(event.toISOString());
+    setEndDateAndTime(event);
   }
 
   const handleEventDescriptionChange = (event) => {
@@ -107,8 +102,8 @@ function EventForm() {
   };
 
   function constructForm(publishBool) {
-    const startDateAndTimeString = startDateAndTime.toString();
-    const endDateAndTimeString = endDateAndTime.toString();
+    const startDateAndTimeString = startDateAndTime.toISOString();
+    const endDateAndTimeString = endDateAndTime.toISOString();
     const formData = {
       eventName,
       startDateAndTimeString,
@@ -136,6 +131,7 @@ function EventForm() {
   }
 
   async function uploadImage() {
+    console.log("uploading?");
     let links = [];
       const data = new FormData()
       let response = {};
@@ -151,10 +147,12 @@ function EventForm() {
       else {
         return;
       }
-      
+      console.log("resp from img upload",response);
       if(response.status === 200) {
         links.push(response.data.public_url);
+        console.log(links);
         setUploadLinks(links.flat());
+        console.log("in upload image",uploadLinks);
       }
       else {
         links = ['Upload failed'];
@@ -177,71 +175,38 @@ function EventForm() {
     event.preventDefault();
     setFormLoading(true);
     await uploadImage();
+    console.log("outside upload", uploadLinks);
     if (action === 'submit') {
       setShouldPublish(true);
     }
     if (action === 'saveDraft') {
       setShouldPublish(false);
     }
-    const formData = constructForm(shouldPublish);  
+    const formData = constructForm(shouldPublish);
+    console.log(formData); 
     await uploadFormAndUpdate(formData);
     setFormLoading(false);
-    console.log("Loading, Submitted, Message", loading, submittedForm, message);
+    // console.log("Loading, Submitted, Message", loading, submittedForm, message);
     resetStates();
   };
 
-
-  // useEffect(async () => {
-  //   if(shouldSubmit) {
-  //     const formData = constructForm(shouldPublish);
-
-  //     const uploadFormAndUpdate = async() => {
-  //       let eventObj = await dispatch(createEventThunk(formData));
-  //       console.log("indexjs",eventObj.payload);
-  //       const newEventID = eventObj.payload;
-  //       // setEventIDCreated(eventID.payload);
-  //       if(newEventID.includes("400")) {
-  //         alert('There was an error creating this event. Please try again.');
-  //         return;
-  //       }
-  //       else {
-  //         // func(array name, value to append);
-  //         // const currentUser = await dispatch(findUserById(currentUser.details._id));
-  //         // let events = [...currentUser.details.createdEventIds]
-  //         // events.push(newEventID);
-  //         // const updatedUser = {...currentUser.details, createdEventIds: events}
-  //         // await dispatch(updateUserThunk(updatedUser));
-  //         // await dispatch(profileThunk())
-  //         await updateUser(dispatch, currentUser,"createdEventIds","ADD",newEventID);
-  //         // console.log(payload.details);
-  //       }
-  //       // const updateEventIds = updatedUser.createdEventIds;
-  //       // updateEventIds.push(eventIDCreated);
-  //       // updatedUser.createdEventIds = updateEventIds;
-  //       // console.log(updatedUser);
-  //       // updatedUser.createdEventIds.push(eventIDCreated);
-  //     }
-
-  //     await uploadFormAndUpdate();
-  //     // const updatedUserEvent = currentUser.details;
-  //     // const user = await dispatch(updateUserThunk(updatedUserEvent.createdEventIds.push(eventIDCreated)));
-  //     // console.log("in form, updated user:", user);
-  //     console.log("Updated user: ", currentUser.details);
-  //     setShouldSubmit(false);
-  //     setFormLoading(false);
-  //     console.log("Loading, Submitted, Message", loading, submittedForm, message);
-  //     resetStates();
-  //   }
-  // }, [shouldSubmit])
-
   return (
-    <div>
+    <ThemeProvider theme={defaultTheme}>
           <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={formLoading}
           >
           <CircularProgress color="inherit" />
           </Backdrop>
+          <Container component='main' maxWidth="md">
+          <CssBaseline/>
+            <Box sx={{
+                    marginTop:10,
+                    marginBottom:8,
+                    display:'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}>
           <Grid container spacing={3} alignItems="flex-start">
             <Grid item xs={12}>
                 <Typography variant="h4">Event Details</Typography>
@@ -416,8 +381,10 @@ function EventForm() {
                 Save Draft
                 </Button>
             </Grid>
-          </Grid>
-        </div>
+            </Grid>
+          </Box>
+          </Container>
+          </ThemeProvider>
   );
 }
 

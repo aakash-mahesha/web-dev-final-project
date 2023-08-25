@@ -23,7 +23,7 @@ export async function updateUser(dispatch, currentState, arrayName, operation, v
                     break;
                 
                 case "REMOVE":
-                    events = events.filter(item => item!== value);
+                    events = events.filter(item => item.event_id!== value.event_id);
                     break;
                 default:
                     break;

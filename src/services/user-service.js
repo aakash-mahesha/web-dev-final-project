@@ -17,7 +17,7 @@ export const findAllUsers = async () => {
     return response.data;
   };
   
-  export const createUser = (user) => {
+  export const createUser = (user) => { 
     return axios.post(USERS_API_URL, user);
   };
 
