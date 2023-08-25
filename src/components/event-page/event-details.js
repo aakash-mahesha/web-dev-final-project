@@ -57,7 +57,7 @@ const EventDetails = () => {
     const isEventOrganizer = (event) => {
         if (currentUser.loggedIn) {
             const user = currentUser.details;
-            return (user.user_type === "organization" && user.email === event.hostDetails.email);
+            return (user.user_type !== "admin" && user.email === event.hostDetails.email);
         }
         return false;
     }
@@ -172,8 +172,9 @@ const EventDetails = () => {
 
     const handleConfirmDelete = async () => {
         console.log("delete");
-        await dispatch(deleteEventThunk(id));
-        setDeleteDialog(false);
+        const response = await dispatch(deleteEventThunk({"_id": id}));
+        console.log(response)
+        navigate(-1);
     }
 
     const navigate = useNavigate();
@@ -249,16 +250,8 @@ const EventDetails = () => {
                 <Grid container spacing={2}
                     sx={{ textAlign: "left", pl: 2, display: "flex", justifyContent: "flex-start" }}
                 >
-                    <Grid item xs={12}
-                        sx={{ textAlign: "right", justifyContent: "flex-end" }} >
-                        {/* <IconButton color="primary" aria-label="add to bookmarks"
-                            onClick={handleGoing}>
-                            {going ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
-                        </IconButton> */}
-                        {isRegularUser && (<IconButton color="primary" title="like" aria-label="add to bookmarks"
-                            onClick={handleLiked}>
-                            {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                        </IconButton>)}
+                    <Grid item xs={6}
+                        sx={{ textAlign: "left", justifyContent: "flex-start" }} >
                         {isEventOrganizer(event) &&
                             (<ButtonGroup>
                                 <IconButton color="primary" title="edit" aria-label="edit event"
@@ -270,23 +263,34 @@ const EventDetails = () => {
                                     <DeleteOutlinedIcon />
                                 </IconButton>
                             </ButtonGroup>)}
-                            <Dialog
+                        <Dialog
                             open={deleteDialog}
                             onClose={handleCancelDelete}
-                            >
-                                <DialogTitle>
-                                    {"Are you sure you want to delete this event?"}
-                                </DialogTitle>
-                                <DialogContent>
-                                    <DialogContentText>
-                                        This action cannot be undone.
-                                    </DialogContentText>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={handleConfirmDelete}>Delete</Button>
-                                    <Button onClick={handleCancelDelete}>Cancel</Button>
-                                </DialogActions>
-                            </Dialog>
+                        >
+                            <DialogTitle>
+                                {"Are you sure you want to delete this event?"}
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    This action cannot be undone.
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleConfirmDelete}>Delete</Button>
+                                <Button onClick={handleCancelDelete}>Cancel</Button>
+                            </DialogActions>
+                        </Dialog>
+                    </Grid>
+                    <Grid item xs={6}
+                        sx={{ textAlign: "right", justifyContent: "flex-end" }} >
+                        {/* <IconButton color="primary" aria-label="add to bookmarks"
+                            onClick={handleGoing}>
+                            {going ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
+                        </IconButton> */}
+                        {isRegularUser && (<IconButton color="primary" title="like" aria-label="add to bookmarks"
+                            onClick={handleLiked}>
+                            {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                        </IconButton>)}
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container
