@@ -71,6 +71,7 @@ const EventSuggestions = () => {
                             "You recently liked" : "Users recently liked"
                         }
                     </Typography>
+                    {console.log('like events', tenLikedEvents)}
                     <EventList events={tenLikedEvents} />
                 </Grid>
                 <Grid item xs={6}>
