@@ -18,6 +18,9 @@ const EventSuggestions = () => {
 
     function arrTenOrLess(arr) {
         console.log("event sugg", arr);
+        if (!arr) {
+            return [];
+        }
         return (arr.length > 10 ? arr.slice(10) : arr);
     }
 
@@ -38,21 +41,23 @@ const EventSuggestions = () => {
 
     useEffect(() => {
         async function loadEvents() {
-            const { payload } = await dispatch(findAllUsersThunk());
-            console.log(payload)
-            if (payload) {
-                const tenUsersList = arrTenOrLess(payload);
-                setTenLikedEvents(findEndFieldList(tenUsersList, "likedEventIds"));
-                setTenGoingEvents(findEndFieldList(tenUsersList, "goingEventIds"));
+            if (currentUser.loggedIn) {
+                setTenLikedEvents(arrTenOrLess(currentUser.details.likedEventIds));
+                setTenGoingEvents(arrTenOrLess(currentUser.details.goingEventIds));
+            } else {
+                const { payload } = await dispatch(findAllUsersThunk());
+                console.log(payload)
+                if (payload) {
+                    const tenUsersList = arrTenOrLess(payload);
+                    setTenLikedEvents(findEndFieldList(tenUsersList, "likedEventIds"));
+                    setTenGoingEvents(findEndFieldList(tenUsersList, "goingEventIds"));
+                }
             }
         };
-        loadEvents();
+        if (!tenGoingEvents.length || !tenLikedEvents.length) {
+            loadEvents();
+        }
     }, []);
-
-    if (currentUser.loggedIn) {
-        // setTenLikedEvents(arrTenOrLess(currentUser.details.likedEventIds));
-        // setTenGoingEvents(arrTenOrLess(currentUser.details.goingEventIds));
-    }
 
     // likedEvents and goingEvents (as lists in side-by-side grids)
 
@@ -69,6 +74,7 @@ const EventSuggestions = () => {
                             "You recently liked" : "Users recently liked"
                         }
                     </Typography>
+                    {console.log('like events', tenLikedEvents)}
                     <EventList events={tenLikedEvents} />
                 </Grid>
                 <Grid item xs={6}>

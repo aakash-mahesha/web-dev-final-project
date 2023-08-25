@@ -15,11 +15,24 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import LayoutPage from '../layout-page';
 import Map from "./map-items/search-map";
+import { useLocation } from 'react-router';
 
 function MapPage({ Component }) {
+    const currentPage = useLocation().pathname.split('/')[1];
+    console.log(currentPage)
     const { results, loading } = useSelector(state => state.results);
+    const { eventDetails } = useSelector(state => state.eventDetails);
     const [drawerWidth, setDrawerWidth] = React.useState(400);
     const [mainSide, setMainSide] = React.useState(true);
+
+    // if (currentPage === 'details') {
+    //     const events = eventDetails;
+    // } else {
+    //     const events = results;
+    // }
+
+    // console.log(events)
+
 
     // const calcDrawerWidth = () => {
     //     const windowWidth = window.innerWidth;
@@ -138,7 +151,7 @@ function MapPage({ Component }) {
                 </Drawer>
                 {showMain && <Main open={open}>
                     <DrawerHeader />
-                    <Map events={results}/>
+                    {currentPage === 'details' ? <Map events={[eventDetails]} /> : <Map events={results}/>}
                 </Main>}
             </>
         );

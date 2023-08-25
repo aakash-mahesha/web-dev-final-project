@@ -26,7 +26,7 @@ export const editEvent = async (formData) => {
         const response = await api.put(FORM_API, formData);
         if (response.status === 201) {
             // Send update to /user db and append this event to his, alongside adding it to redux state of the user
-            return response.data._id;
+            return response;
         }
         else {
             return 'Could not complete request: '+response;
