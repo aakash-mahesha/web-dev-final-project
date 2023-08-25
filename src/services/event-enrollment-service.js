@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_BASE_URL = "http://localhost:4000/api";
-const ENROLLMENTS_API = `${API_BASE_URL}/api/enrollments`;
+// const API_BASE_URL = "http://localhost:4000/api";
+const ENROLLMENTS_API = `${REACT_APP_API_BASE}/api/enrollments`;
 
 const USERS_API = `${API_BASE_URL}/api/users`;
 
