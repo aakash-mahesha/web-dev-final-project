@@ -12,7 +12,8 @@ const API_KEY = process.env.REACT_APP_TICKETMASTER_API_KEY;
 const TICKEMASTER_DETAILS_API = (id) => (`${TICKEMASTER_API_BASE}/events/${id}?apikey=${API_KEY}`);
 
 // const REACT_APP_API_BASE = 'https://mapverse-server.onrender.com/api';
-const REACT_APP_API_BASE = 'http://localhost:4000/api';
+// const REACT_APP_API_BASE = 'http://localhost:4000/api';
+const REACT_APP_API_BASE = process.env.REACT_APP_API_BASE;
 
 
 // export const dbDetails = async (id) => {

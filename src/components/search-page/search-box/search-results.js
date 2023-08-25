@@ -27,11 +27,11 @@ const SearchResults = ({ results, loading, noResults, origin }) => {
         try {
             if (origin === 'db') {
                 await dispatch(dbDetailsThunk(id));
-                navigate(`/results/${origin}/${id}`);
+                navigate(`/details/${origin}/${id}`);
 
             } else {
                 await dispatch(apiDetailsThunk(id));
-                navigate(`/results/${origin}/${id}`);
+                navigate(`/details/${origin}/${id}`);
             }
         } catch (e) {
             alert(e);

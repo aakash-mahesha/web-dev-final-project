@@ -18,9 +18,10 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { logoutThunk, registerThunk } from '../../thunks/auth-thunks';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 
 export default function SiteMenu() {
@@ -28,7 +29,7 @@ export default function SiteMenu() {
     const { currentUser } = useSelector(state => state.auth);
     // const [currentUser] = React.useState(true);
     const [drawerState, setDrawerState] = React.useState(false);
-
+    const dispatch = useDispatch();
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -38,7 +39,7 @@ export default function SiteMenu() {
     };
 
     const menuItems = ['Home', 'Search', 'Create an event', 'Dashboard', 'Logout', 'Login', 'Register'];
-    const menuLinks = ['/', '/search', '/create-event', '/dashboard', '/', '/', '/'];
+    const menuLinks = ['/', '/search', '/create-event', '/dashboard', '/login', '/login', '/register'];
     const menuIcons = [<HomeIcon />, <SearchIcon />, <AddCircleIcon />, <DashboardIcon />, <LogoutIcon />, <LoginIcon />, <PersonAddIcon />]
 
     const menuList = menuItems.map((item, index) => {
@@ -52,7 +53,7 @@ export default function SiteMenu() {
                 show = false;
             }
         }
-
+        
         return (
             show &&
             <ListItem key={index} disablePadding>
@@ -60,7 +61,11 @@ export default function SiteMenu() {
                     <ListItemIcon>
                         {menuIcons[index]}
                     </ListItemIcon>
-                    <ListItemText primary={item} />
+                    <ListItemText primary={item} onClick={() => {
+                        if(item === 'Logout'){
+                            dispatch(logoutThunk())
+                        }
+                    }} />
                 </ListItemButton>
             </ListItem>
         );

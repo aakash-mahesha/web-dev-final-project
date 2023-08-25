@@ -1,11 +1,52 @@
 import axios from "axios";
 
 const api = axios.create();
-const API_BASE = process.env.API_BASE;
-const FORM_API = `${API_BASE}/users/{id}/save-event`
+// const API_BASE = process.env.API_BASE;
+// const FORM_API = `https://mapverse-server.onrender.com/api/events`
+const REACT_APP_API_BASE = process.env.REACT_APP_API_BASE;
+const FORM_API =  `${REACT_APP_API_BASE}/events`;
 
-export const submitEventForm = async (formData) => {
-    console.log("In Service, form data: ", formData);
-    const response = await api.post(FORM_API, formData);
-    return response.data;
+export const createEvent = async (formData) => {
+    try {
+        const response = await api.post(FORM_API, formData);
+        if (response.status === 201) {
+            // Send update to /user db and append this event to his, alongside adding it to redux state of the user
+            return response.data._id;
+        }
+        else {
+            return 'Could not complete request: '+response;
+        }
+    } catch (error) {
+        return error.message;
+    }
+}
+
+export const editEvent = async (formData) => {
+    try {
+        const response = await api.put(FORM_API, formData);
+        if (response.status === 201) {
+            // Send update to /user db and append this event to his, alongside adding it to redux state of the user
+            return response.data._id;
+        }
+        else {
+            return 'Could not complete request: '+response;
+        }
+    } catch (error) {
+        return error.message;
+    }
+}
+
+export const deleteEvent = async (eventID) => {
+    try {
+        const response = await api.delete(FORM_API, eventID);
+        if (response.status === 201) {
+            // Send update to /user db and append this event to his, alongside adding it to redux state of the user
+            return response.data._id;
+        }
+        else {
+            return 'Could not complete request: '+response;
+        }
+    } catch (error) {
+        return error.message;
+    }
 }

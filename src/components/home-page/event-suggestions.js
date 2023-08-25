@@ -16,7 +16,10 @@ const EventSuggestions = () => {
 
     const dispatch = useDispatch();
 
-    const arrTenOrLess = (arr) => (arr.length > 10 ? arr.slice(10) : arr);
+    function arrTenOrLess(arr) {
+        console.log("event sugg", arr);
+        return (arr.length > 10 ? arr.slice(10) : arr);
+    }
 
     const findEndFieldList = (userList, field) => {
         const endsList = [];
@@ -47,8 +50,8 @@ const EventSuggestions = () => {
     }, []);
 
     if (currentUser.loggedIn) {
-        setTenLikedEvents(arrTenOrLess(currentUser.likedEventIds));
-        setTenGoingEvents(arrTenOrLess(currentUser.goingEventIds));
+        // setTenLikedEvents(arrTenOrLess(currentUser.details.likedEventIds));
+        // setTenGoingEvents(arrTenOrLess(currentUser.details.goingEventIds));
     }
 
     // likedEvents and goingEvents (as lists in side-by-side grids)
