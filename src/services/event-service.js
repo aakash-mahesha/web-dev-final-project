@@ -1,6 +1,6 @@
 import axios from 'axios';
 
- const API_BASE = "http://localhost:4000/api";
+ const API_BASE = process.env.REACT;
  const EVENT_API = `${API_BASE}/events`;
 export const createEvent = async (event) => {
     const response = await axios.post(EVENT_API,event);
