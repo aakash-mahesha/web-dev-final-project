@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Button, Grid, Typography, InputLabel, Checkbox, FormControlLabel, Chip, Backdrop, CircularProgress } from '@mui/material';
+import { TextField, Button, Grid, Typography, InputLabel, Checkbox, FormControlLabel, Chip, Backdrop, CircularProgress, Container, Box } from '@mui/material';
 import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { createEventThunk, editEventThunk } from '../../../thunks/event-form-thunks.js';
+import { editEventThunk } from '../../../thunks/event-form-thunks.js';
 import postreq from '../../../utils/postreq.js';
 import { useSelector } from 'react-redux';
-import { updateUser } from '../../../utils/update-user-events.js';
 import { dbDetails } from '../../../services/event-details-service.js';
-import { useNavigate } from 'react-router';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const defaultTheme = createTheme();
 
 const EditEventForm = (props) => {
     
-    const id = (props.id) ? props.id : '64e7ebf4e226dc63a476ccaf';
+    const id = (props.id) ? props.id : '64e7deb30974f2f0e56d4ab6';
     // console.log("$$$ id", id);
     const dispatch = useDispatch();
-    const {loading, submittedForm, message} = useSelector(state => state.eventFormState);
     const {currentUser} = useSelector(state => state.auth);
 
     useEffect(() => {
@@ -201,14 +202,23 @@ const EditEventForm = (props) => {
   };
 
   return (
-    <div>
+      <ThemeProvider theme={defaultTheme}>
           <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={formLoading}
           >
           <CircularProgress color="inherit" />
           </Backdrop>
-          <Grid container spacing={3} alignItems="flex-start">
+          <Container component='main' maxWidth="md">
+          <CssBaseline/>
+            <Box sx={{
+                    marginTop:10,
+                    marginBottom:8,
+                    display:'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Typography variant="h4">Event Details</Typography>
             </Grid>
@@ -383,7 +393,9 @@ const EditEventForm = (props) => {
                 </Button>
             </Grid>
           </Grid>
-        </div>
+          </Box>
+          </Container>
+          </ThemeProvider>
   );
 }
 
