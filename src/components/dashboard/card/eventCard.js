@@ -32,8 +32,8 @@ const EventCard = () =>{
     const info_url =null;
     const dispatch = useDispatch();
     // const deleteEventHandler = (eventId) => {
-    //    // dispatch(deleteTuit(id));
-    //     dispatch(deleteTuitThunk(eventId)); // invoke the deleteTuitThunk from the remove icon
+    //     dispatch(deleteEvent(eventId));
+   
     // }
     return(
         <Paper>
