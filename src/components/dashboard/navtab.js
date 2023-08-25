@@ -94,7 +94,7 @@ import {
                   fontSize="0.85rem"
                   sx={{ color: theme.palette.secondary[100] }}
                 >
-                  Jack
+                
                  {/* // {user.name} */}
                 </Typography>
                 <Typography

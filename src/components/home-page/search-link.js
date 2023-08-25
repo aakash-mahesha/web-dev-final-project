@@ -47,12 +47,14 @@ const SearchLink = () => {
                 >
                     Ready to find the next best experience of your life?
                 </Typography>
-                <IconButton color="primary" onClick={handleSearch}
-                    sx={{ p: 3 }}
+                <IconButton onClick={handleSearch}
+                    sx={{ color: "grey.800", p: 3 }}
                 >
-                    <SearchIcon sx={{ mr: 1 }} />
-                    <Typography variant="h5">
-                        Search the MapVerse now
+                    <SearchIcon sx={{fontSize: 30,  mr: 1 }} />
+                    <Typography variant="h5"
+                        sx={{ fontWeight: 700 }}
+                    >
+                        Enter the MapVerse
                     </Typography>
                 </IconButton>
             </Box>

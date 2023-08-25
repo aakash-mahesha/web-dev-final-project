@@ -1,9 +1,8 @@
 import { Typography, Box, Container,Paper,Grid} from "@mui/material";
 import MainLayout from "../layout/main-layout";
-import Header from "../header";
-
-import ProfileContent from "../../../form/edit-profile/profile";
 import CheckboxesGroup from "../checkbox";
+// import ProfileForm from "../../../form/edit-profile/edit-profile";
+import EditProfileBox from "../../../form/edit-profile/edit-profile-box.js";
 const ProfileScreen = () => {
     return(
         <>
@@ -13,14 +12,13 @@ const ProfileScreen = () => {
 
         </Box>
         <Container md={6} lg={10} xl={12}>
-            <Paper>
-                <Grid justify = "center">
-            <Header subtitle ="Profile"/>
-            </Grid>
-            </Paper>
+            
+        
+            
         <Box>
             
-        <ProfileContent/>
+        {/* <ProfileForm/> */}
+        <EditProfileBox/>
         <CheckboxesGroup/>
 
         </Box>

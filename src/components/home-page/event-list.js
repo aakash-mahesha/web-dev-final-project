@@ -14,19 +14,22 @@ import { apiDetailsThunk, dbDetailsThunk } from '../../thunks/event-details-thun
 
 
 const EventList = ({ eventIds }) => {
+    console.log('event list', eventIds)
     const dispatch = useDispatch();
     // iterate over eventId list, for each event, retrieve event from either db or api
     const fetchEvents = async (eventIds) => {
         const events = [];
         for (const idObject of eventIds) {
             if (idObject.source === 'db') {
-                const event = await dispatch(dbDetailsThunk(idObject.event_id));
-                events.push(event);
+                const { payload } = await dispatch(dbDetailsThunk(idObject.event_id));
+                events.push(payload);
+                console.log('fetcher', events)
             } else {
-                const event = await dispatch(apiDetailsThunk(idObject.event_id));
-                events.push(event);
+                const { payload } = await dispatch(apiDetailsThunk(idObject.event_id));
+                events.push(payload);
             }
         }
+        console.log('fetcher events', events)
         return events;
     }
 
@@ -44,17 +47,33 @@ const EventList = ({ eventIds }) => {
         }
     };
 
-    let listedEvents = '';
+    const [events, setEvents] = useState([]);
 
-    const displayEvents = async (eventIds) => {
-        if (!Array.isArray(eventIds)) {
-            return;
-        }
-        const events = await fetchEvents(eventIds);
+    useEffect(() => {
+        async function loadEvents() {
+            if (Array.isArray(eventIds)) {
+                console.log('checking length')
+                if (!events.length) {
+                    const fetchedEvents = await fetchEvents(eventIds);
+                    console.log('fetchedEvents', fetchedEvents)
+                    setEvents(fetchedEvents);
+                }
+            }
+        };
+        loadEvents();
+    }, [eventIds]);
+
+    console.log('effect events', events)
+
+    const displayEvents = (events) => {
+        // if (!Array.isArray(eventIds)) {
+        //     return;
+        // }
+        // const events = await fetchEvents(eventIds);
         // setEvents(fetchEvents);
 
         if (events.length) {
-            listedEvents = events.map((event) => (
+            const listedEvents = events.map((event) => (
                 <ListItem key={event._id} disablePadding>
                     <ListItemButton >
                         <Grid container spacing={2} onClick={async () => await handleLoadEvent(event._id)}
@@ -97,17 +116,18 @@ const EventList = ({ eventIds }) => {
                     </ListItemButton>
                 </ListItem>
             ))
+            return listedEvents
         }
-        return listedEvents;
+        return '';
     }
 
-    useEffect(() => {displayEvents(eventIds)}, []);
+    // useEffect(() => { displayEvents(eventIds) }, []);
 
 
     return (
         <Box sx={{ display: 'flex' }}>
             <List>
-                {listedEvents}
+                {displayEvents(events)}
             </List>
         </Box>
     );

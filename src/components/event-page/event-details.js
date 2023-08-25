@@ -23,7 +23,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import { apiDetailsThunk, dbDetailsThunk } from '../../thunks/event-details-thunks';
-import { updateUserThunk } from '../../thunks/user-thunks';
+// import { updateUserThunk } from '../../thunks/user-thunks';
+import { updateUser } from '../../utils/update-user-events';
 
 // update to reflect revised event structure from api and backend
 // to know whether to format description, 
@@ -31,36 +32,7 @@ import { updateUserThunk } from '../../thunks/user-thunks';
 // (already formatted type (from db) should be string):
 // https://www.w3docs.com/snippets/javascript/how-to-check-if-a-value-is-an-object-in-javascript.html
 
-const EventDetails = (
-    //{
-    // event = {
-    //     "name": "2021 Austin City Limits Music Festival",
-    //     "date": {
-    //         "start_date": "Oct 1",
-    //         "when": "Oct 1 – 10"
-    //     },
-    //     "address": [
-    //         "Zilker Park, 2207 Lou Neff Rd",
-    //         "Austin, TX"
-    //     ],
-    //     "pos": ["39.742043", "-104.991531"],
-    //     "url": "https://www.austintexas.org/event/austin-city-limits-music-festival/350781/",
-    //     "description": "One of the country's largest celebrations of live music, this two weekend, six-day festival brings the magic of the famed public TV series \"Austin City Limits\" outside the studio and into Austin's...",
-    //     "venue": {
-    //         "name": "Zilker Park",
-    //         "rating": 4.8,
-    //         "reviews": 837,
-    //         "url": "https://www.google.com/search?q=Zilker+Park&ludocid=11191514603003015866&ibp=gwp%3B0,7"
-    //     },
-    //     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8mRlkCYd_eqWXP6BjfIHI8_m35omm6PkpHEYS9jFoq1wz3O4ra2i8mz4&s",
-    //     "host": {
-    //         "firstname": "Alice",
-    //         "lastname": "Wonderland",
-    //         "_id": "123"
-    //     }
-    // }
-    //}
-) => {
+const EventDetails = () => {
     const { eventDetails } = useSelector(state => state.eventDetails);
     const { currentUser } = useSelector(state => state.auth);
     const [event, setEvent] = useState(eventDetails);
@@ -95,26 +67,35 @@ const EventDetails = (
                 console.log('effect')
             }
         };
-        loadEvent();
+        if (event === '') {
+            loadEvent();
+        }
     }, []);
     // console.log('reducer',eventDetails)
     console.log('state', event)
 
-    const removeEventId = (arr, eid) => arr.filter((idObj) => idObj.event_id !== eid);
+    // const removeEventId = (arr, eid) => arr.filter((idObj) => idObj.event_id !== eid);
 
-    const updateUserFieldList = (fieldName, add) => {
-        let fieldList = currentUser.details[fieldName];
-        if (add) {
-            const idObj = { event_id: id, source: origin };
-            fieldList.push(idObj);
-        } else {
-            fieldList = removeEventId(fieldList, id);
-        }
-        const user = {
-            // ...currentUser,
-            fieldName: fieldList
-        }
-        updateUserThunk(user);
+    const updateUserFieldList = async (fieldName, add) => {
+        // let fieldList = currentUser.details[fieldName];
+        // if (add) {
+        //     const idObj = { event_id: id, source: origin };
+        //     fieldList.push(idObj);
+        // } else {
+        //     fieldList = removeEventId(fieldList, id);
+        // }
+        // const user = {
+        //     // ...currentUser,
+        //     fieldName: fieldList
+        // }
+        // updateUserThunk(user);
+        const idObj = { event_id: id, source: origin };
+        const operation = (add ? "ADD" : "REMOVE");
+        console.log(operation);
+        const response = await updateUser(dispatch, currentUser, fieldName, operation, idObj);
+        console.log(response);
+
+
     }
 
     // update to get initial value from state
@@ -122,8 +103,9 @@ const EventDetails = (
 
     // update to send new value to server via reducer
     const handleLiked = () => {
-        setLiked(!liked);
-        updateUserFieldList("likedEventIds", liked);
+        const updated = !liked;
+        setLiked(updated);
+        updateUserFieldList("likedEventIds", updated);
     }
 
 
@@ -132,8 +114,9 @@ const EventDetails = (
 
     // update to send new value to server via reducer
     const handleGoing = () => {
-        setGoing(!going);
-        updateUserFieldList("goingEventIds", going);
+        const updated = !going;
+        setGoing(updated);
+        updateUserFieldList("goingEventIds", updated);
     }
 
     const getUserVals = () => {
@@ -160,6 +143,54 @@ const EventDetails = (
         const address = event.address;
         const cityStateCountry = [address.city, address.state, address.country].filter((x) => x).join(', ');
         return cityStateCountry;
+    }
+
+    const description = (event) => {
+        const description = event.description;
+        if (origin === 'db') {
+            return (
+                <Grid item xs={12}>
+                    <Typography>{description}</Typography>
+                </Grid>
+            );
+        } else {
+            return (
+                <Grid item xs={12}
+                    sx={{ p: 2 }}
+                >
+                    <Grid container>
+                        {description.info &&
+                            <Grid item xs={12}>
+                                <Typography>
+                                    {description.info}
+                                </Typography>
+                            </Grid>}
+                        {description.eventType.length ?
+                            (<Grid item xs={12}>
+                                <Typography
+                                    sx={{ fontWeight: 'bold' }}
+                                >
+                                    Event Type:
+                                </Typography>
+                                <Typography>
+                                    {description.eventType.join(', ')}
+                                </Typography>
+                            </Grid>) : ''}
+                        {description.featured.length ?
+                            (<Grid item xs={12}>
+                                <Typography
+                                    sx={{ fontWeight: 'bold' }}
+                                >
+                                    Featured:
+                                </Typography>
+                                <Typography>
+                                    {description.featured.join(', ')}
+                                </Typography>
+                            </Grid>) : ''}
+                    </Grid>
+                </Grid>
+            )
+        }
     }
 
     return (
@@ -247,16 +278,18 @@ const EventDetails = (
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} >
-                        {/* <Typography>
+                    {description(event)}
+                    {(origin === 'api') &&
+                        (<Grid item xs={12} >
+                            {/* <Typography>
                             {event.description}
                         </Typography> */}
-                        {/* <a target='_blank' rel='noopener noreferrer' href={event.url}> */}
-                        <Typography component={Link} to={`/details/${event._id}`}>
-                            See event details
-                        </Typography>
-                        {/* </a> */}
-                    </Grid>
+                            {/* <a target='_blank' rel='noopener noreferrer' href={event.url}> */}
+                            <Typography >
+                                <a target='_blank' rel='noopener noreferrer' href={event.url}>See on Ticketmaster</a>
+                            </Typography>
+                            {/* </a> */}
+                        </Grid>)}
                     {event.hostDetails && (<Grid item xs={12}
                         sx={{
                             py: 2
