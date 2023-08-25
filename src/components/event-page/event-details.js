@@ -31,36 +31,7 @@ import { updateUserThunk } from '../../thunks/user-thunks';
 // (already formatted type (from db) should be string):
 // https://www.w3docs.com/snippets/javascript/how-to-check-if-a-value-is-an-object-in-javascript.html
 
-const EventDetails = (
-    //{
-    // event = {
-    //     "name": "2021 Austin City Limits Music Festival",
-    //     "date": {
-    //         "start_date": "Oct 1",
-    //         "when": "Oct 1 – 10"
-    //     },
-    //     "address": [
-    //         "Zilker Park, 2207 Lou Neff Rd",
-    //         "Austin, TX"
-    //     ],
-    //     "pos": ["39.742043", "-104.991531"],
-    //     "url": "https://www.austintexas.org/event/austin-city-limits-music-festival/350781/",
-    //     "description": "One of the country's largest celebrations of live music, this two weekend, six-day festival brings the magic of the famed public TV series \"Austin City Limits\" outside the studio and into Austin's...",
-    //     "venue": {
-    //         "name": "Zilker Park",
-    //         "rating": 4.8,
-    //         "reviews": 837,
-    //         "url": "https://www.google.com/search?q=Zilker+Park&ludocid=11191514603003015866&ibp=gwp%3B0,7"
-    //     },
-    //     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8mRlkCYd_eqWXP6BjfIHI8_m35omm6PkpHEYS9jFoq1wz3O4ra2i8mz4&s",
-    //     "host": {
-    //         "firstname": "Alice",
-    //         "lastname": "Wonderland",
-    //         "_id": "123"
-    //     }
-    // }
-    //}
-) => {
+const EventDetails = () => {
     const { eventDetails } = useSelector(state => state.eventDetails);
     const { currentUser } = useSelector(state => state.auth);
     const [event, setEvent] = useState(eventDetails);
@@ -95,7 +66,9 @@ const EventDetails = (
                 console.log('effect')
             }
         };
-        loadEvent();
+        if (event === '') {
+            loadEvent();
+        }
     }, []);
     // console.log('reducer',eventDetails)
     console.log('state', event)
