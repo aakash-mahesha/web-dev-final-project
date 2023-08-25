@@ -23,7 +23,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import { apiDetailsThunk, dbDetailsThunk } from '../../thunks/event-details-thunks';
-import { updateUserThunk } from '../../thunks/user-thunks';
+// import { updateUserThunk } from '../../thunks/user-thunks';
+import { updateUser } from '../../utils/update-user-events';
 
 // update to reflect revised event structure from api and backend
 // to know whether to format description, 
@@ -73,21 +74,25 @@ const EventDetails = () => {
     // console.log('reducer',eventDetails)
     console.log('state', event)
 
-    const removeEventId = (arr, eid) => arr.filter((idObj) => idObj.event_id !== eid);
+    // const removeEventId = (arr, eid) => arr.filter((idObj) => idObj.event_id !== eid);
 
-    const updateUserFieldList = (fieldName, add) => {
-        let fieldList = currentUser.details[fieldName];
-        if (add) {
-            const idObj = { event_id: id, source: origin };
-            fieldList.push(idObj);
-        } else {
-            fieldList = removeEventId(fieldList, id);
-        }
-        const user = {
-            // ...currentUser,
-            fieldName: fieldList
-        }
-        updateUserThunk(user);
+    const updateUserFieldList = async (fieldName, add) => {
+        // let fieldList = currentUser.details[fieldName];
+        // if (add) {
+        //     const idObj = { event_id: id, source: origin };
+        //     fieldList.push(idObj);
+        // } else {
+        //     fieldList = removeEventId(fieldList, id);
+        // }
+        // const user = {
+        //     // ...currentUser,
+        //     fieldName: fieldList
+        // }
+        // updateUserThunk(user);
+        const idObj = { event_id: id, source: origin };
+        const operation = (add ? "ADD" : "REMOVE");
+        await updateUser(dispatch, currentUser, fieldName, operation, idObj);
+
     }
 
     // update to get initial value from state
@@ -133,6 +138,54 @@ const EventDetails = () => {
         const address = event.address;
         const cityStateCountry = [address.city, address.state, address.country].filter((x) => x).join(', ');
         return cityStateCountry;
+    }
+
+    const description = (event) => {
+        const description = event.description;
+        if (origin === 'db') {
+            return (
+                <Grid item xs={12}>
+                    <Typography>{description}</Typography>
+                </Grid>
+            );
+        } else {
+            return (
+                <Grid item xs={12}
+                    sx={{ p: 2 }}
+                >
+                    <Grid container>
+                        {description.info &&
+                            <Grid item xs={12}>
+                                <Typography>
+                                    {description.info}
+                                </Typography>
+                            </Grid>}
+                        {description.eventType.length ?
+                            (<Grid item xs={12}>
+                                <Typography
+                                    sx={{ fontWeight: 'bold' }}
+                                >
+                                    Event Type:
+                                </Typography>
+                                <Typography>
+                                    {description.eventType.join(', ')}
+                                </Typography>
+                            </Grid>) : ''}
+                        {description.featured.length ?
+                            (<Grid item xs={12}>
+                                <Typography
+                                    sx={{ fontWeight: 'bold' }}
+                                >
+                                    Featured:
+                                </Typography>
+                                <Typography>
+                                    {description.featured.join(', ')}
+                                </Typography>
+                            </Grid>) : ''}
+                    </Grid>
+                </Grid>
+            )
+        }
     }
 
     return (
@@ -220,16 +273,18 @@ const EventDetails = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} >
-                        {/* <Typography>
+                    {description(event)}
+                    {(origin === 'api') &&
+                        (<Grid item xs={12} >
+                            {/* <Typography>
                             {event.description}
                         </Typography> */}
-                        {/* <a target='_blank' rel='noopener noreferrer' href={event.url}> */}
-                        <Typography component={Link} to={`/details/${event._id}`}>
-                            See event details
-                        </Typography>
-                        {/* </a> */}
-                    </Grid>
+                            {/* <a target='_blank' rel='noopener noreferrer' href={event.url}> */}
+                            <Typography >
+                                <a target='_blank' rel='noopener noreferrer' href={event.url}>See on Ticketmaster</a>
+                            </Typography>
+                            {/* </a> */}
+                        </Grid>)}
                     {event.hostDetails && (<Grid item xs={12}
                         sx={{
                             py: 2
