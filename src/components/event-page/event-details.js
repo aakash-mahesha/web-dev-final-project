@@ -88,6 +88,8 @@ const EventDetails = () => {
         };
         if (event === '') {
             loadEvent();
+        } else if (event === null) {
+            navigate("/404");
         }
     }, []);
     // console.log('reducer',eventDetails)

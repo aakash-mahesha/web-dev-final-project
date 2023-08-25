@@ -27,8 +27,9 @@ export const dbDetails = async (id) => {
         console.log("Error with getting details from DB");
         return null;
     }
-    if(response.data === null) {
-        return "event not found";
+    if (response.data === null ) {
+        console.log("event not found")
+        return null;
     }
     // console.log(response.data)
     // const parsedResponse = {
