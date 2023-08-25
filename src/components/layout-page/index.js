@@ -10,13 +10,16 @@ import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 
 import SiteMenu from './menu';
+import UserStatusPanel from './user-status-panel';
+import { useSelector } from 'react-redux';
 
 
 function LayoutPage({ Content, Icon }) {
     const includeIcon = Boolean(Icon);
     // const { drawerWidth } = useSelector(state => state.drawerWidth);
     const drawerWidth = 400;
-
+    const {currentUser} = useSelector(state => state.auth)
+    console.log(currentUser)
     const AppBar = styled(MuiAppBar, {
         shouldForwardProp: (prop) => prop !== 'open',
     })(({ theme, open }) => ({
@@ -43,6 +46,7 @@ function LayoutPage({ Content, Icon }) {
                     <Typography variant="h5" noWrap component="div" sx={{ flexGrow: 1, textAlign: 'left' }}>
                         MapVerse
                     </Typography>
+                    <UserStatusPanel user = {currentUser}/>
                     <SiteMenu />
                 </Toolbar>
             </AppBar>

@@ -8,10 +8,10 @@ import Welcome from "./welcome"
 const HomeContent = () => {
     return (
         <Box flexGrow={1}>
-            {/* brief description/tagline */}
-            <Description />
             {/* welcome to mapverse */}
             <Welcome />
+            {/* brief description/tagline */}
+            <Description />
             {/* link to search */}
             <SearchLink />
             {/* links register/login (loggedIn=false) or profile (loggedIn=true) */}
