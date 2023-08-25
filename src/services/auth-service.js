@@ -1,8 +1,6 @@
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router";
-const API_BASE_URL = "http://localhost:4000/api";
-// const API_BASE_URL = "https://mapverse-server.onrender.com/api";
-//const API_BASE_URL = process.env.REACT_APP_API_BASE;
+const API_BASE_URL = process.env.REACT_APP_API_BASE;
 const USERS_API_URL = `${API_BASE_URL}/users`;  
 const api = axios.create({
     withCredentials: true,
