@@ -118,7 +118,7 @@ const EditEventForm = () => {
     setImages(Array.from(selectedImages));
   };
 
-  function constructForm(publishBool) {
+  function constructForm(publishBool, links) {
     const startDateAndTimeString = startDateAndTime.toISOString();
     const endDateAndTimeString = endDateAndTime.toISOString();
     const formData = {
@@ -138,7 +138,7 @@ const EditEventForm = () => {
       isReservation,
       maxPeople,
       tags,
-      uploadLinks,
+      uploadLinks: links,
       shouldPublish: publishBool,
       hostDetails: {
         name: currentUser.loggedIn ? (currentUser.details.firstname + " " + currentUser.details.lastname) : "Test",
@@ -167,6 +167,7 @@ const EditEventForm = () => {
       console.log("resp from img upload",response);
       if(response.status === 200) {
         links.push(response.data.public_url);
+        return links;
         console.log(links);
         setUploadLinks(links.flat());
         console.log("in upload image",uploadLinks);
@@ -183,18 +184,19 @@ const EditEventForm = () => {
   const handleSubmit = async (event, action) => {
     event.preventDefault();
     setFormLoading(true);
-    await uploadImage();
+    const links = await uploadImage();
     // console.log("outside upload", uploadLinks);
+    let should_publish = false;
     if (action === 'submit') {
         // console.log("IN SUBMIT ACTION");
-        setShouldPublish(true);
+        should_publish = true;
         // console.log(shouldPublish);
     }
     if (action === 'saveDraft') {
         // console.log("IN ACTION SAVE DRAFT")
-      setShouldPublish(false);
+      should_publish = false;
     }
-    const formData = constructForm(shouldPublish);
+    const formData = constructForm(should_publish, links);
     // console.log("new form data",formData); 
     await uploadFormAndUpdate(formData);
     setFormLoading(false);
