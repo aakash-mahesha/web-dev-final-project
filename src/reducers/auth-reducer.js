@@ -1,8 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+<<<<<<< HEAD
 import {loginThunk, logoutThunk, profileThunk, registerThunk, updateUserThunk} from "../thunks/auth-thunks";
+=======
+import {loginThunk, logoutThunk, profileThunk, registerThunk} from "../thunks/auth-thunks";
+import { current } from "@reduxjs/toolkit";
+
+>>>>>>> 5f19b7f75fc47e55a8e91cf93967458070bb6d6c
 const initialState = {
     currentUser : {details: null, loggedIn: false},
 }
+
 const authSlice = createSlice({
     name:"auth",
     initialState,
@@ -11,20 +18,23 @@ const authSlice = createSlice({
     extraReducers:{
     
         [registerThunk.fulfilled]: (state, { payload }) => {
-            
-            state.currentUser.details = payload;
-            state.currentUser.loggedIn = true;
+            state.currentUser = payload
         },
 
         [loginThunk.fulfilled]:(state,{payload}) => {
-            //in a state variable called currentUser
-            // console.log('in auth reducer', payload)
-            state.currentUser.details = payload;
-            state.currentUser.loggedIn = true;
+            state.currentUser = payload;
         },
-        [logoutThunk.fulfilled]: (state,action) => {
-            state.currentUser.details = null;
-            state.currentUser.loggedIn = false;
+        [logoutThunk.fulfilled]: (state) => {
+            state.currentUser = initialState
+        },
+        [profileThunk.fulfilled]: (state, { payload }) => {
+            state.currentUser = payload;
+        },
+        [profileThunk.rejected]: (state, { payload }) => {
+            state.currentUser = initialState;
+        },
+        [profileThunk.pending]: (state,action) => {
+            state.currentUser = state.currentUser
         },
         [profileThunk.fulfilled]: (state, { payload }) => {
             state.currentUser.details = payload;

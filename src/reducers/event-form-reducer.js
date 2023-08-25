@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { submitEventFormThunk } from "../thunks/event-form-thunks";
+import { createEventThunk, deleteEventThunk, editEventThunk } from "../thunks/event-form-thunks.js";
 
 const initialState = {
     loading: false,
     submittedForm: false,
-    savedDraft: false
+    message: 'init',
+    processedFormUpdates: false,
 }
 
 const eventFormSlice = createSlice({
@@ -12,47 +13,75 @@ const eventFormSlice = createSlice({
     initialState: initialState,
     reducers: {},
     extraReducers: {
-        [submitEventFormThunk.pending]:
+        [createEventThunk.pending]:
         (state) => {
             state.submittedForm = false;
-            state.savedDraft = false;
             state.loading = true;
         },
 
-        [submitEventFormThunk.fulfilled]:
+        [createEventThunk.fulfilled]:
+        (state, {payload}) => {
+            state.loading = false;
+            const error = payload.includes("Request failed with status code 400");
+            if(error) {
+                state.submittedForm = false;
+            }
+            else {
+                state.submittedForm = true;
+            }
+            state.message = payload;
+        },
+
+        [createEventThunk.rejected]:
+        (state, {payload}) => {
+            state.submittedForm = false;
+            state.loading = false;
+            state.message = payload;
+        },
+
+        [editEventThunk.pending]:
         (state) => {
-            state.submittedForm = true;
-            state.savedDraft = false;
+            state.processedFormUpdates = false;
+            state.loading = true;
+        },
+
+        [editEventThunk.fulfilled]:
+        (state) => {
+            state.loading = false;
+            state.processedFormUpdates = true;
+        },
+
+        [editEventThunk.rejected]:
+        (state) => {
+            state.processedFormUpdates = false;
             state.loading = false;
         },
 
-        [submitEventFormThunk.rejected]:
+        [deleteEventThunk.pending]:
         (state) => {
-            state.submittedForm = false;
-            state.savedDraft = false;
+            state.processedFormUpdates = false;
+            state.loading = true;
+        },
+
+        [deleteEventThunk.fulfilled]:
+        (state, {payload}) => {
             state.loading = false;
-        }
+            const error = payload.includes("Request failed with status code 400");
+            if(error) {
+                state.processedFormUpdates = false;
+            }
+            else {
+                state.processedFormUpdates = true;
+            }
+            state.message = payload;
+        },
 
-        // [saveEventFormThunk.pending]:
-        // (state) => {
-        //     state.submittedForm = false;
-        //     state.savedDraft = false;
-        //     state.loading = true;
-        // },
-
-        // [saveEventFormThunk.fulfilled]:
-        // (state) => {
-        //     state.submittedForm = false;
-        //     state.savedDraft = true;
-        //     state.loading = false;
-        // },
-
-        // [saveEventFormThunk.rejected]:
-        // (state) => {
-        //     state.submittedForm = false;
-        //     state.savedDraft = false; // NOT TOO SURE
-        //     state.loading = false;
-        // }
+        [deleteEventThunk.rejected]:
+        (state, {payload}) => {
+            state.processedFormUpdates = false;
+            state.loading = false;
+            state.message = payload;
+        },
     }
 })
 

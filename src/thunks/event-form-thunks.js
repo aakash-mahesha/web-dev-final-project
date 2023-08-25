@@ -1,10 +1,27 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { submitEventForm } from "../services/event-form-service.js";
+import { createEvent, deleteEvent, editEvent } from "../services/event-form-service.js";
 
-export const submitEventFormThunk = createAsyncThunk(
-    "event/submitEventForm",
+export const createEventThunk = createAsyncThunk(
+    "event/createEvent",
     async (formData) => {
-        console.log("In Thunks, form data: ", formData);
-        await submitEventForm(formData);
-    } // point to upload service
+        const response = await createEvent(formData);
+        console.log(response);
+        return response;
+    }
 );
+
+export const editEventThunk = createAsyncThunk(
+    "event/editEvent",
+    async (formData) => {
+        const response = await editEvent(formData);
+        return response;
+    }
+)
+
+export const deleteEventThunk = createAsyncThunk(
+    "event/deleteEvent",
+    async (formData) => {
+        const response = await deleteEvent(formData)
+        return response;
+    }
+)

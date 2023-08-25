@@ -3,7 +3,10 @@ import axios from "axios";
 const api = axios.create();
 // const API_BASE = process.env.API_BASE;
 // const FORM_API = `${API_BASE}/users/{id}/save-profile";
-const PROFILE_API = `http://localhost:4000/api/users/profile`; // ??? TODO: change to a valid one
+// const PROFILE_API = `http://localhost:4000/api/users/profile`; // ??? TODO: change to a valid one
+
+const REACT_APP_API_BASE = process.env.REACT_APP_API_BASE;
+const PROFILE_API =  `${REACT_APP_API_BASE}/users/profile`;
 
 export const submitProfileForm = async (formData) => {
     try {

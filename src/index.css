@@ -6,8 +6,20 @@
   font-family: 'Poppins', sans-serif;
   font-size: 1rem;
   /* Drawer width for search/details side-bar */
-  --drawer-width: 400;
+  /* --drawer-width: 400; */
 }
+
+/* @media screen and (min-width: 700px) {
+  :root {
+    --drawer-width: 400;
+  }
+}
+
+@media screen and (max-width: 699px) {
+  :root {
+    --drawer-width: calc(100vw);
+  }
+} */
 
 /* .App {
   display: flex;
@@ -57,3 +69,18 @@
 .leaflet-control-attribution {
   font-size: 10px;
 }
+
+/* leaflet popups */
+.leaflet-popup {
+  position: absolute;
+  text-align: center;
+  }
+
+.leaflet-popup-content {
+  margin-top: 20px;
+  margin-right: 2px;
+  padding-right: 12px;
+  min-width: 100 px !important;
+  max-height: 300px;
+  overflow: auto;
+  }

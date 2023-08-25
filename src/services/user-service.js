@@ -1,10 +1,11 @@
 import axios from "axios";
-const API_BASE_URL = "http://localhost:4000/api";
+const API_BASE_URL = process.env.REACT_APP_API_BASE;
 const USERS_API_URL = `${API_BASE_URL}/users`;
 
 const api = axios.create({
     withCredentials: true,
 });
+
 //Admin
 export const findAllUsers = async () => {
     const response = await axios.get(USERS_API_URL);
@@ -16,7 +17,7 @@ export const findAllUsers = async () => {
     return response.data;
   };
   
-  export const createUser = (user) => {
+  export const createUser = (user) => { 
     return axios.post(USERS_API_URL, user);
   };
 
