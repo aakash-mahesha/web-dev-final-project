@@ -172,7 +172,7 @@ const EventDetails = () => {
 
     const handleConfirmDelete = async () => {
         console.log("delete");
-        const response = await dispatch(deleteEventThunk({"_id": id}));
+        const response = await dispatch(deleteEventThunk(id));
         console.log(response)
         navigate(-1);
     }

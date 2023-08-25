@@ -38,10 +38,11 @@ export const editEvent = async (formData) => {
 
 export const deleteEvent = async (eventID) => {
     try {
-        const response = await api.delete(FORM_API, eventID);
+        console.log(eventID);
+        const response = await api.delete(FORM_API+`/${eventID}`);
         if (response.status === 201) {
             // Send update to /user db and append this event to his, alongside adding it to redux state of the user
-            return response.data._id;
+            return response;
         }
         else {
             return 'Could not complete request: '+response;

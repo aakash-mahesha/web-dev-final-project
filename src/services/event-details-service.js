@@ -20,8 +20,17 @@ const REACT_APP_API_BASE = process.env.REACT_APP_API_BASE;
 export const dbDetails = async (id) => {
 
     const detailsUrl = `${REACT_APP_API_BASE}/events`;
-    const response = await axios.get(detailsUrl, { params: { _id: id } });
-    console.log(response.data)
+    let response = null;
+    try {
+        response = await axios.get(detailsUrl, { params: { _id: id } });
+    } catch (error) {
+        console.log("Error with getting details from DB");
+        return null;
+    }
+    if(response.data === null) {
+        return "event not found";
+    }
+    // console.log(response.data)
     // const parsedResponse = {
     //     image: _getIfExists(response.data, 'imgs')[0] || '',
     //     ...response.data

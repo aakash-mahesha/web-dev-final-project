@@ -59,28 +59,20 @@ const eventFormSlice = createSlice({
 
         [deleteEventThunk.pending]:
         (state) => {
-            state.processedFormUpdates = false;
             state.loading = true;
+            state.processedFormUpdates = false;
         },
 
         [deleteEventThunk.fulfilled]:
-        (state, {payload}) => {
+        (state) => {
             state.loading = false;
-            const error = payload.includes("Request failed with status code 400");
-            if(error) {
-                state.processedFormUpdates = false;
-            }
-            else {
-                state.processedFormUpdates = true;
-            }
-            state.message = payload;
+            state.processedFormUpdates = true;
         },
 
         [deleteEventThunk.rejected]:
-        (state, {payload}) => {
-            state.processedFormUpdates = false;
+        (state) => {
             state.loading = false;
-            state.message = payload;
+            state.processedFormUpdates = false;
         },
     }
 })
