@@ -8,11 +8,11 @@ import { useNavigate } from "react-router";
 import { profileThunk, updateUserThunk, logoutThunk } from "../../thunks/auth-thunks";
 import authReducer from "../../reducers/auth-reducer";
 import { current } from '@reduxjs/toolkit';
+import { PanToolAltRounded } from '@mui/icons-material'
 function ProfileForm() {
     const { currentUser } = useSelector((state) => state.auth);
     const [profile, setProfile] = useState(currentUser.details);
     const [userUpdated, setUserUpdated] = useState(false);
-    console.log(currentUser.details)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [selectedTags, setSelectedTags] = useState([]);
@@ -20,16 +20,33 @@ function ProfileForm() {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [password, setPassword] = useState('');
-
     const [email, setEmail] = useState('');
     const [addressLine1, setAddressLine1] = useState('');
-
     const [addressLine2, setAddressLine2] = useState('');
     const [city, setCity] = useState('');
     const [stateName, setStateName] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [country, setCountry] = useState('');
+    const [orgId, setOrgId] = useState('');
+    const [orgName, setOrgName] = useState('');
 
+    const setAllStates = () => {
+        setFirstname(currentUser.details.firstname)
+        setLastname(currentUser.details.lastname)
+        setUsername(currentUser.details.username)
+        setPassword(currentUser.details.password)
+        setEmail(currentUser.details.email)
+        setAddressLine1(currentUser.details.address.addressLine1)
+        setAddressLine2(currentUser.details.address.addressLine2)
+        setCity(currentUser.details.address.city)
+        setStateName(currentUser.details.address.stateName)
+        setZipcode(currentUser.details.address.zipcode)
+        setCountry(currentUser.details.address.country)
+        if(currentUser.details.user_type === "organization"){
+            setOrgId(currentUser.details.orgData.orgId)
+            setOrgName(currentUser.details.orgData.orgName)
+        } 
+    }
 
     const handleAddressLine1Change = (event) => {
         const newAddressLine1 = event.target.value;
@@ -78,65 +95,71 @@ function ProfileForm() {
         const newCountry = event.target.value;
         setCountry(newCountry);
     }
+    const handleOrgIdChange = (event) => {
+        const newOrgId = event.target.value;
+        setOrgId(newOrgId)
+    }
+    const handleOrgNameChange = (event) => {
+        const newOrgName = event.target.value;
+        setOrgName(newOrgName)
+    }
 
 
-
-
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     setShouldSubmit(true);
-    // };
     const handleTagChange = (event, newTag) => {
         setSelectedTags(newTag)
     }
+
     const save = async () => {
-        const updatedProfile = {
-            // _id: currentUser.details._id,
-            username,
-            firstname,
-            lastname,
-            password,
-            email,
-            address: {
-                addressLine1,
-                addressLine2,
-                city,
-                stateName,
-                zipcode,
-                country,
-            },
-            tags: selectedTags,
-        };
-        const dummyUser = {
-           ...currentUser.details, updatedProfile
+        
+        let dummyUser = {
+           ...currentUser.details,
+           username:username,
+           firstname:firstname, 
+           lastname:lastname,
+           password:password,
+           address: {
+            addressLine1:addressLine1,
+            addressLine2:addressLine2,
+            city: city,
+            stateName : stateName,
+            zipcode: zipcode,
+            country: country, 
+           },
+           tags: selectedTags
+        }
+
+        if(currentUser.details.user_type === "organization"){
+            dummyUser = {...dummyUser, orgData:{
+                orgName: orgName,
+                orgId : orgId,
+            }}
         }
 
         await dispatch(updateUserThunk(dummyUser));
 
    
-        const response = await dispatch(profileThunk());
-        if(response){
-            setUserUpdated(true);
-        }
+        await dispatch(profileThunk());
+
         
     };
 
     useEffect(() => {
+        
+        setAllStates()
         const loadProfile = async () => {
 
-            try {
-                const { payload } = await dispatch(profileThunk());
-                setProfile(payload);
-
-            } catch (error) {
-                console.error(error);
+            const {payload} = await dispatch(profileThunk());
+            if(payload.loggedIn){
+                setProfile(payload)
+            }
+            else{
+                console.error(payload);
                 navigate("/login");
             }
         };
 
         loadProfile();
     }, []);
-    console.log(profile)
 
     return (
         <div>
@@ -156,7 +179,7 @@ function ProfileForm() {
                             fullWidth
                             autoFocus
                             required
-                            value={currentUser.details.firstname}
+                            value={firstname}
                             onChange={handleFirstNameChange}
                         />
                     </Grid>
@@ -167,11 +190,11 @@ function ProfileForm() {
                             fullWidth
                             autoFocus
                             required
-                            value={currentUser.details.lastname}
+                            value={lastname}
                             onChange={handleLastNameChange}
                         />
                     </Grid>
-                    {/* <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Username"
                             variant="outlined"
@@ -208,6 +231,33 @@ function ProfileForm() {
                             onChange={handlePasswordChange}
                         />
                     </Grid>
+                    {currentUser.details.orgData &&
+                    <>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            label="Organization Id"
+                            variant="outlined"
+                            fullWidth
+                            autoFocus
+                            required
+                            value={orgId}
+                            onChange={handleOrgIdChange}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            label="Organization Name"
+                            variant="outlined"
+                            fullWidth
+                            autoFocus
+                            required
+                            value={orgName}
+                            onChange={handleOrgNameChange}
+                        />
+                    </Grid>
+                    </>
+                    }
 
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -277,7 +327,7 @@ function ProfileForm() {
                             value={country}
                             onChange={handleCountryChange}
                         />
-                    </Grid> */}
+                    </Grid>
 
                 </Grid>
                 {/* <Grid item xs={12} sm={12} md={6}>
