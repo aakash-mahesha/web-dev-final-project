@@ -4,7 +4,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import dayjs from "dayjs";
 
 
-import { IconButton, Typography } from '@mui/material';
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -21,10 +21,13 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 import { apiDetailsThunk, dbDetailsThunk } from '../../thunks/event-details-thunks';
 // import { updateUserThunk } from '../../thunks/user-thunks';
 import { updateUser } from '../../utils/update-user-events';
+import { deleteEventThunk } from '../../thunks/event-form-thunks';
 
 // update to reflect revised event structure from api and backend
 // to know whether to format description, 
@@ -33,15 +36,31 @@ import { updateUser } from '../../utils/update-user-events';
 // https://www.w3docs.com/snippets/javascript/how-to-check-if-a-value-is-an-object-in-javascript.html
 
 const EventDetails = () => {
+    /*
+    details page conditional rendering based on user type (
+        like and going for regular, 
+        edit (link to pg) and delete (dispatch delete event think) for organization if organization is host (use email field to compare)
+    */
+    // const userTypes = ["regular", "organization", "admin"];
     const { eventDetails } = useSelector(state => state.eventDetails);
     const { currentUser } = useSelector(state => state.auth);
-    const [event, setEvent] = useState(eventDetails);
 
     const { origin, id } = useParams();
-    console.log('params', useParams())
-    console.log('id', id);
+    // console.log('params', useParams())
+    // console.log('id', id);
     const dispatch = useDispatch();
-    console.log('from reducer', eventDetails);
+    // console.log('from reducer', eventDetails);
+
+    const [event, setEvent] = useState(eventDetails);
+
+    const isRegularUser = (currentUser.loggedIn ? currentUser.details.user_type === "regular" : false);
+    const isEventOrganizer = (event) => {
+        if (currentUser.loggedIn) {
+            const user = currentUser.details;
+            return (user.user_type === "organization" && user.email === event.hostDetails.email);
+        }
+        return false;
+    }
 
     // async function loadEvent(origin, id) {
     //     if (origin === 'db') {
@@ -121,17 +140,41 @@ const EventDetails = () => {
 
     const getUserVals = () => {
         if (currentUser.loggedIn) {
-            // check whether event id is in current users liked list
-            const initialLiked = currentUser.details.likedEventIds.some((idObj) => idObj.event_id === id);
-            setLiked(initialLiked);
+            if (currentUser.details.user_type === "regular") {
+                // check whether event id is in current users liked list
+                const initialLiked = currentUser.details.likedEventIds.some((idObj) => idObj.event_id === id);
+                setLiked(initialLiked);
 
-            // check whether event id is in current users going list
-            const initialGoing = currentUser.details.goingEventIds.some((idObj) => idObj.event_id === id);
-            setGoing(initialGoing)
+                // check whether event id is in current users going list
+                const initialGoing = currentUser.details.goingEventIds.some((idObj) => idObj.event_id === id);
+                setGoing(initialGoing)
+            }
         }
     }
 
     useEffect(() => getUserVals(), []);
+
+    const handleEdit = () => {
+        console.log("edit");
+        navigate(`/edit-event/${id}`)
+    }
+
+    const [deleteDialog, setDeleteDialog] = useState(false);
+
+    const handleDeleteClick = () => {
+        setDeleteDialog(true);
+    }
+
+    const handleCancelDelete = () => {
+        console.log('cancel');
+        setDeleteDialog(false);
+    }
+
+    const handleConfirmDelete = async () => {
+        console.log("delete");
+        await dispatch(deleteEventThunk(id));
+        setDeleteDialog(false);
+    }
 
     const navigate = useNavigate();
 
@@ -212,10 +255,38 @@ const EventDetails = () => {
                             onClick={handleGoing}>
                             {going ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
                         </IconButton> */}
-                        {currentUser.loggedIn && (<IconButton color="primary" aria-label="add to bookmarks"
+                        {isRegularUser && (<IconButton color="primary" title="like" aria-label="add to bookmarks"
                             onClick={handleLiked}>
                             {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                         </IconButton>)}
+                        {isEventOrganizer(event) &&
+                            (<ButtonGroup>
+                                <IconButton color="primary" title="edit" aria-label="edit event"
+                                    onClick={handleEdit}>
+                                    <EditOutlinedIcon />
+                                </IconButton>
+                                <IconButton color="primary" title="delete" aria-label="delete event"
+                                    onClick={handleDeleteClick}>
+                                    <DeleteOutlinedIcon />
+                                </IconButton>
+                            </ButtonGroup>)}
+                            <Dialog
+                            open={deleteDialog}
+                            onClose={handleCancelDelete}
+                            >
+                                <DialogTitle>
+                                    {"Are you sure you want to delete this event?"}
+                                </DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        This action cannot be undone.
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleConfirmDelete}>Delete</Button>
+                                    <Button onClick={handleCancelDelete}>Cancel</Button>
+                                </DialogActions>
+                            </Dialog>
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container
@@ -305,13 +376,13 @@ const EventDetails = () => {
                             {event.hostDetails.email}
                         </Typography>
                     </Grid>)}
-                    {currentUser.loggedIn && (<Grid item xs={12}
+                    {isRegularUser && (<Grid item xs={12}
                         sx={{ textAlign: "left", justifyContent: "flex-start" }} >
                         {/* <IconButton color="primary" aria-label="like"
                             onClick={handleLiked}>
                             {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                         </IconButton> */}
-                        <IconButton color="primary" aria-label="going"
+                        <IconButton color="primary" title="going to event" aria-label="going"
                             onClick={handleGoing}>
                             {going ? <CheckCircleIcon sx={{ mr: 1 }} /> : <CheckCircleOutlineIcon sx={{ mr: 1 }} />}
                             <Typography>Going?</Typography>
