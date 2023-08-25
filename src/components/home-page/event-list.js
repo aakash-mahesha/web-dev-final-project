@@ -43,8 +43,9 @@ const EventList = ({ eventIds }) => {
 
     const handleLoadEvent = (id) => {
         try {
+            const eventIdObj = eventIds.find((idObject) => idObject.event_id === id);
             // await dispatch(dbDetailsThunk(id));
-            navigate(`/details/${id}`);
+            navigate(`/details/${eventIdObj.source}/${id}`);
 
         } catch (e) {
             alert(e);

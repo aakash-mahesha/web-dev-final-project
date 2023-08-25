@@ -49,6 +49,8 @@ const EventDetails = () => {
     // console.log('params', useParams())
     // console.log('id', id);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     // console.log('from reducer', eventDetails);
 
     const [event, setEvent] = useState(eventDetails);
@@ -178,8 +180,6 @@ const EventDetails = () => {
         console.log(response)
         navigate(-1);
     }
-
-    const navigate = useNavigate();
 
     const handleBackClick = () => {
         navigate(-1);

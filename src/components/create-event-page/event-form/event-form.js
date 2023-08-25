@@ -11,11 +11,13 @@ import { useSelector } from 'react-redux';
 import { updateUser } from '../../../utils/update-user-events.js';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { useNavigate } from 'react-router';
 
 const defaultTheme = createTheme();
 
 const EventForm = () => {
   
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const {currentUser} = useSelector(state => state.auth);
     // https://mapverse-server.onrender.com/api/events
@@ -36,7 +38,7 @@ const EventForm = () => {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState('');
   const [selectedImages, setImages] = useState([]);
-  const [shouldPublish, setShouldPublish] = useState(false);
+  const [shouldPublish, setShouldPublish] = useState(true);
   const [uploadLinks, setUploadLinks] = useState([]);
   const [formLoading, setFormLoading] = useState(false);
 
@@ -101,7 +103,7 @@ const EventForm = () => {
     setImages(Array.from(selectedImages));
   };
 
-  function constructForm(publishBool) {
+  function constructForm(publishBool, public_url) {
     const startDateAndTimeString = startDateAndTime.toISOString();
     const endDateAndTimeString = endDateAndTime.toISOString();
     const formData = {
@@ -120,7 +122,7 @@ const EventForm = () => {
       isReservation,
       maxPeople,
       tags,
-      uploadLinks,
+      uploadLinks: public_url,
       publish: publishBool,
       hostDetails: {
         name: currentUser.loggedIn ? (currentUser.details.firstname + " " + currentUser.details.lastname) : "Test",
@@ -151,6 +153,7 @@ const EventForm = () => {
       if(response.status === 200) {
         links.push(response.data.public_url);
         console.log(links);
+        return links;
         setUploadLinks(links.flat());
         console.log("in upload image",uploadLinks);
       }
@@ -174,7 +177,9 @@ const EventForm = () => {
   const handleSubmit = async (event, action) => {
     event.preventDefault();
     setFormLoading(true);
-    await uploadImage();
+    const public_url = await uploadImage();
+    console.log("public url", public_url);
+    setUploadLinks(public_url);
     console.log("outside upload", uploadLinks);
     if (action === 'submit') {
       setShouldPublish(true);
@@ -182,12 +187,13 @@ const EventForm = () => {
     if (action === 'saveDraft') {
       setShouldPublish(false);
     }
-    const formData = constructForm(shouldPublish);
+    const formData = constructForm(shouldPublish, public_url);
     console.log(formData); 
     await uploadFormAndUpdate(formData);
     setFormLoading(false);
     // console.log("Loading, Submitted, Message", loading, submittedForm, message);
     resetStates();
+    navigate(-1);
   };
 
   return (
