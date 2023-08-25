@@ -38,21 +38,23 @@ const EventSuggestions = () => {
 
     useEffect(() => {
         async function loadEvents() {
-            const { payload } = await dispatch(findAllUsersThunk());
-            console.log(payload)
-            if (payload) {
-                const tenUsersList = arrTenOrLess(payload);
-                setTenLikedEvents(findEndFieldList(tenUsersList, "likedEventIds"));
-                setTenGoingEvents(findEndFieldList(tenUsersList, "goingEventIds"));
+            if (currentUser.loggedIn) {
+                setTenLikedEvents(arrTenOrLess(currentUser.details.likedEventIds));
+                setTenGoingEvents(arrTenOrLess(currentUser.details.goingEventIds));
+            } else {
+                const { payload } = await dispatch(findAllUsersThunk());
+                console.log(payload)
+                if (payload) {
+                    const tenUsersList = arrTenOrLess(payload);
+                    setTenLikedEvents(findEndFieldList(tenUsersList, "likedEventIds"));
+                    setTenGoingEvents(findEndFieldList(tenUsersList, "goingEventIds"));
+                }
             }
         };
-        loadEvents();
+        if (!tenGoingEvents.length || !tenLikedEvents.length) {
+            loadEvents();
+        }
     }, []);
-
-    if (currentUser.loggedIn) {
-        // setTenLikedEvents(arrTenOrLess(currentUser.details.likedEventIds));
-        // setTenGoingEvents(arrTenOrLess(currentUser.details.goingEventIds));
-    }
 
     // likedEvents and goingEvents (as lists in side-by-side grids)
 
