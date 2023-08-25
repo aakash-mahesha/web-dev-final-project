@@ -19,7 +19,7 @@ function LayoutPage({ Content, Icon }) {
     // const { drawerWidth } = useSelector(state => state.drawerWidth);
     const drawerWidth = 400;
     const {currentUser} = useSelector(state => state.auth)
-    console.log(currentUser)
+    // console.log(currentUser)
     const AppBar = styled(MuiAppBar, {
         shouldForwardProp: (prop) => prop !== 'open',
     })(({ theme, open }) => ({

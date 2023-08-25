@@ -83,17 +83,19 @@ function EditToolbar(props) {
     );
 }
 function UserTable() {
-    const [users, setUsers] = useState([]);
+    const [users1, setUsers] = useState([]);
+    const {users} = useSelector(state => state.user)
+    console.log(users)
     const dispatch = useDispatch();
     useEffect(() => {
       const getLatestUsers = async() => {
-        const allUsers = await dispatch(findAllUsersThunk());
-        setUsers(allUsers.payload);
+        console.log('in useEffect')
+        await dispatch(findAllUsersThunk());
       }
       getLatestUsers();
     }, []);
 
-    console.log("USER ARRAY",users);
+    // console.log("USER ARRAY",users);
     // const [rows, setUsers] = React.useState(users);
     const [rowModesModel, setRowModesModel] = React.useState({});
 
@@ -111,8 +113,14 @@ function UserTable() {
         setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     };
 
-    const handleDeleteClick = (id) => () => {
-        setUsers(users.filter((row) => row.id !== id));
+    const handleDeleteClick = (id) => async () => {
+      console.log("In handle delete; Id : ", id)
+      const response = await dispatch(deleteUserThunk(id))
+      console.log(response)
+      // users = users.filter((row) => row.id !== id);
+      // setUsers(users.filter((row) => row.id !== id));
+
+
     };
 
     const handleCancelClick = (id) => () => {
@@ -121,15 +129,17 @@ function UserTable() {
             [id]: { mode: GridRowModes.View, ignoreModifications: true },
         });
 
-        const editedRow = users.find((row) => row.id === id);
-        if (editedRow.isNew) {
-            setUsers(users.filter((row) => row.id !== id));
-        }
+        // const editedRow = users.find((row) => row.id === id);
+        // console.log("PRINTING EDITED ROW",editedRow)
+        // if (editedRow.isNew) {
+        //     setUsers(users.filter((row) => row.id !== id));
+        // }
     };
 
-    const processRowUpdate = (newRow) => {
+    const processRowUpdate = async (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
-        setUsers(users.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        setUsers(users.map((row) => (row._id === newRow._id ? updatedRow : row)));
+        await dispatch(updateUserThunk(newRow))
         return updatedRow;
     };
 

@@ -81,7 +81,7 @@ function EventTable() {
     useEffect(() => {
       const getAllEvents = async() => {
         const allEvents = await dispatch(findEventThunk());
-        console.log(allEvents.payload);
+        // console.log(allEvents.payload);
         setEvents(allEvents.payload);
       }
       getAllEvents();
@@ -133,7 +133,7 @@ function EventTable() {
         { field: 'eventName', headerName: 'Name', width: 150,editable: true},
         { field: 'startDate', headerName: 'Date', width: 150,editable: true },
         { field: 'location', headerName: 'Location', width: 150, editable: true },
-        { field: ['hostDetails','name'], headerName: 'Host', width: 150, editable: true },
+        { field: 'hostDetails.name', headerName: 'Host', width: 150, editable: true },
         { field: 'email', headerName: 'Email', width: 150, editable: true },
         {
             field: 'status', headerName: 'Status', type: 'singleSelect',

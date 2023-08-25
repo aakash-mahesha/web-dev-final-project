@@ -15,8 +15,8 @@ export const logoutThunk = createAsyncThunk("auth/logout", async () => {
 export const profileThunk = createAsyncThunk(
     "auth/profile", async () => {
         const response = await authService.profile();
-        console.log('response profile thunk')
-        console.log(response.data)
+        // console.log('response profile thunk')
+        // console.log(response.data)
         return response.data;
     });
 

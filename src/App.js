@@ -23,6 +23,7 @@ import ProtectedRoute from './utils/protected-route';
 import HomePage from './components/home-page';
 import EditEventFormBox from './components/edit-event';
 import FourOhFourPage from './components/404-page';
+import userReducer from './reducers/user-reducer';
 
 function App() {
   const store = configureStore({
@@ -32,6 +33,7 @@ function App() {
       eventDetails: eventDetailsReducer,
       tagOptions: tagsReducer,
       auth: authReducers,
+      user: userReducer,
     }
   })
 

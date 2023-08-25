@@ -9,7 +9,6 @@ const api = axios.create({
 //Admin
 export const findAllUsers = async () => {
     const response = await axios.get(USERS_API_URL);
-    console.log("Service", response.data);
     return response.data;
   };
   

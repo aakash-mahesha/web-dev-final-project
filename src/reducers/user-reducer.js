@@ -1,11 +1,5 @@
-const { createSlice } = require("@reduxjs/toolkit");
-const { 
-    findAllUsersThunk, 
-    findUserByIdThunk, 
-    createUserThunk, 
-    deleteUserThunk,
-    updateUserThunk 
-    } = require("../thunks/user-thunks");
+import { createSlice } from "@reduxjs/toolkit";
+import { findAllUsersThunk, findUserByIdThunk, createUserThunk, deleteUserThunk, updateUserThunk } from "../thunks/user-thunks";
     const initialState = {
         users: [],
         loading: false,
@@ -22,9 +16,9 @@ const usersSlice = createSlice({
         state.loading = true;
         state.users = [];
     },
-    [findAllUsersThunk.fulfilled]: (state, action) => {
+    [findAllUsersThunk.fulfilled]: (state, {payload}) => {
         state.loading = false;
-        state.users = action.payload;
+        state.users = payload;
       },
     [findAllUsersThunk.rejected]: (state, action) => {
         state.loading = false;
