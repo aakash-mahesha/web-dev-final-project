@@ -41,7 +41,7 @@ const EventDetails = () => {
         like and going for regular, 
         edit (link to pg) and delete (dispatch delete event think) for organization if organization is host (use email field to compare)
     */
-    const userTypes = ["regular", "organization", "admin"];
+    // const userTypes = ["regular", "organization", "admin"];
     const { eventDetails } = useSelector(state => state.eventDetails);
     const { currentUser } = useSelector(state => state.auth);
 
