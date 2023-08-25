@@ -91,7 +91,10 @@ const EventDetails = () => {
         // updateUserThunk(user);
         const idObj = { event_id: id, source: origin };
         const operation = (add ? "ADD" : "REMOVE");
-        await updateUser(dispatch, currentUser, fieldName, operation, idObj);
+        console.log(operation);
+        const response = await updateUser(dispatch, currentUser, fieldName, operation, idObj);
+        console.log(response);
+
 
     }
 
@@ -100,8 +103,9 @@ const EventDetails = () => {
 
     // update to send new value to server via reducer
     const handleLiked = () => {
-        setLiked(!liked);
-        updateUserFieldList("likedEventIds", liked);
+        const updated = !liked;
+        setLiked(updated);
+        updateUserFieldList("likedEventIds", updated);
     }
 
 
@@ -110,8 +114,9 @@ const EventDetails = () => {
 
     // update to send new value to server via reducer
     const handleGoing = () => {
-        setGoing(!going);
-        updateUserFieldList("goingEventIds", going);
+        const updated = !going;
+        setGoing(updated);
+        updateUserFieldList("goingEventIds", updated);
     }
 
     const getUserVals = () => {
