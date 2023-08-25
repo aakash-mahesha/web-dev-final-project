@@ -52,7 +52,7 @@ function App() {
               <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               {/* <Route path="/table" element={<EventTable />} /> */}
               <Route path="/create-event" element={<ProtectedRoute>< EventFormBox /></ProtectedRoute>} />
-              <Route path="/edit-event" element={<ProtectedRoute>< EditEventFormBox /></ProtectedRoute>} />
+              <Route path="/edit-event/:id" element={<ProtectedRoute>< EditEventFormBox /></ProtectedRoute>} />
               <Route path="/details/*" element={<EventPage />} />
               <Route path="/login" element={<LoginComponent />} />
               <Route path="/register/*" element={<Register />} />

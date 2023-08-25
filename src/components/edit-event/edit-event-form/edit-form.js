@@ -11,13 +11,14 @@ import { useSelector } from 'react-redux';
 import { dbDetails } from '../../../services/event-details-service.js';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { useParams } from 'react-router';
 
 const defaultTheme = createTheme();
 
-const EditEventForm = (props) => {
+const EditEventForm = () => {
     
-    const id = (props.id) ? props.id : '64e7deb30974f2f0e56d4ab6';
-    // console.log("$$$ id", id);
+  const {id} = useParams();
+    console.log("$$$ id", id);
     const dispatch = useDispatch();
     const {currentUser} = useSelector(state => state.auth);
 
