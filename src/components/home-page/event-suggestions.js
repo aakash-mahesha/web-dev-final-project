@@ -28,11 +28,15 @@ const EventSuggestions = () => {
     }
 
     const findEndFieldList = (userList, field) => {
+        console.log('endfieldslist function')
         const endsList = [];
         userList.map((user) => {
+            console.log('user', user)
             const fieldList = user[field];
+            console.log('list', fieldList)
             if (fieldList) {
-                const lastElement = fieldList[field.length - 1];
+                const lastElement = fieldList[fieldList.length - 1];
+                console.log('last', lastElement)
                 if (lastElement) {
                     endsList.push(lastElement);
                 }
@@ -56,11 +60,13 @@ const EventSuggestions = () => {
                 }
             } else {
                 const { payload } = await dispatch(findAllUsersThunk());
-                console.log(payload)
+                console.log("users", payload)
                 if (payload) {
-                    const tenUsersList = arrTenOrLess(payload);
-                    setTenLikedEvents(findEndFieldList(tenUsersList, "likedEventIds"));
-                    setTenGoingEvents(findEndFieldList(tenUsersList, "goingEventIds"));
+                    // const tenUsersList = arrTenOrLess(payload);
+                    // setTenLikedEvents(findEndFieldList(tenUsersList, "likedEventIds"));
+                    // setTenGoingEvents(findEndFieldList(tenUsersList, "goingEventIds"));
+                    setTenLikedEvents(arrTenOrLess(findEndFieldList(payload, "likedEventIds")));
+                    setTenGoingEvents(arrTenOrLess(findEndFieldList(payload, "goingEventIds")));
                 }
             }
         };
