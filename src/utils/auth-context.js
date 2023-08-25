@@ -12,7 +12,6 @@ function AuthContext ({children}){
     };
     load();
     }, []);
-
     if (loading) {
         return(
             <div className="spinner-border" role="status">

@@ -51,7 +51,7 @@ const LoginComponent = () =>{
           setLoginStatus('error');
         }else{
           setLoginStatus('success');
-          navigate("/") // profile page
+          navigate("/") 
         }
         
     };

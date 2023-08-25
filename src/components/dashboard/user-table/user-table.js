@@ -83,20 +83,21 @@ function EditToolbar(props) {
     );
 }
 function UserTable() {
-    const [users1, setUsers] = useState([]);
     const {users} = useSelector(state => state.user)
-    console.log(users)
+    const [updatedUsers,setUpdatedUsers] = useState([])
     const dispatch = useDispatch();
     useEffect(() => {
       const getLatestUsers = async() => {
-        console.log('in useEffect')
         await dispatch(findAllUsersThunk());
       }
       getLatestUsers();
-    }, []);
+      
+    }, [dispatch]);
 
-    // console.log("USER ARRAY",users);
-    // const [rows, setUsers] = React.useState(users);
+    useEffect(() => {
+      setUpdatedUsers(users)
+    }, [users])
+    
     const [rowModesModel, setRowModesModel] = React.useState({});
 
     const handleRowEditStop = (params, event) => {
@@ -115,12 +116,10 @@ function UserTable() {
 
     const handleDeleteClick = (id) => async () => {
       console.log("In handle delete; Id : ", id)
-      const response = await dispatch(deleteUserThunk(id))
-      console.log(response)
-      // users = users.filter((row) => row.id !== id);
-      // setUsers(users.filter((row) => row.id !== id));
-
-
+      await dispatch(deleteUserThunk(id))
+      await setUpdatedUsers(updatedUsers.filter((row) => row.id !== id));
+      // dummyUsers = dummyUsers.filter((row) => row.id !== id)
+      
     };
 
     const handleCancelClick = (id) => () => {
@@ -138,7 +137,7 @@ function UserTable() {
 
     const processRowUpdate = async (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
-        setUsers(users.map((row) => (row._id === newRow._id ? updatedRow : row)));
+        setUpdatedUsers(updatedUsers.map((row) => (row._id === newRow._id ? updatedRow : row)));
         await dispatch(updateUserThunk(newRow))
         return updatedRow;
     };
@@ -215,7 +214,7 @@ function UserTable() {
               }}
             >
               <DataGrid
-                rows={users}
+                rows={updatedUsers}
                 columns={columns}
                 editMode="row"
                 getRowId={(row) => row._id}
@@ -227,7 +226,7 @@ function UserTable() {
                   toolbar: EditToolbar,
                 }}
                 slotProps={{
-                  toolbar: { setUsers, setRowModesModel },
+                  toolbar: { setUpdatedUsers, setRowModesModel },
                 }}
               />
             </Box>
