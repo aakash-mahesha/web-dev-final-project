@@ -18,6 +18,9 @@ const EventSuggestions = () => {
 
     function arrTenOrLess(arr) {
         console.log("event sugg", arr);
+        if (!arr) {
+            return [];
+        }
         return (arr.length > 10 ? arr.slice(10) : arr);
     }
 
