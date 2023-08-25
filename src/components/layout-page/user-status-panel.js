@@ -1,14 +1,16 @@
 import React from 'react';
 import { Avatar, Typography, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 const UserStatusPanel = ({ user }) => {
     return (
+        <div style={{ marginRight:"15px"}}>
         <Box display="flex" alignItems="center">
-            <Avatar>
-                <PersonIcon />
+            <Avatar sx={{backgroundColor:'transparent'}} mr={0}>
+                <AccountCircleOutlinedIcon fontSize='large' />
             </Avatar>
-            <Box ml={2}>
+            <Box ml={1}>
                 {user.loggedIn ? (
                     <>
                     <Typography variant="subtitle1">
@@ -26,6 +28,8 @@ const UserStatusPanel = ({ user }) => {
                 
             </Box>
         </Box>
+        </div>
+        
     );
 };
 
