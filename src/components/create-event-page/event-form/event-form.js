@@ -181,13 +181,14 @@ const EventForm = () => {
     console.log("public url", public_url);
     setUploadLinks(public_url);
     console.log("outside upload", uploadLinks);
+    let should_publish = false;
     if (action === 'submit') {
-      setShouldPublish(true);
+      should_publish = true;
     }
     if (action === 'saveDraft') {
-      setShouldPublish(false);
+      should_publish = false;
     }
-    const formData = constructForm(shouldPublish, public_url);
+    const formData = constructForm(should_publish, public_url);
     console.log(formData); 
     await uploadFormAndUpdate(formData);
     setFormLoading(false);
