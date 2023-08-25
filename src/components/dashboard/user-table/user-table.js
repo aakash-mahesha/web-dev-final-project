@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+
 import {
     GridRowModes,
     DataGrid,
@@ -61,12 +62,12 @@ const initialRows = [
 ]
 
 function EditToolbar(props) {
-    const { setRows, setRowModesModel } = props;
+    const { setUsers, setRowModesModel } = props;
 
     const handleClick = () => {
         const id = Math.floor(Math.random() * 100);
         
-        setRows((oldRows) => [...oldRows, { id, username: '', firstname: '', lastname: '', email: '' }]);
+        setUsers((oldRows) => [...oldRows, { id, username: '', firstname: '', lastname: '', email: '' }]);
         setRowModesModel((oldModel) => ({
             ...oldModel,
             [id]: { mode: GridRowModes.Edit, fieldToFocus: 'username' },
@@ -82,15 +83,18 @@ function EditToolbar(props) {
     );
 }
 function UserTable() {
-    
-    const { currentUser, users } = useSelector((state) => state.users);
+    const [users, setUsers] = useState([]);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     useEffect(() => {
-        dispatch(findAllUsersThunk());
+      const getLatestUsers = async() => {
+        const allUsers = await dispatch(findAllUsersThunk());
+        setUsers(allUsers.payload);
+      }
+      getLatestUsers();
     }, []);
 
-    const [rows, setRows] = React.useState(initialRows);
+    console.log("USER ARRAY",users);
+    // const [rows, setUsers] = React.useState(users);
     const [rowModesModel, setRowModesModel] = React.useState({});
 
     const handleRowEditStop = (params, event) => {
@@ -108,7 +112,7 @@ function UserTable() {
     };
 
     const handleDeleteClick = (id) => () => {
-        setRows(rows.filter((row) => row.id !== id));
+        setUsers(users.filter((row) => row.id !== id));
     };
 
     const handleCancelClick = (id) => () => {
@@ -117,15 +121,15 @@ function UserTable() {
             [id]: { mode: GridRowModes.View, ignoreModifications: true },
         });
 
-        const editedRow = rows.find((row) => row.id === id);
+        const editedRow = users.find((row) => row.id === id);
         if (editedRow.isNew) {
-            setRows(rows.filter((row) => row.id !== id));
+            setUsers(users.filter((row) => row.id !== id));
         }
     };
 
     const processRowUpdate = (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        setUsers(users.map((row) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
     };
 
@@ -136,7 +140,7 @@ function UserTable() {
         { field: 'username', headerName: 'Username', width: 150, editable: true },
 
         { field: 'password', headerName: 'Password', type: Password, width: 150, editable: true },
-        { field: 'fistname', headerName: 'First name', width: 150, editable: true },
+        { field: 'firstname', headerName: 'First name', width: 150, editable: true },
         { field: 'lastname', headerName: 'Last name', width: 150, editable: true },
         { field: 'email', headerName: 'Email', width: 150, editable: true },
         {
@@ -201,10 +205,10 @@ function UserTable() {
               }}
             >
               <DataGrid
-                rows={rows}
+                rows={users}
                 columns={columns}
                 editMode="row"
-                getRowId={(row) => row.id}
+                getRowId={(row) => row._id}
                 rowModesModel={rowModesModel}
                 onRowModesModelChange={handleRowModesModelChange}
                 onRowEditStop={handleRowEditStop}
@@ -213,7 +217,7 @@ function UserTable() {
                   toolbar: EditToolbar,
                 }}
                 slotProps={{
-                  toolbar: { setRows, setRowModesModel },
+                  toolbar: { setUsers, setRowModesModel },
                 }}
               />
             </Box>

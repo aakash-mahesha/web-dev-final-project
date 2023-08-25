@@ -9,11 +9,12 @@ const api = axios.create({
 //Admin
 export const findAllUsers = async () => {
     const response = await axios.get(USERS_API_URL);
+    console.log("Service", response.data);
     return response.data;
   };
   
   export const findUserById = async (id) => {
-    const response = await axios.get(`${USERS_API_URL}/userId/${id}`);
+    const response = await axios.get(`${USERS_API_URL}/${id}`);
     return response.data;
   };
   
