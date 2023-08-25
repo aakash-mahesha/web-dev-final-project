@@ -69,7 +69,9 @@ const SearchForm = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(dbGetTagsThunk())
+        if (!tagOptions.length) {
+            dispatch(dbGetTagsThunk());
+        }
     }, [])
 
 
@@ -332,7 +334,7 @@ const SearchForm = () => {
                         sx={{ ml: 2, mt: 3, width: "95%" }}
                         variant="standard"
                     >
-                        <FormLabel sx={{ mb: 2 }} component="legend">Filter by tag (saved events only)</FormLabel>
+                        <FormLabel sx={{ mb: 2 }} component="legend">Filter by tag (MapVerse only)</FormLabel>
                         {/* <Autocomplete
                             multiple
                             id="tags-filled"
