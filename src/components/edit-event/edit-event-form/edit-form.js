@@ -11,14 +11,14 @@ import { useSelector } from 'react-redux';
 import { dbDetails } from '../../../services/event-details-service.js';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 const defaultTheme = createTheme();
 
 const EditEventForm = () => {
     
+  const navigate = useNavigate();
   const {id} = useParams();
-    console.log("$$$ id", id);
     const dispatch = useDispatch();
     const {currentUser} = useSelector(state => state.auth);
 
@@ -49,7 +49,7 @@ const EditEventForm = () => {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState('');
   const [selectedImages, setImages] = useState([]);
-  const [shouldPublish, setShouldPublish] = useState(false);
+  const [shouldPublish, setShouldPublish] = useState(true);
   const [uploadLinks, setUploadLinks] = useState([]);
   const [formLoading, setFormLoading] = useState(false);
   const [_id, setId] = useState('');
@@ -198,6 +198,7 @@ const EditEventForm = () => {
     // console.log("new form data",formData); 
     await uploadFormAndUpdate(formData);
     setFormLoading(false);
+    navigate(-1);
     // console.log("Loading, Submitted, Message", loading, submittedForm, message);
     // resetStates();
   };
