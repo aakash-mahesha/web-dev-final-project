@@ -69,7 +69,9 @@ const SearchForm = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(dbGetTagsThunk())
+        if (!tagOptions.length) {
+            dispatch(dbGetTagsThunk());
+        }
     }, [])
 
 
