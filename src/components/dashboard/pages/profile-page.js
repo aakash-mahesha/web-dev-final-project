@@ -1,6 +1,7 @@
 import { Typography, Box, Container,Paper,Grid} from "@mui/material";
 import MainLayout from "../layout/main-layout";
 import CheckboxesGroup from "../checkbox";
+import ProfileForm from "../../../form/edit-profile/edit-profile";
 // import ProfileForm from "../../../form/edit-profile/edit-profile";
 import EditProfileBox from "../../../form/edit-profile/edit-profile-box.js";
 const ProfileScreen = () => {

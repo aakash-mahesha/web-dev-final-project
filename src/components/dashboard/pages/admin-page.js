@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { Router, Route, BrowserRouter, Switch, Link } from "react-router-dom";
 import UserTable from "../user-table/user-table";
 import EventTable from "../event-table/event-table";
+import MiniDrawer from "../sidebar/nav-item";
 
 const Admin= () => {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Admin= () => {
         
         <Box>
             <MainLayout/>
+           
 
         </Box>
         <Container xs={8} lg={10} >

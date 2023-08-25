@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Box, Grid, useMediaQuery,Paper} from "@mui/material";
+import { Box, Grid, useMediaQuery, Paper } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Header from"../header";
+import Header from "../header";
 import Sidebar from "../sidebar";
 import Navtab from "../navtab";
+import MiniDrawer from "../sidebar/nav-item";
 
 
 const DashLayout = () => {
@@ -18,30 +19,32 @@ const DashLayout = () => {
       <Sidebar
         //user={data || {}}
         isNonMobile={isNonMobile}
-        drawerWidth="250px"
+        drawerWidth="180px"
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
-      <Box flexGrow={1}>
-      
-      <Header/>
-      <Header />
-      
-      <div style={{ padding: '20px' }}>
 
-      <Header/>
-      
-      <Navtab
-        user= "admin"
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-      />
-      
-      
-      </div>
+      <Box>
+
+        <Header />
+        <Header />
+
+        <div style={{ padding: '20px' }}>
+
+          <Header />
+
+
+          <Navtab
+            user="admin"
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
+
+
+        </div>
       </Box>
-      </Box>
-);
+    </Box >
+  );
 };
 export default DashLayout;
 

@@ -8,7 +8,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
-import EventCard from './card/eventCard';
+import EventCard from '../card/eventCard';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;

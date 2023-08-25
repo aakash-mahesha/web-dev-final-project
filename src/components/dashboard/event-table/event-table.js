@@ -14,6 +14,10 @@ import {
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 import { Password } from '@mui/icons-material';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { findEventThunk } from '../../../thunks/event-thunks';
+import { useState } from 'react';
 
 const initialRows = [
     {   id: 12,
@@ -51,12 +55,12 @@ const initialRows = [
 ]
 
 function EditToolbar(props) {
-    const { setRows, setRowModesModel } = props;
+    const { setEvents, setRowModesModel } = props;
 
     const handleClick = () => {
         const id = Math.floor(Math.random() * 100);
         
-        setRows((oldRows) => [...oldRows, { id, name: '', date: '', location: '', host: '',email: '' }]);
+        setEvents((oldRows) => [...oldRows, { id, name: '', date: '', location: '', host: '',email: '' }]);
         setRowModesModel((oldModel) => ({
             ...oldModel,
             [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
@@ -72,7 +76,16 @@ function EditToolbar(props) {
     );
 }
 function EventTable() {
-    const [rows, setRows] = React.useState(initialRows);
+    const dispatch = useDispatch();
+    const [events, setEvents] = useState([]);
+    useEffect(() => {
+      const getAllEvents = async() => {
+        const allEvents = await dispatch(findEventThunk());
+        console.log(allEvents.payload);
+        setEvents(allEvents.payload);
+      }
+      getAllEvents();
+    }, [])
     const [rowModesModel, setRowModesModel] = React.useState({});
 
     const handleRowEditStop = (params, event) => {
@@ -90,7 +103,7 @@ function EventTable() {
     };
 
     const handleDeleteClick = (id) => () => {
-        setRows(rows.filter((row) => row.id !== id));
+        setEvents(events.filter((row) => row.id !== id));
     };
 
     const handleCancelClick = (id) => () => {
@@ -99,15 +112,15 @@ function EventTable() {
             [id]: { mode: GridRowModes.View, ignoreModifications: true },
         });
 
-        const editedRow = rows.find((row) => row.id === id);
+        const editedRow = events.find((row) => row.id === id);
         if (editedRow.isNew) {
-            setRows(rows.filter((row) => row.id !== id));
+            setEvents(events.filter((row) => row.id !== id));
         }
     };
 
     const processRowUpdate = (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        setEvents(events.map((row) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
     };
 
@@ -115,12 +128,12 @@ function EventTable() {
         setRowModesModel(newRowModesModel);
     };
     const columns = [
-        { field: 'id', headerName: 'EventId', width: 150, editable: true },
+        { field: '_id', headerName: 'EventId', width: 150, editable: true },
 
-        { field: 'name', headerName: 'Name', width: 150,editable: true},
-        { field: 'date', headerName: 'Date', width: 150,editable: true },
+        { field: 'eventName', headerName: 'Name', width: 150,editable: true},
+        { field: 'startDate', headerName: 'Date', width: 150,editable: true },
         { field: 'location', headerName: 'Location', width: 150, editable: true },
-        { field: 'host', headerName: 'Host', width: 150, editable: true },
+        { field: ['hostDetails','name'], headerName: 'Host', width: 150, editable: true },
         { field: 'email', headerName: 'Email', width: 150, editable: true },
         {
             field: 'status', headerName: 'Status', type: 'singleSelect',
@@ -184,10 +197,10 @@ function EventTable() {
               }}
             >
               <DataGrid
-                rows={rows}
+                rows={events}
                 columns={columns}
                 editMode="row"
-                getRowId={(row) => row.id}
+                getRowId={(event) => event._id}
                 rowModesModel={rowModesModel}
                 onRowModesModelChange={handleRowModesModelChange}
                 onRowEditStop={handleRowEditStop}
@@ -196,7 +209,7 @@ function EventTable() {
                   toolbar: EditToolbar,
                 }}
                 slotProps={{
-                  toolbar: { setRows, setRowModesModel },
+                  toolbar: { setEvents, setRowModesModel },
                 }}
               />
             </Box>

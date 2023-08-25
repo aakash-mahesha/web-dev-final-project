@@ -23,6 +23,7 @@ export const logout = async () => {
     return response.data;
 };
 export const profile = async () => {
+   
     try{
         const response = await api.post(`${USERS_API_URL}/profile`);
         return response; 

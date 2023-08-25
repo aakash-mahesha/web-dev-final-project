@@ -34,7 +34,7 @@ const EditEventCard = () =>{
                     component="img"
                     sx={{
                         height: 60,
-                        width: 120,
+                        width: 80,
                         m:2
                         
                     }} 

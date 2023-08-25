@@ -12,10 +12,14 @@ export const loginThunk = createAsyncThunk("auth/login", async ({ username, pass
 export const logoutThunk = createAsyncThunk("auth/logout", async () => { 
     await authService.logout();
 });
-export const profileThunk = createAsyncThunk("auth/profile", async () => {
-    const response = await authService.profile();
-    return response.data;
-});
+export const profileThunk = createAsyncThunk(
+    "auth/profile", async () => {
+        const response = await authService.profile();
+        console.log('response profile thunk')
+        console.log(response.data)
+        return response.data;
+    });
+
 export const updateUserThunk = createAsyncThunk("auth/updateUser", async (user) => {
     const response = await authService.updateUser(user);
     return response.data;
